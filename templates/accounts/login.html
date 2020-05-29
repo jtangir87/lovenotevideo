@@ -1,0 +1,26 @@
+{% extends 'accounts/registration_base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+
+    <section class="screen_area text-center p_120">
+        <div class="container">
+            <div class="main_title">
+                <h2>Login</h2>
+            </div>
+            <div class="login-form">
+                <form method="post">
+                {% bootstrap_form_errors form %}
+                  {% csrf_token %}
+                  {% bootstrap_field form.username show_label=false %}
+                  {% bootstrap_field form.password show_label=false %}
+                  {% bootstrap_button "Login" button_type="submit" button_class="btn btn-lg login-button" %}
+                </form>
+            <div>
+            <div class="form-footer">
+                <p>Want to start spreading the love? <a class="btn btn-sm login-button" href="{% url 'accounts:register' %}">Sign Up!</a></p>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+
+\

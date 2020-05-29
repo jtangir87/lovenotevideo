@@ -1,0 +1,53 @@
+html {
+    height: 100%;
+}
+body {
+    margin: 0;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background: linear-gradient(#9B5DE5,  #F15BB5) fixed;
+}
+
+.main_title > h2 {
+    color: white;
+}
+
+.header_area .navbar {
+    background: #00BBF9;
+}
+
+.login-form {
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.form-footer {
+    margin-top: 35px;
+    color: white;
+}
+
+.login-button {
+    border: none;
+    color: white;
+    background: #00BBF9;
+}
+
+.col-form-label {
+    color: white;
+}
+
+.text-muted {
+    color:white!important;
+}
+
+.brand-img {
+    height: 70px;
+    width: 250px;
+  }
+  
+
+@media (max-width: 991px) {
+    .header_area .navbar {
+        background: #00BBF9;
+    }
+    }

@@ -1,0 +1,51 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+{% block content %}
+<div class="content-container">
+  <section id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                <h4>My Active Love Notes</h4>
+                <div class="row">
+                    {% for event in events %}
+
+                        <div class="col-lg-4 mx-auto mb-2">
+                            <div class="card">
+                                {% if event.image %}
+                                    <img class="card-img-top dash-img-top" src="{{event.image.url}}" alt="{% static "dashboard/img/heart-stock.png" %}">
+
+                                {% else %}
+                                    <img class="card-img-top dash-img-top" src="{% static "dashboard/img/heart-stock.png" %}" alt="Image Not Found">
+                                {% endif %}
+                                
+                                <div class="card-body">
+                                    <h5 class="card-title">{{event.name}}</h5>
+                                    <p class="card-text">Due Date: {{event.due_date}}</p>
+                                    {% comment %} <p class="card-text">Submissions: {{event.submissions.count}}</p> {% endcomment %}
+                                    <div class="text-center">
+                                        <a href="{% url 'events:event_detail' uuid=event.uuid %}" class="btn lilac-button">View Love Note</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+                <hr>
+                <div class="text-center">
+                    <button class="btn btn-lg teal-button js-create-event" data-url="{% url 'events:event_create' %}">Start a Love Note</button>
+                </div>
+            </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+{% endblock content %}

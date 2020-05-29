@@ -1,0 +1,63 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block headscript %}
+
+
+{% endblock headscript %}
+
+{% block content %}
+<div class="content-container">
+  <section id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 mx-auto">
+
+            <div class="card">                 
+                <div class="card-body">
+                    <h2 class="card-title text-center">Order & Approve Your Love Notes</h2>
+                    <p class="card-title text-center">We recommend that you choose your order by 5's so that if you change your mind you have spaces in between</p>
+                    <div class="col-lg-12 mx-auto">
+                        <form method="POST" class="center-form">
+                            {% csrf_token %}
+                            {{ formset.management_form }}
+                            {% bootstrap_formset_errors formset %}
+                                {% for form in formset  %}
+                                    <div class="row mb-2 mx-auto">
+                                    <div class="col-lg-2 text-center">
+                                        <video width="150" height="150" class="card-img-top" poster="{{video.video_thumbnail}}" preload="auto" controls >
+                                            <source src="{{form.instance.video_mp4.url}}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>                                    
+                                    </div>
+                                    <div class="col-lg-2 text-center vertical-align-center video-sub-details" style="padding-top:1.25rem;">
+                                        <p>From: {{form.instance.uploaded_by}}</br>Shared: {{form.instance.timestamp}}</p>
+                                                                        
+                                    </div>
+                                    <div class="col-lg-2 vertical-align-center">
+                                        {% bootstrap_field form.approved layout="horizontal" %}
+                                    </div>
+                                    <div class="col-lg-6 vertical-align-center">
+                                        {% bootstrap_field form.production_order %}
+                                        {% bootstrap_field form.id layout="horizontal" %}
+                                    </div>
+                                    </div>
+                                    <hr>
+                                    
+                                {% endfor %}
+                                {% bootstrap_button "Approve" button_type="submit" button_class="btn btn-lg lilac-button"%}
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+                        
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+{% endblock content %}

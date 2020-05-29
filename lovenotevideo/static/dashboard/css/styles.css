@@ -1,0 +1,102 @@
+.content-container {
+    margin: 0;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background: radial-gradient(#00BBF9,  #00F5D4) fixed;
+  }
+
+.thankyou-container {
+    margin: 0;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 800px;
+    
+}
+.teal-button {
+    border: none;
+    color: white;
+    background: #00BBF9;
+}
+
+.lilac-button {
+    border: none;
+    color: white;
+    background: #9B5DE5;
+}
+
+.image-head {
+  max-width: 300px;
+  max-height: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dash-img-top {
+  width: 335px;
+  height: 295px;
+  object-fit: contain;
+}
+
+.brand-img {
+  height: 70px;
+  width: 250px;
+}
+
+.video-sub-details p {
+  font-size: .75rem;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+
+.table-video-window {
+  width: 150px;
+  height: 150px;
+}
+
+.video-thumb {
+  max-height: 200px;
+  max-width: 200px;
+}
+
+.vertical-align-center {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+
+  align-items: center;
+}
+
+.card-footer {
+  background: white;
+}
+
+/* Container needed to position the button. Adjust the width as needed */
+.image-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Make the image responsive */
+.image-container img {
+  width: 100%;
+  height: auto;
+}
+
+/* Style the button and place it in the middle of the image-container/image */
+.image-container .btn {
+  position: absolute;
+  bottom:5px;
+  right:5px;
+}
+
+
+
+@media (min-width:900px) {
+  .content-container {
+    min-height: 850px;
+  }
+}

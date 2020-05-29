@@ -1,0 +1,76 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block content %}
+<div class="content-container">
+  <section id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 mx-auto">
+            <div class="card">
+                <div class="card-body">    
+                    <div class="row">
+                        <div class="col-lg-4 mx-auto mb-2">
+                            <div class="card">
+                                <div class="image-container">
+                                    {% if event.image %}
+                                        <img class="card-img-top" src="{{event.image.url}}" alt="Image Not Found">
+
+                                    {% else %}
+                                        <img class="card-img-top" src="{% static "dashboard/img/heart-stock.png" %}" alt="Image Not Found">
+                                    {% endif %}
+                                    <button class="btn teal-button" type="button" id="changeImage"><span class="fas fa-camera"></span> &nbsp;Change Image</button>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{event.name}}</h5>
+                                    <p class="card-text">Due Date: {{event.due_date}}</p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a class="btn btn-sm teal-button" href=""><span class="far fa-edit"></span> &nbsp;Update</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 mx-auto mb-2">
+                            <div class="card mb-4">                 
+                                <div class="card-body">
+                                    <h2 class="card-title text-center">Publishing Details</h2>
+                                    <p class="card-title text-center">Subnote here</p>
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <tr>
+                                                    <th>Package</th>
+                                                    <th>Videos Included</th>
+                                                    <th>Price</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{package.name}}</td>
+                                                    <td>{{package.min_videos}} - {{package.max_videos}}</td>
+                                                    <td>${{package.price}}</td>
+                                                </tr>
+                                            </table>    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                <div class="card-footer text-center">
+                    <a class="btn btn-lg teal-button" href=""><span class="far fa-heart"></span> &nbsp;Publish Love Note</a>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+{% endblock content %}
+
+{% block footscript %}
+
+
+{% endblock footscript %}

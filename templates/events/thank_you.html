@@ -1,0 +1,28 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="thankyou-container" style="background-image: url({% static 'dashboard/img/fireworks-background.jpg' %});">
+  <section id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="text-center mb-4">Your video has been submitted! Thank you for sharing your love!</h5>
+                <hr>
+                <div class="text-center">
+                    <a class="btn btn-lg teal-button" href="{% url 'accounts:login' %}">Start a Love Note</a>
+                </div>
+            </h3>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+{% endblock content %}

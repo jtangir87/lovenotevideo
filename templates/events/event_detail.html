@@ -1,0 +1,126 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block content %}
+<div class="content-container">
+  <section id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 mx-auto">
+            <div class="card">
+                <div class="card-body">    
+                    <div class="row">
+                        <div class="col-lg-4 mx-auto mb-2">
+                            <div class="card">
+                                <div class="image-container">
+                                    {% if event.image %}
+                                        <img class="card-img-top" src="{{event.image.url}}" alt="Image Not Found">
+
+                                    {% else %}
+                                        <img class="card-img-top" src="{% static "dashboard/img/heart-stock.png" %}" alt="Image Not Found">
+                                    {% endif %}
+                                    <button class="btn teal-button" type="button" id="changeImage"><span class="fas fa-camera"></span> &nbsp;Change Image</button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="show-or-hide">
+                                        <form method="POST" enctype='multipart/form-data' action="{% url 'events:event_image_upload' uuid=event.uuid %}">
+                                            {% csrf_token %}
+                                            {% bootstrap_form_errors image_form %}
+                                            {% bootstrap_form image_form layout="horizontal" %}
+                                            <div class="text-center">
+                                                {% bootstrap_button "Submit" button_type="submit" button_class="btn btn-sm teal-button mb-4"%}
+                                            </div>
+                                        </form>
+                                        <hr>
+                                    </div>
+                                    <h5 class="card-title">{{event.name}}</h5>
+                                    <p class="card-text">Due Date: {{event.due_date}}</p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a class="btn btn-sm teal-button" href=""><span class="far fa-edit"></span> &nbsp;Update</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 mx-auto mb-2">
+                            <div class="card mb-4">                 
+                                <div class="card-body">
+                                    <h2 class="card-title text-center">Invite People to Share Their Love</h2>
+                                    <p class="card-title text-center">Subnote here</p>
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-4 mx-auto text-center mb-2">
+                                                <a class="btn btn-lg lilac-button" href="mailto:?subject=Let's create a Love Note Video for {{event.name}}&body=I am inviting you to be a part of the Love Note Video for {{event.name}}. Please go to https://www.lovenotevideo.com{{submission_url}} to record or submit a special message. All Love Notes need to be submitted by {{event.due_date}}. Thank you!"><span class="far fa-envelope"></span> &nbsp;Email</a>
+                                            </div>
+                                            <div class="col-lg-4 mx-auto text-center mb-2">
+                                                <a class="btn btn-lg lilac-button" href="sms:?&body=I am inviting you to be a part of the Love Note Video for {{event.name}}. Please go to https://www.lovenotevideo.com{{submission_url}} to record or submit a special message. All Love Notes need to be submitted by {{event.due_date}}. Thank you!"><span class="far fa-comment-dots"></span> &nbsp;Text</a>
+                                            </div>
+                                            <div class="col-lg-4 mx-auto text-center mb-2">
+                                                <button class="btn btn-lg lilac-button" data-clipboard-text="https://www.lovenotevideo.com{{submission_url}}"><span class="far fa-copy"></span> &nbsp;Copy Link</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">                 
+                                <div class="card-body">
+                                    <h2 class="card-title text-center">Love Notes</h2>
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                        {% for video in videos %}
+                                            <div class="col-lg-4 mx-auto">
+                                                <div class="card mb-4">
+                                                	<video width="150" height="150" class="card-img-top" poster="{{video.video_thumbnail.url}}" preload="auto" controls >
+                                                        <source src="{{video.video_mp4.url}}" type="video/mp4">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                    
+                                                    <div class="card-body video-sub-details">
+                                                        <p>From: {{video.uploaded_by}}</p>
+                                                        <p class="video-sub-details">Shared: {{video.timestamp}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        </div>
+                                        <hr>
+                                        <div class="text-center">
+                                            <a class="btn btn-lg lilac-button" href="{% url 'events:video_reorder' uuid=event.uuid %}">Approve and Order Videos</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                <div class="card-footer text-center">
+                    <a class="btn btn-lg teal-button" href="{% url 'orders:publish_event' uuid=event.uuid %}"><span class="far fa-heart"></span> &nbsp;Publish Love Note</a>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+{% endblock content %}
+
+{% block footscript %}
+<script src="{% static 'dashboard/dist/clipboard.min.js' %}"></script>
+<script>
+new ClipboardJS('.btn')
+</script>
+<script>
+$(function() {
+    $('.show-or-hide').hide();
+});
+$("#changeImage").click(function() {
+    $('.show-or-hide').toggle();
+});
+
+
+</script>
+
+{% endblock footscript %}

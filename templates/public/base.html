@@ -1,0 +1,159 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" href="{% static 'favicon.ico' %}" type="image/png">
+        <title>Love Note Video</title>
+        <!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'public/vendors/linericon/style.css' %}">
+        <link rel="stylesheet" href="{% static 'public/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'public/vendors/owl-carousel/owl.carousel.min.css' %}">
+        <link rel="stylesheet" href="{% static 'public/vendors/lightbox/simpleLightbox.css' %}">
+        <link rel="stylesheet" href="{% static 'public/vendors/nice-select/css/nice-select.css' %}">
+        <link rel="stylesheet" href="{% static 'public/vendors/animate-css/animate.css' %}">
+        <link rel="stylesheet" href="{% static 'public/vendors/flaticon/flaticon.css' %}">
+        <!-- main css -->
+        <link rel="stylesheet" href="{% static 'public/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'public/css/responsive.css' %}">
+		{% block headscript %}
+		{% endblock headscript %}
+    </head>
+    <body>
+        
+        <!--================Header Menu Area =================-->
+        <header class="header_area">
+            <div class="main_menu">
+            	<nav class="navbar navbar-expand-lg navbar-light">
+					<div class="container box_1620">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<a class="navbar-brand logo_h" href="{% url 'home' %}"><img class="brand-img" src="{% static 'lnv-logo-sm-wh.png' %}" alt=""></a>
+						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+							<ul class="nav navbar-nav menu_nav justify-content-center">
+								<li class="nav-item active"><a class="nav-link" href="{% url 'home' %}"">Home</a></li> 
+								{% comment %} <li class="nav-item"><a class="nav-link" href="about-us.html">About</a></li> 
+								<li class="nav-item"><a class="nav-link" href="services.html">Services</a>
+								<li class="nav-item submenu dropdown">
+									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pages</a>
+									<ul class="dropdown-menu">
+										<li class="nav-item"><a class="nav-link" href="price.html">Pricing</a> 
+										<li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
+									</ul>
+								</li> 
+								<li class="nav-item submenu dropdown">
+									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blog</a>
+									<ul class="dropdown-menu">
+										<li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+										<li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
+									</ul>
+								</li>  
+								<li class="nav-item divider"><a class="nav-link" href="contact.html">Contact</a></li>{% endcomment %}
+								{% if request.user.is_authenticated %}
+									<li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a></li>
+								{% else %}
+									<li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url 'accounts:register' %}">Sign Up</a></li>
+								{% endif %}
+							</ul>
+							<ul class="nav navbar-nav navbar-right">
+								{% if request.user.is_authenticated %}
+									<li class="nav-item"><a href="#" class="tickets_btn">Start a Love Note</a></li>
+								{% else %}
+									<li class="nav-item"><a href="{% url 'accounts:register' %}" class="tickets_btn">Start a Love Note</a></li>
+								{% endif %}
+								
+							</ul>
+						</div> 
+					</div>
+            	</nav>
+            </div>
+        </header>
+        <!--================Header Menu Area =================-->
+        
+        {% block content %}
+        {% endblock content %}
+        
+        <!--================Footer Area =================-->
+        <footer class="footer_area p_120">
+        	<div class="container">
+        		<div class="row footer_inner">
+        			<div class="col-lg-5 col-sm-6">
+        				<aside class="f_widget ab_widget">
+        					<div class="f_title">
+        						<h3>About Me</h3>
+        					</div>
+        					<p>Coming Soon!</p>
+        					<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+        				</aside>
+        			</div>
+        			<div class="col-lg-5 col-sm-6">
+        				<aside class="f_widget news_widget">
+        					<div class="f_title">
+        						<h3>Newsletter</h3>
+        					</div>
+        					<p>Stay updated with our latest features</p>
+        					<div id="mc_embed_signup">
+                                <form target="_blank" action="#" method="get" class="subscribe_form relative">
+                                	<div class="input-group d-flex flex-row">
+                                        <input name="EMAIL" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '" required="" type="email">
+                                        <button class="btn sub-btn"><span class="lnr lnr-arrow-right"></span></button>		
+                                    </div>				
+                                    <div class="mt-10 info"></div>
+                                </form>
+                            </div>
+        				</aside>
+        			</div>
+        			<div class="col-lg-2">
+        				<aside class="f_widget social_widget">
+        					<div class="f_title">
+        						<h3>Follow Me</h3>
+        					</div>
+        					<p>Let us be social</p>
+        					<ul class="list">
+        						<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+        						<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+        						<li><a href="#"><i class="fa fa-instagram"></i></a></li>
+        					</ul>
+        				</aside>
+        			</div>
+        		</div>
+        	</div>
+        </footer>
+        <!--================End Footer Area =================-->
+        
+        
+        
+        
+        
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="{% static 'public/js/jquery-3.2.1.min.js' %}"></script>
+        <script src="{% static 'public/js/popper.js' %}"></script>
+        <script src="{% static 'public/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'public/js/stellar.js' %}"></script>
+        <script src="{% static 'public/vendors/lightbox/simpleLightbox.min.js' %}"></script>
+        <script src="{% static 'public/vendors/nice-select/js/jquery.nice-select.min.js' %}"></script>
+        <script src="{% static 'public/vendors/isotope/imagesloaded.pkgd.min.js' %}"></script>
+        <script src="{% static 'public/vendors/isotope/isotope-min.js' %}"></script>
+        <script src="{% static 'public/vendors/owl-carousel/owl.carousel.min.js' %}"></script>
+        <script src="{% static 'public/js/jquery.ajaxchimp.min.js' %}"></script>
+        <script src="{% static 'public/vendors/counter-up/jquery.waypoints.min.js' %}"></script>
+        <script src="{% static 'public/vendors/counter-up/jquery.counterup.min.js' %}"></script>
+        <script src="{% static 'public/js/mail-script.js' %}"></script>
+        <!--gmaps Js-->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+        <script src="{% static 'public/js/gmaps.min.js' %}"></script>
+        <script src="{% static 'public/js/theme.js' %}"></script>
+    </body>
+</html>
