@@ -3024,6 +3024,12 @@ h6 {
   width: 250px;
 }
 
+@media (max-width: 990px) {
+  .brand-img {
+    width: 200px;
+  }
+}
+
   @media (min-width: 991px) {
     #navbarSupportedContent .divider::after {
         content: '|';

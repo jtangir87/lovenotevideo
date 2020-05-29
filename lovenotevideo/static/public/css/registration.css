@@ -12,9 +12,6 @@ body {
     color: white;
 }
 
-.header_area .navbar {
-    background: #00BBF9;
-}
 
 .login-form {
     margin-left: 25%;
@@ -46,8 +43,15 @@ body {
   }
   
 
+
+@media (max-width:900px) {
+    .brand-img {
+      width: 225px;
+    }
+  }
+
 @media (max-width: 991px) {
     .header_area .navbar {
-        background: #00BBF9;
+        background: transparent;
     }
     }
