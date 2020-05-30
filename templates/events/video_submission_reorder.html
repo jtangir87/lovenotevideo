@@ -25,7 +25,7 @@
                                 {% for form in formset  %}
                                     <div class="row mb-2 mx-auto">
                                     <div class="col-lg-2 text-center">
-                                        <video width="150" height="150" class="card-img-top" poster="{{video.video_thumbnail}}" preload="auto" controls >
+                                        <video width="150" height="150" class="card-img-top" poster="{{video.video_thumbnail}}" preload="auto" controls controlsList="nodownload">
                                             <source src="{{form.instance.video_mp4.url}}" type="video/mp4">
                                             Your browser does not support the video tag.
                                         </video>                                    

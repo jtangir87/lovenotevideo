@@ -70,7 +70,7 @@
                                         {% for video in videos %}
                                             <div class="col-lg-4 mx-auto">
                                                 <div class="card mb-4">
-                                                	<video width="150" height="150" class="card-img-top" poster="{{video.video_thumbnail.url}}" preload="auto" controls >
+                                                	<video width="150" height="150" class="card-img-top" poster="{{video.video_thumbnail.url}}" preload="auto" controls controlsList="nodownload">
                                                         <source src="{{video.video_mp4.url}}" type="video/mp4">
                                                         Your browser does not support the video tag.
                                                     </video>
