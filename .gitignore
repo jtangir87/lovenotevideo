@@ -32,7 +32,6 @@ lovenotevideo/local_settings.py
 # Distribution / packaging 
 .Python build/ 
 develop-eggs/ 
-dist/ 
 downloads/ 
 eggs/ 
 .eggs/ 
