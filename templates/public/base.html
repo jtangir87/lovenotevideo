@@ -58,6 +58,7 @@
 								</li>  
 								<li class="nav-item divider"><a class="nav-link" href="contact.html">Contact</a></li>{% endcomment %}
 								{% if request.user.is_authenticated %}
+									<li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">My Love Notes</a></li>
 									<li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a></li>
 								{% else %}
 									<li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
@@ -89,7 +90,7 @@
         			<div class="col-lg-5 col-sm-6">
         				<aside class="f_widget ab_widget">
         					<div class="f_title">
-        						<h3>About Me</h3>
+        						<h3>About Us</h3>
         					</div>
         					<p>Coming Soon!</p>
         					<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
@@ -98,7 +99,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         				</aside>
         			</div>
         			<div class="col-lg-5 col-sm-6">
-        				<aside class="f_widget news_widget">
+        				{% comment %} <aside class="f_widget news_widget">
         					<div class="f_title">
         						<h3>Newsletter</h3>
         					</div>
@@ -112,18 +113,18 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                                     <div class="mt-10 info"></div>
                                 </form>
                             </div>
-        				</aside>
+        				</aside> {% endcomment %}
         			</div>
         			<div class="col-lg-2">
         				<aside class="f_widget social_widget">
         					<div class="f_title">
-        						<h3>Follow Me</h3>
+        						<h3>Follow Us</h3>
         					</div>
-        					<p>Let us be social</p>
+        					<p>Let's be social</p>
         					<ul class="list">
-        						<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-        						<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-        						<li><a href="#"><i class="fa fa-instagram"></i></a></li>
+        						<li><a href="https://www.facebook.com/thelovenotevideo" target="_blank"><i class="fa fa-facebook"></i></a></li>
+        						{% comment %} <li><a href="#"><i class="fa fa-twitter"></i></a></li> {% endcomment %}
+        						<li><a href="https://www.instagram.com/lovenotevideo" target="_blank"><i class="fa fa-instagram"></i></a></li>
         					</ul>
         				</aside>
         			</div>

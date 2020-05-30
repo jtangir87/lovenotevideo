@@ -3024,6 +3024,8 @@ h6 {
   width: 250px;
 }
 
+
+
 @media (max-width: 990px) {
   .brand-img {
     width: 200px;
@@ -3035,6 +3037,9 @@ h6 {
         content: '|';
         color: white;
         padding: 0  0.5em;	
+    }
+    #mobile-only {
+      display:none;
     }
   }
 
