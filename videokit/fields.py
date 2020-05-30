@@ -335,7 +335,7 @@ class VideoSpecFieldFile(VideoFieldFile):
         cachefile_dir = getattr(
             settings, "VIDEOKIT_CACHEFILE_DIR", VideokitConfig.VIDEOKIT_CACHEFILE_DIR
         )
-        dir = os.path.join(cachefile_dir, os.path.splitext(self.source_file.name)[0])
+        dir = os.path.join(cachefile_dir, os.path.split(self.source_file.name)[0])
         hash = md5()
         hash.update(
             (
