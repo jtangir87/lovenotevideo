@@ -9,6 +9,9 @@ class CustomUser(AbstractUser):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     editor = models.BooleanField(default=False)
 
+    def get_absolute_url(self):
+        return reverse("dashboard")
+
 
 class Profile(models.Model):
     user = models.OneToOneField(
