@@ -18,19 +18,23 @@ from django.urls import path
 from .views import (
     EventDetail,
     event_create,
+    event_update,
     video_submission,
     ThankYou,
     production_order,
     event_image_upload,
+    download_files,
 )
 
 app_name = "events"
 
 urlpatterns = [
     path("create", event_create, name="event_create"),
+    path("<uuid:uuid>/update", event_update, name="event_update"),
     path("<uuid:uuid>", EventDetail.as_view(), name="event_detail"),
     path("<uuid:uuid>/submission", video_submission, name="video_submission"),
     path("thank-you", ThankYou.as_view(), name="thank_you"),
     path("<uuid:uuid>/reorder", production_order, name="video_reorder"),
     path("<uuid:uuid>/image", event_image_upload, name="event_image_upload"),
+    path("<uuid:uuid>/download", download_files, name="download_files"),
 ]

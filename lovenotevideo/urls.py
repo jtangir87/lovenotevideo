@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from .views import HomeView, dashboard
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("dev/backend", admin.site.urls),
     path("", include("accounts.urls")),
     path("", include("events.urls")),
     path("", include("orders.urls")),

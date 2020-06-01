@@ -1,18 +1,19 @@
 import uuid
 from django.db import models
 from django.contrib.auth import get_user_model
-
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from videokit.models import VideoField, VideoSpecField
 
 User = get_user_model()
 # Create your models here.
 
-EVENT_STATUS_CHOICES = {
-    ("Open", "Open"),
-    ("Production", "Production"),
-    ("Delivered", "Delivered"),
+EVENT_STATUS_CHOICES = [
+    ("Open", "Open for Submissions"),
+    ("Production", "Being Produced"),
+    ("Delivered", "Final Product"),
     ("Complete", "Complete"),
-}
+]
 
 
 def user_event_directory_path(instance, filename):
@@ -46,6 +47,9 @@ class Event(models.Model):
 
     def submissions(self):
         return VideoSubmission.objects.filter(event=self.id)
+
+    def approved_videos(self):
+        return VideoSubmission.objects.filter(event=self.id, approved=True)
 
 
 def user_directory_path(instance, filename):
@@ -86,3 +90,12 @@ class VideoSubmission(models.Model):
 
     def __str__(self):
         return self.event.name + " - " + str(self.timestamp)
+
+
+@receiver(post_delete, sender=VideoSubmission)
+def video_delete(sender, instance, **kwargs):
+    instance.video.delete(False)
+    instance.video_thumbnail.delete(False)
+    instance.video_mp4.delete(False)
+    instance.video_ogg.delete(False)
+    instance.video_webm.delete(False)

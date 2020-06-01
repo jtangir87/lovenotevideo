@@ -1,17 +1,24 @@
 {% extends 'dashboard_base.html' %}
 {% load static %}
 {% load bootstrap4 %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page">{{event.name}}</li>
+{% endblock breadcrumb %}
+
 {% block content %}
-<div class="content-container">
-  <section id="about">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 mx-auto">
             <div class="card">
+                <div class="card-header text-center">
+                {% if not event.order %}
+                    <a class="btn btn-lg teal-button" href="{% url 'orders:publish_event' uuid=event.uuid %}"><span class="far fa-heart"></span> &nbsp;Publish Love Note</a>
+                {% else %}
+                    <h4>Published on {{event.order.created_at| date:"M j, Y "}}
+                {% endif %}
+                </div>
                 <div class="card-body">    
                     <div class="row">
                         <div class="col-lg-4 mx-auto mb-2">
-                            <div class="card">
+                            <!--- EVENT CARD -->
+                            <div class="card mb-2">
                                 <div class="image-container">
                                     {% if event.image %}
                                         <img class="card-img-top" src="{{event.image.url}}" alt="Image Not Found">
@@ -19,7 +26,9 @@
                                     {% else %}
                                         <img class="card-img-top" src="{% static "dashboard/img/lnv-phone-logo.png" %}" alt="Image Not Found">
                                     {% endif %}
-                                    <button class="btn teal-button" type="button" id="changeImage"><span class="fas fa-camera"></span> &nbsp;Change Image</button>
+                                    {% if event.status == "Open" %}
+                                        <button class="btn teal-button" type="button" id="changeImage"><span class="fas fa-camera"></span> &nbsp;Change Image</button>
+                                    {% endif %}
                                 </div>
                                 <div class="card-body">
                                     <div class="show-or-hide">
@@ -34,12 +43,54 @@
                                         <hr>
                                     </div>
                                     <h5 class="card-title">{{event.name}}</h5>
-                                    <p class="card-text">Due Date: {{event.due_date}}</p>
+                                    <p class="card-text"><strong>Due Date: </strong>{{event.due_date}}<br>
+                                    
+                                        <strong>Status: </strong>{{event.get_status_display}}</p>
+                                    
+
+                                    
+
                                 </div>
                                 <div class="card-footer text-center">
-                                    <a class="btn btn-sm teal-button" href=""><span class="far fa-edit"></span> &nbsp;Update</a>
+                                {% if event.status == "Open" %}
+                                    <button class="btn btn-sm teal-button js-create-event" data-url="{% url 'events:event_update' uuid=event.uuid %}"><span class="far fa-edit"></span> &nbsp;Update</button>
+                                {% else %}
+                                    <p class="text-muted"><small>Sorry, you cannot update a published love note</small></p>
+                                {% endif %}
                                 </div>
                             </div>
+                            <!--- ORDER CARD -->
+                            {% if event.order %}
+                           
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Order Details</h5>
+                                    <p class="card-text"><strong>Package: </strong>{{event.order.package.name}}<br>
+                                        <strong>Total Price: </strong>${{event.order.order_total}}
+                                    </p>
+                                    <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="3">Payments:</th>
+                                        </tr>
+                                    </thead>
+                                    {% for payment in event.order.get_payments %}
+                                        <tr>
+                                            <td>{{payment.created_at|date:"m/j/Y"}}
+                                            <td>${{payment.amount}}</td>
+                                            <td><a href="{{payment.receipt_url}}" target="_blank">Receipt</a></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </table>
+                                    
+
+                                    
+
+                                </div>
+                            </div>
+                             {% endif %}
+
+
                         </div>
                         <div class="col-lg-8 mx-auto mb-2">
                             <div class="card mb-4">                 
@@ -47,17 +98,21 @@
                                     <h2 class="card-title text-center">Invite People to Share Their Love</h2>
                                     {% comment %} <p class="card-title text-center">Subnote here</p> {% endcomment %}
                                     <div class="col-lg-12">
-                                        <div class="row">
-                                            <div class="col-lg-4 mx-auto text-center mb-2">
-                                                <a class="btn btn-lg lilac-button" href="mailto:?subject=Let's create a Love Note Video for {{event.name}}&body=I am inviting you to be a part of the Love Note Video for {{event.name}}. Please go to https://www.lovenotevideo.com{{submission_url}} to record or submit a special message. All Love Notes need to be submitted by {{event.due_date}}. Thank you!"><span class="far fa-envelope"></span> &nbsp;Email</a>
+                                        {% if event.status == "Open" %}
+                                            <div class="row">
+                                                <div class="col-lg-4 mx-auto text-center mb-2">
+                                                    <a class="btn btn-lg lilac-button" href="mailto:?subject=Let's create a Love Note Video for {{event.name}}&body=I am inviting you to be a part of the Love Note Video for {{event.name}}. Please go to https://www.lovenotevideo.com{{submission_url}} to record or submit a special message. All Love Notes need to be submitted by {{event.due_date}}. Thank you!"><span class="far fa-envelope"></span> &nbsp;Email</a>
+                                                </div>
+                                                <div class="col-lg-4 mx-auto text-center mb-2">
+                                                    <a class="btn btn-lg lilac-button" href="sms:?&body=I am inviting you to be a part of the Love Note Video for {{event.name}}. Please go to https://www.lovenotevideo.com{{submission_url}} to record or submit a special message. All Love Notes need to be submitted by {{event.due_date}}. Thank you!"><span class="far fa-comment-dots"></span> &nbsp;Text</a>
+                                                </div>
+                                                <div class="col-lg-4 mx-auto text-center mb-2">
+                                                    <button class="btn btn-lg lilac-button" data-clipboard-text="https://www.lovenotevideo.com{{submission_url}}"><span class="far fa-copy"></span> &nbsp;Copy Link</button>
+                                                </div>
                                             </div>
-                                            <div class="col-lg-4 mx-auto text-center mb-2">
-                                                <a class="btn btn-lg lilac-button" href="sms:?&body=I am inviting you to be a part of the Love Note Video for {{event.name}}. Please go to https://www.lovenotevideo.com{{submission_url}} to record or submit a special message. All Love Notes need to be submitted by {{event.due_date}}. Thank you!"><span class="far fa-comment-dots"></span> &nbsp;Text</a>
-                                            </div>
-                                            <div class="col-lg-4 mx-auto text-center mb-2">
-                                                <button class="btn btn-lg lilac-button" data-clipboard-text="https://www.lovenotevideo.com{{submission_url}}"><span class="far fa-copy"></span> &nbsp;Copy Link</button>
-                                            </div>
-                                        </div>
+                                        {% else %}
+                                            <p class="text-muted text-center"><small>Video submissions are closed once a love note is submitted for publishing</small></p>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -83,25 +138,24 @@
                                             </div>
                                         {% endfor %}
                                         </div>
-                                        <hr>
-                                        <div class="text-center">
-                                            <a class="btn btn-lg lilac-button" href="{% url 'events:video_reorder' uuid=event.uuid %}">Approve and Order Videos</a>
-                                        </div>
+                                        {% if event.status == "Open" %}
+                                            <hr>
+                                            <div class="text-center">
+                                                <a class="btn btn-lg lilac-button" href="{% url 'events:video_reorder' uuid=event.uuid %}">Approve and Order Videos</a>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div> 
                 </div>
+                {% if not event.order %}
                 <div class="card-footer text-center">
                     <a class="btn btn-lg teal-button" href="{% url 'orders:publish_event' uuid=event.uuid %}"><span class="far fa-heart"></span> &nbsp;Publish Love Note</a>
                 </div>
+                {% endif %}
             </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
 
 
 

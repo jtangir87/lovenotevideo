@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from .models import Event, VideoSubmission
 
 
@@ -12,6 +13,7 @@ class EventCreateForm(forms.ModelForm):
         }
         widgets = {
             "name": forms.TextInput(attrs={"placeholder": "Michael's 50th Birthday"}),
+            "due_date": forms.DateInput(format="%m/%d/%Y"),
         }
 
 

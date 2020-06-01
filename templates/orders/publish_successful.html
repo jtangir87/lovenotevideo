@@ -1,0 +1,33 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item active"><a href="{% url 'events:event_detail' uuid=event.uuid %}">{{event.name}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Published!</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="image-head text-center mb-2">
+                        <img class="card-img-top" src="{% static "dashboard/img/lnv-phone-logo.png" %}" alt="Image Not Found">
+                    </div>
+                    <h3 class="text-center mb-4">Yay! You have successfully published your Love Note Video for {{event.name}}!</h3>
+                    <p class="text-center">Our editors will get started right away and your video will be ready within 48 hours! We will send you an email when it's ready to share
+                        <br>
+                        Thank you,
+                        <br>
+                        <span class="signature">Love Note Video Team</span>
+
+                    </p>
+                <hr>
+                <div class="text-center">
+                    <a class="btn btn-lg teal-button" href="{% url 'accounts:login' %}">Start a Love Note</a>
+                </div>
+            </h3>
+            </div>
+
+
+
+{% endblock content %}

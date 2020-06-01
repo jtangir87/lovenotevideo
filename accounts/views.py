@@ -1,6 +1,12 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, get_user_model
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import RegisterForm
+from django.views.generic import UpdateView
+
+
+CustomUser = get_user_model()
 
 # Create your views here.
 def register(request):
@@ -16,3 +22,11 @@ def register(request):
     else:
         form = RegisterForm()
     return render(request, "accounts/register.html", {"form": form})
+
+
+class UserUpdate(LoginRequiredMixin, UpdateView):
+    slug_url_kwarg = "uuid"
+    slug_field = "uuid"
+    model = CustomUser
+    fields = ("first_name", "last_name", "email")
+    template_name = "accounts/user_update.html"

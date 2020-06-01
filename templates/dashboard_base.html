@@ -44,12 +44,12 @@
           {% if request.user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="{% url  'dashboard' %}">Dashboard</a>
-          </li>
-          <li class="nav-item">
+          </li>      
+          {% comment %} <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#contact">My Love Notes</a>
-          </li>
+          </li> {% endcomment %}
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#services">Account</a>
+            <a class="nav-link js-scroll-trigger" href="{% url 'accounts:user_update' uuid=request.user.uuid %}"">Account</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="{% url 'accounts:logout' %}">Logout</a>
@@ -67,8 +67,33 @@
     </div>
   </nav>
 
-{% block content %}
-{% endblock content %}
+<div class="content-container">
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 mx-auto">
+          {% if request.user.is_authenticated %}
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                    {% block breadcrumb %}
+                    {% endblock breadcrumb %}
+                    
+                </ol>
+            </nav>
+          {% endif %}
+
+
+      {% block content %}
+      {% endblock content %}
+
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
 
 
 <div class="modal fade" id="modal-dashboard">

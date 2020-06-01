@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "bootstrap4",
     "bootstrap_datepicker_plus",
     "videokit",
+    "django_simple_coupons",
     "accounts",
     "events",
     "orders",
@@ -112,7 +113,7 @@ LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
 
-DATE_INPUT_FORMATS = ["%m-%d-%Y"]
+DATE_INPUT_FORMATS = ["%m/%d/%Y"]
 
 USE_I18N = True
 
@@ -134,6 +135,10 @@ STATIC_URL = "/static/"
 # MEDIA FOLDER SETTINGS
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+STRIPE_PUBLISHABLE_KEY = "pk_test_PJJHfAwUOglj5eVZoU1niYfB00qiCv5TCr"
+STRIPE_SECRET_KEY = "sk_test_SbjZwava798h4wk1zEKceowy00RQkC6nUX"
+
 
 try:
     from .local_settings import *

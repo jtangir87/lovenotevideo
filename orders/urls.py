@@ -15,10 +15,11 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import publish_event
+from .views import publish_event, publish_success
 
 app_name = "orders"
 
 urlpatterns = [
     path("<uuid:uuid>/publish", publish_event, name="publish_event"),
+    path("<uuid:uuid>/publish/success", publish_success, name="publish_success"),
 ]

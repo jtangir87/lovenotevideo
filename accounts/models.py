@@ -14,4 +14,4 @@ class Profile(models.Model):
     user = models.OneToOneField(
         CustomUser, related_name="profile", on_delete=models.CASCADE
     )
-    stripe_id = models.CharField(max_length=255, blank=True)
+    stripe_id = models.CharField(max_length=255, blank=True, null=True)

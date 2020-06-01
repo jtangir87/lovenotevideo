@@ -1,14 +1,14 @@
 {% extends 'dashboard_base.html' %}
 {% load static %}
 {% block content %}
-<div class="content-container">
-  <section id="about">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 mx-auto">
+
             <div class="card">
+                <div class="card-header text-center">
+                    <button class="btn btn-lg teal-button js-create-event" data-url="{% url 'events:event_create' %}">Start a Love Note</button>
+                </div>
                 <div class="card-body">
-                <h4>My Active Love Notes</h4>
+
+                <h3 class="mb-4 text-center">My Love Notes</h3>
                 <div class="row">
                     {% for event in events %}
 
@@ -23,7 +23,9 @@
                                 
                                 <div class="card-body">
                                     <h5 class="card-title">{{event.name}}</h5>
-                                    <p class="card-text">Due Date: {{event.due_date}}</p>
+                                    <p class="card-text"><strong>Submission Deadline: </strong>{{event.due_date}}
+                                        <br><strong>Status: </strong>{{event.get_status_display}}
+                                    </p>
                                     {% comment %} <p class="card-text">Submissions: {{event.submissions.count}}</p> {% endcomment %}
                                     <div class="text-center">
                                         <a href="{% url 'events:event_detail' uuid=event.uuid %}" class="btn lilac-button">View Love Note</a>
@@ -34,17 +36,13 @@
                     {% endfor %}
 
                 </div>
-                <hr>
+                {% comment %} <hr>
                 <div class="text-center">
                     <button class="btn btn-lg teal-button js-create-event" data-url="{% url 'events:event_create' %}">Start a Love Note</button>
-                </div>
+                </div> {% endcomment %}
             </div>
             </div>
         </div>
-      </div>
-    </div>
-  </section>
-</div>
 
 
 

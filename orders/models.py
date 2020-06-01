@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.db.models import Sum
 from events.models import Event
 from django.contrib.auth import get_user_model
 
@@ -49,10 +50,19 @@ class Order(models.Model):
 
     def __str__(self):
         return (
-            "%s - %s - %s" % self.customer.last_name,
-            self.event.name,
-            str(self.created_at),
+            self.customer.last_name
+            + " - "
+            + self.event.name
+            + " - "
+            + str(self.created_at)
         )
+
+    def get_payments(self):
+        return Payment.objects.filter(order=self.id)
+
+    def payments_sum(self):
+        total_payments = Payment.objects.filter(order=self.id).aggregate(Sum("amount"))
+        return total_payments["amount__sum"]
 
 
 class OrderAddon(models.Model):
@@ -67,3 +77,18 @@ class OrderAddon(models.Model):
 
     def __str__(self):
         return "%s - %s" % self.order.id, self.addon.name
+
+
+class Payment(models.Model):
+    order = models.ForeignKey(Order, related_name="payments", on_delete=models.CASCADE)
+    stripe_payment_id = models.CharField(max_length=100)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(
+        Event, related_name="event_payments", on_delete=models.CASCADE
+    )
+    amount = models.DecimalField(max_digits=6, decimal_places=2)
+    receipt_url = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.event.name + " - " + str(self.id)

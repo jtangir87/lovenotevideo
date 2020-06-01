@@ -14,6 +14,9 @@
                         {% endif %}
                     </div>
                     <h3 class="text-center mb-4">{{event.user.first_name}} has invited to you to share your love for {{event.name}}!</h3>
+                    <div class="text-center mb-4">    
+                        <button type="button" class="btn btn-lg pink-button" data-toggle="modal" data-target="#tipsModal"><span class="far fa-lightbulb"></span> &nbsp;Recording Tips</button>
+                    </div>
                     <div class="col-lg-6 mx-auto">
                         {% if event.status == "Open" %}
                         
@@ -46,7 +49,61 @@
                 </div>
             </h3>
             </div>
-
+<!-- Modal -->
+<div class="modal fade" id="tipsModal" tabindex="-1" role="dialog" aria-labelledby="tipsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tips for Best Video Quality</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ol>
+            <li>Position of Camera</li>
+                <ul>
+                    <li>Horizontal is important! Hold the camera so the video is wider. NOT Vertical Video! Even if this will be watched on a phone or tablet later, we edit horizontally not vertically.</li>
+                    <li>Lighting</li>
+                        <ul>
+                            <li>Film yourself in a location with consistent lighting across the subjects and background.</li>
+                            <li>Do not film in a location where you may need to squint or have so much lighting that you are hard to see.</li>
+                            <li>Having too much light behind you (a bright window) may cause the subject (you) to be dark.</li>
+                        </ul>
+                    <li>Angle</li>
+                        <ul>
+                            <li>Most people prefer a camera angle that is a little above the subjects head or straight on level. Not below the subject's eyes.</li>
+                        </ul>
+                    <li>Keep the camera steady, if using a phone lean it on something stable if needed.</li>
+                </ul>
+            <li>Location</li>
+                <ul>
+                    <li>Please look behind you before filming, make sure the background is what you wish to share with everyone.</li>
+                    <li>If creating a long video, please make sure there is no movement that may distract in the background.</li>
+                </ul>
+            
+            <li>Audio</li>
+                <ul>
+                    <li>Very important to find a quiet location.</li>
+                    <li>Please be careful not to film in a windy location that will make it difficult to hear.</li>
+                </ul>
+            <li>Filming</li>
+                <ul>
+                    <li>Please leave 2 seconds at the start and finish for editing purposes if needed.</li>
+                        <ul>
+                            <li>Hit record, pause two seconds then start.</li>
+                            <li>When finished, pause two seconds then hit stop.</li>
+                            <li>We will trim the edges of the film.</li>
+                        </ul> 
+                </ul>
+        </ol>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 {% endblock content %}

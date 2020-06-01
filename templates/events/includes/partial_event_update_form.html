@@ -1,0 +1,21 @@
+{% load bootstrap4 %}
+
+<form method="POST" action="{% url 'events:event_update' uuid=form.instance.uuid %}" class="js-event-create-form" autocomplete="off">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h4 class="modal-title">Update Your Love note!</h4>
+  </div>
+  <div class="modal-body">
+    {% bootstrap_form_errors form %}
+    {% bootstrap_form form %}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    {% bootstrap_button "Update" button_type="submit" button_class="teal-button"%}
+  </div>
+</form>
+
+<script>
+$('#id_due_date').datepicker({
+});
+</script>

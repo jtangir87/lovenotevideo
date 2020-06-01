@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Marck+Script&family=Permanent+Marker&display=swap');/* h3 {
+  font-family: 'Permanent Marker';
+  font-size: 3rem;
+}
+
+.card-title {
+  font-family: 'Permanent Marker';
+} */
+
 .content-container {
     margin: 0;
     background-size: 100% 100%;
@@ -22,6 +31,13 @@
     border: none;
     color: white;
     background: #9B5DE5;
+}
+
+
+.pink-button {
+  border: none;
+  color: white;
+  background: #F15BB5;
 }
 
 .image-head {
@@ -71,7 +87,16 @@
 }
 
 .card-footer {
-  background: white;
+  background: transparent;
+}
+
+.card-header {
+  background: transparent;
+}
+
+.signature {
+  font-family: "Marck Script";
+  font-size: 1.5rem;
 }
 
 /* Container needed to position the button. Adjust the width as needed */
@@ -93,7 +118,17 @@
   right:5px;
 }
 
+.breadcrumb {
+  background: transparent;
+  color: white;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
 
+.breadcrumb a {
+  color: #F15BB5;
+  font-weight: 500;
+}
 
 @media (min-width:900px) {
   .content-container {

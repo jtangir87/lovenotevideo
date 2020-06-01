@@ -1,5 +1,9 @@
 import json
 import datetime
+import os
+import os.path
+import zipfile
+from django.contrib.auth import settings
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Event, VideoSubmission
@@ -43,6 +47,31 @@ def event_create(request):
         form = EventCreateForm()
         data["html_form"] = render_to_string(
             "events/includes/partial_event_create_form.html",
+            {"form": form},
+            request=request,
+        )
+    return JsonResponse(data)
+
+
+@login_required
+def event_update(request, uuid):
+    event = Event.objects.filter(uuid=uuid).first()
+    data = dict()
+
+    if request.method == "POST":
+        form = EventCreateForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(
+                reverse("events:event_detail", kwargs={"uuid": event.uuid})
+            )
+        else:
+            data["form_is_valid"] = False
+
+    else:
+        form = EventCreateForm(instance=event)
+        data["html_form"] = render_to_string(
+            "events/includes/partial_event_update_form.html",
             {"form": form},
             request=request,
         )
@@ -95,7 +124,7 @@ def video_submission(request, uuid):
             sub.save()
 
             sub.video_mp4.generate()
-            return redirect("/thank-you")
+            return HttpResponseRedirect("/thank-you")
         else:
             errors = form.errors
             form = VideoSubmissionForm(request.POST or None, request.FILES or None)
@@ -134,4 +163,24 @@ def production_order(request, uuid):
             form.fields["production_order"].choices = [
                 (x, x) for x in range(1, submission_count)
             ]
-    return render(request, "events/video_submission_reorder.html", {"formset": formset})
+    return render(
+        request,
+        "events/video_submission_reorder.html",
+        {"formset": formset, "event": event},
+    )
+
+
+@login_required
+def download_files(request, uuid):
+    event = Event.objects.filter(uuid=uuid).first()
+    videos = VideoSubmission.objects.filter(event=event, approved=True)
+
+    response = HttpResponse(content_type="application/zip")
+    zip_file = zipfile.ZipFile(response, "w")
+    for video in videos:
+        name_only = video.video.path.split(os.sep)[-1]
+        ordered_name = "{}_{}".format(video.production_order, name_only)
+        zip_file.write(video.video.path, ordered_name)
+    response["Content-Disposition"] = "attachment; filename={}.zip".format(event.name)
+    zip_file.close()
+    return response
