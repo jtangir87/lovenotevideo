@@ -13,7 +13,8 @@
                             <img class="card-img-top" src="{% static "dashboard/img/lnv-phone-logo.png" %}" alt="Image Not Found">
                         {% endif %}
                     </div>
-                    <h3 class="text-center mb-4">{{event.user.first_name}} has invited to you to share your love for {{event.name}}!</h3>
+                    <h3 class="text-center mb-2">{{event.user.first_name}} has invited to you to share your love for {{event.name}}!</h3>
+                    <p class="text-center mb-4">Use your phone to record your video message and upload here!</p>
                     <div class="text-center mb-4">    
                         <button type="button" class="btn btn-lg pink-button" data-toggle="modal" data-target="#tipsModal"><span class="far fa-lightbulb"></span> &nbsp;Recording Tips</button>
                     </div>
@@ -43,9 +44,10 @@
                             <p class="text-center">Sorry! This Love Note has already been published and is no longer accepting submissions!</p>
                         {% endif %}
                     </div>
-                <hr>
+                <hr style="margin-top:75px;">
                 <div class="text-center">
-                    <a class="btn btn-lg teal-button" href="{% url 'accounts:login' %}">Start a Love Note</a>
+                    <p class="mb-2">Want to create your own Love Note Video?</p>
+                    <a class="btn btn-lg teal-button" href="{% url 'accounts:login' %}">Get Started!</a>
                 </div>
             </h3>
             </div>

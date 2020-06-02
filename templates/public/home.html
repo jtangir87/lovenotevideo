@@ -9,8 +9,8 @@
 					<div class="row">
 						<div class="col-lg-5">
 							<div class="banner_content">
-								<h2>Create Memories <br />from anywhere</h2>
-								<p>Show someone special how much they are loved with a Love Note Video. Even when you cannot celebrate in person .. your someone special can still feel the love!</p>
+								<h2>Create memories <br />from anywhere</h2>
+								<p>Love Note Video turns individual well-wishes into one shareable, professionally edited video that is easy and convenient for everyone to use!</p>
 								<a class="banner_btn" href="{% url 'accounts:register' %}">Start a Love Note</a>
 							</div>
 						</div>
@@ -45,41 +45,73 @@
         		</div>
         	</div>
         </section>
-        <!--================End MOBILE ONLY =================-->       
+        <!--================End MOBILE ONLY =================-->    
+
+   
         <!--================Work Area =================-->
-        {% comment %} <section class="work_area p_120">
+        <section class="work_area p_120">
         	<div class="container">
         		<div class="main_title">
         			<h2>How It works</h2>
-        			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+        			<p>We have made sharing love easier than ever before!</p>
         		</div>
         		<div class="work_inner row">
-        			<div class="col-lg-4">
+        			<div class="col-lg-3">
         				<div class="work_item">
-        					<i class="lnr lnr-screen"></i>
-        					<a href="#"><h4>Stunning Visuals</h4></a>
-        					<p>Here, I focus on a range of items and features that we use in life without giving them a second thought such as Coca Cola.</p>
+        					<i class="far fa-heart"></i>
+        					<a href="#"><h4>Create a Love Note</h4></a>
+        					<p>Tell us your occassion and provide a submission due date. We will take care of the rest!</p>
         				</div>
         			</div>
-        			<div class="col-lg-4">
+        			<div class="col-lg-3">
         				<div class="work_item">
-        					<i class="lnr lnr-code"></i>
-        					<a href="#"><h4>Stunning Visuals</h4></a>
-        					<p>Here, I focus on a range of items and features that we use in life without giving them a second thought such as Coca Cola.</p>
+        					<i class="fas fa-upload"></i>
+        					<a href="#"><h4>Share The Link</h4></a>
+        					<p>From your Love Note Dashboard we provide links to easily email and text invitations to your friends and family!</p>
         				</div>
         			</div>
-        			<div class="col-lg-4">
+        			<div class="col-lg-3">
         				<div class="work_item">
-        					<i class="lnr lnr-clock"></i>
-        					<a href="#"><h4>Stunning Visuals</h4></a>
-        					<p>Here, I focus on a range of items and features that we use in life without giving them a second thought such as Coca Cola.</p>
+        					<i class="fas fa-sort-amount-up-alt"></i>
+        					<a href="#"><h4>Order and Approve</h4></a>
+        					<p>Select the order of the submissions and choose which to approve</p>
+        				</div>
+        			</div>
+        			<div class="col-lg-3">
+        				<div class="work_item">
+        					<i class="fas fa-video"></i>
+        					<a href="#"><h4>Publish</h4></a>
+        					<p>Click Publish and we will provide you a download and shareable link within 48 hours!</p>
         				</div>
         			</div>
         		</div>
         	</div>
-        </section> {% endcomment %}
+        </section>
         <!--================End Work Area =================-->
-        
+
+        <!--================Made Life Area =================-->
+        <section class="made_life_area p_120">
+        	<div class="container">
+        		<div class="made_life_inner">
+					<div class="row made_life_text">
+						<div class="col-lg-6">
+							<div class="left_side_text">
+								<h3>Our Mission</h3>
+								<h6>It's our mission to provide friends and families all over the world the opportunity to share and celebrate special occassions from a distance.</h6>
+								<a class="main_btn" href="{% url 'accounts:register' %}">Get Started Now</a>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="chart_img">
+								<img class="img-fluid" src="{% static 'dashboard/img/lnv-phone-logo.png' %}" alt="" style="max-height:500px;">
+							</div>
+						</div>
+					</div>
+        		</div>
+        	</div> 
+        </section> 
+        <!--================End Made Life Area =================-->
+
         <!--================Made Life Area =================-->
         {% comment %} <section class="made_life_area p_120">
         	<div class="container">
