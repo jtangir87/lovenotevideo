@@ -9,12 +9,15 @@
             </div>
             <div class="login-form">
                 <form method="post">
-                {% bootstrap_form_errors form %}
-                  {% csrf_token %}
-                  {% bootstrap_field form.username show_label=false %}
-                  {% bootstrap_field form.password show_label=false %}
-                  {% bootstrap_button "Login" button_type="submit" button_class="btn btn-lg login-button" %}
+                    {% bootstrap_form_errors form %}
+                    {% csrf_token %}
+                    {% bootstrap_field form.username show_label=false %}
+                    {% bootstrap_field form.password show_label=false %}
+                    {% bootstrap_button "Login" button_type="submit" button_class="btn btn-lg login-button" %}
                 </form>
+                <div class="text-center mt-2">
+                    <a style="color:white;" href="{% url 'password_reset' %}">Forgot your password?</a>
+                </div>
             <div>
             <div class="form-footer">
                 <p>Want to start spreading the love? <a class="btn btn-sm login-button" href="{% url 'accounts:register' %}">Sign Up!</a></p>
@@ -23,4 +26,3 @@
     </section>
 {% endblock content %}
 
-\

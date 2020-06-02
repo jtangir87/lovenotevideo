@@ -8,6 +8,8 @@
 
             <div class="card">
                 <div class="card-body">
+                <div class="col-lg-12">
+                    <div class="row">
                     <div class="col-lg-6 mx-auto">
                         <form method="POST" enctype='multipart/form-data'>
                             {% csrf_token %}
@@ -18,9 +20,15 @@
                             </div>
                         </form>
                     </div>
-            </h3>
+                    <div class="col-lg-6 mx-auto">
+                        <div class="text-center">
+                            <a class="btn btn-lg teal-button" href="{% url 'password_change' %}">Change Password</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-
+        </div>
+    </div>
 
 
 {% endblock content %}

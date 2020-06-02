@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 from .models import Package, Addon, Order, OrderAddon, Payment
 from events.models import Event, VideoSubmission
@@ -32,62 +33,68 @@ def publish_event(request, uuid):
     event = Event.objects.filter(uuid=uuid).first()
     user = User.objects.filter(id=request.user.id).first()
     videos = VideoSubmission.objects.filter(event=event, approved=True)
-    package = get_package(event)
-    order_total = package.price
-    stripe_total = int(package.price * 100)
 
-    if request.method == "POST":
-        profile, created = Profile.objects.get_or_create(user=request.user)
-        print(profile.stripe_id)
-        if profile.stripe_id:
-            customer = profile.stripe_id
+    if videos.count() >= 1:
+        if request.method == "POST":
+            profile, created = Profile.objects.get_or_create(user=request.user)
+            package = get_package(event)
+            order_total = package.price
+            stripe_total = int(package.price * 100)
+            if profile.stripe_id:
+                customer = profile.stripe_id
+            else:
+                customer = stripe.Customer.create(
+                    email=request.user.email,
+                    source=request.POST["stripeToken"],
+                    name=(request.user.first_name + " " + request.user.last_name),
+                )
+                profile.stripe_id = customer.id
+                profile.save()
+
+            charge = stripe.Charge.create(
+                amount=stripe_total,
+                currency="usd",
+                customer=customer,
+                description="Love Note Video" + " - " + event.name,
+            )
+
+            if charge.status == "succeeded":
+                order = Order.objects.create(
+                    event=event, customer=user, package=package, order_total=order_total
+                )
+                Payment.objects.create(
+                    order=order,
+                    stripe_payment_id=charge.id,
+                    customer=user,
+                    event=event,
+                    amount=order_total,
+                    receipt_url=charge.receipt_url,
+                )
+                event.status == "Production"
+                event.save()
+
+                card = charge.payment_method_details.card
+
+                return HttpResponseRedirect(
+                    reverse("orders:publish_success", kwargs={"uuid": event.uuid})
+                )
         else:
-            customer = stripe.Customer.create(
-                email=request.user.email,
-                source=request.POST["stripeToken"],
-                name=(request.user.first_name + " " + request.user.last_name),
-            )
-            profile.stripe_id = customer.id
-            profile.save()
 
-        charge = stripe.Charge.create(
-            amount=stripe_total,
-            currency="usd",
-            customer=customer,
-            description="Love Note Video" + " - " + event.name,
-        )
-
-        if charge.status == "succeeded":
-            order = Order.objects.create(
-                event=event, customer=user, package=package, order_total=order_total
-            )
-            Payment.objects.create(
-                order=order,
-                stripe_payment_id=charge.id,
-                customer=user,
-                event=event,
-                amount=order_total,
-                receipt_url=charge.receipt_url,
-            )
-            event.status == "Production"
-            event.save()
-
-            card = charge.payment_method_details.card
-
-            return HttpResponseRedirect(
-                reverse("orders:publish_success", kwargs={"uuid": event.uuid})
-            )
+            context = {
+                "event": event,
+                "videos": videos,
+                "package": package,
+                "order_total": order_total,
+                "stripe_total": stripe_total,
+                "key": settings.STRIPE_PUBLISHABLE_KEY,
+            }
     else:
-
-        context = {
-            "event": event,
-            "videos": videos,
-            "package": package,
-            "order_total": order_total,
-            "stripe_total": stripe_total,
-            "key": settings.STRIPE_PUBLISHABLE_KEY,
-        }
-
+        messages.add_message(
+            request,
+            messages.WARNING,
+            "Please approve and order your Love Notes before publishing",
+        )
+        return redirect(reverse("events:event_detail", kwargs={"uuid": event.uuid}))
     return render(request, "orders/publish_event.html", context)
 
 

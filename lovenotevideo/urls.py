@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
@@ -24,6 +25,7 @@ urlpatterns = [
     path("", include("accounts.urls")),
     path("", include("events.urls")),
     path("", include("orders.urls")),
+    path("", include("django.contrib.auth.urls")),
     path("", HomeView.as_view(), name="home"),
     path("dashboard", dashboard, name="dashboard"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
