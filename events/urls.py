@@ -24,6 +24,7 @@ from .views import (
     production_order,
     event_image_upload,
     download_files,
+    event_titles,
 )
 
 app_name = "events"
@@ -32,6 +33,7 @@ urlpatterns = [
     path("create", event_create, name="event_create"),
     path("<uuid:uuid>/update", event_update, name="event_update"),
     path("<uuid:uuid>", EventDetail.as_view(), name="event_detail"),
+    path("<uuid:uuid>/titles", event_titles, name="set_titles"),
     path("<uuid:uuid>/submission", video_submission, name="video_submission"),
     path("thank-you", ThankYou.as_view(), name="thank_you"),
     path("<uuid:uuid>/reorder", production_order, name="video_reorder"),

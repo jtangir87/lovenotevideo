@@ -6,12 +6,13 @@ import zipfile
 from django.contrib.auth import settings
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import Event, VideoSubmission
+from .models import Event, VideoSubmission, EventTitles
 from .forms import (
     EventCreateForm,
     VideoSubmissionForm,
     VideoProductionForm,
     EventImageForm,
+    EventTitlesForm,
 )
 from django.forms.models import modelformset_factory
 from django.views.generic import DetailView, CreateView, TemplateView, View
@@ -22,6 +23,7 @@ from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
+from django.contrib import messages
 
 User = get_user_model()
 # Create your views here.
@@ -108,6 +110,7 @@ class EventDetail(LoginRequiredMixin, DetailView):
         )
         context["videos"] = VideoSubmission.objects.filter(event=self.object.id)
         context["image_form"] = EventImageForm()
+        context["titles"] = EventTitles.objects.filter(event=self.object.id).first()
         return context
 
 
@@ -140,6 +143,34 @@ class ThankYou(TemplateView):
 
 
 @login_required
+def event_titles(request, uuid):
+    event = Event.objects.filter(uuid=uuid).first()
+    titles, created = EventTitles.objects.get_or_create(event=event)
+    data = dict()
+
+    if request.method == "POST":
+        form = EventTitlesForm(request.POST, instance=titles)
+        if form.is_valid():
+            form.save()
+            data["form_is_valid"] = True
+            data["html_titles"] = render_to_string(
+                "events/includes/partial_event_titles.html",
+                {"titles": titles, "event": event},
+            )
+        else:
+            data["form_is_valid"] = False
+
+    else:
+        form = EventTitlesForm(instance=titles)
+
+    context = {"form": form, "event": event}
+    data["html_form"] = render_to_string(
+        "events/includes/partial_event_titles_form.html", context, request=request
+    )
+    return JsonResponse(data)
+
+
+@login_required
 def production_order(request, uuid):
     event = Event.objects.filter(uuid=uuid).first()
     ProductionOrderFormset = modelformset_factory(
@@ -150,7 +181,9 @@ def production_order(request, uuid):
         if formset.is_valid():
             for form in formset:
                 form.save()
-
+        messages.add_message(
+            request, messages.SUCCESS, "Order and Approvals saved!",
+        )
         return HttpResponseRedirect(
             reverse("events:video_reorder", kwargs={"uuid": event.uuid})
         )
@@ -158,11 +191,6 @@ def production_order(request, uuid):
         formset = ProductionOrderFormset(
             queryset=VideoSubmission.objects.filter(event=event)
         )
-        submission_count = int(VideoSubmission.objects.filter(event=event).count()) + 1
-        for form in formset:
-            form.fields["production_order"].choices = [
-                (x, x) for x in range(1, submission_count)
-            ]
     return render(
         request,
         "events/video_submission_reorder.html",

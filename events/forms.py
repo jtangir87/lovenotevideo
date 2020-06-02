@@ -1,6 +1,6 @@
 from django import forms
 from django.conf import settings
-from .models import Event, VideoSubmission
+from .models import Event, VideoSubmission, EventTitles
 
 
 class EventCreateForm(forms.ModelForm):
@@ -37,3 +37,9 @@ class VideoProductionForm(forms.ModelForm):
     class Meta:
         model = VideoSubmission
         fields = ("video_thumbnail", "approved", "production_order")
+
+
+class EventTitlesForm(forms.ModelForm):
+    class Meta:
+        model = EventTitles
+        fields = ("start_title", "end_title")

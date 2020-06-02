@@ -99,3 +99,16 @@ def video_delete(sender, instance, **kwargs):
     instance.video_mp4.delete(False)
     instance.video_ogg.delete(False)
     instance.video_webm.delete(False)
+
+
+class EventTitles(models.Model):
+    event = models.OneToOneField(Event, on_delete=models.CASCADE, related_name="titles")
+    start_title = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Start Title"
+    )
+    end_title = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="End Title"
+    )
+
+    def __str__(self):
+        return self.event.name

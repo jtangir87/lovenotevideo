@@ -1,0 +1,16 @@
+<div class="card-body">
+    <h2 class="card-title text-center">Titles</h2>
+    <div class="col-lg-12">
+
+
+        <p><strong>Start Title: </strong> {{titles.start_title|default_if_none:""}}</p>
+        <p><strong>End Title: </strong> {{titles.end_title|default_if_none:""}}</p>
+
+
+    {% if event.status == "Open" %}
+        <div class="text-center">
+            <button type="button" class="btn btn-lg lilac-button js-set-titles" data-url="{% url 'events:set_titles' uuid=event.uuid %}">Update Titles</button>
+        </div>
+    {% endif %}
+    </div>
+</div>
