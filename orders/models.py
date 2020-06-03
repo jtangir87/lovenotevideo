@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import Sum
 from events.models import Event
 from django.contrib.auth import get_user_model
+from django_simple_coupons.models import Coupon
 
 User = get_user_model()
 
@@ -92,3 +93,14 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.event.name + " - " + str(self.id)
+
+
+class EventCoupon(models.Model):
+    event = models.OneToOneField(Event, related_name="coupon", on_delete=models.CASCADE)
+    coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, blank=True, null=True)
+    discount_value = models.DecimalField(
+        max_digits=6, decimal_places=2, blank=True, null=True
+    )
+
+    def __str__(self):
+        return self.event.name

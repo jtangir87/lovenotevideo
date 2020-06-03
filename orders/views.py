@@ -5,12 +5,17 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
+from django.views.generic import View
+from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Package, Addon, Order, OrderAddon, Payment
+from .models import Package, Addon, Order, OrderAddon, Payment, EventCoupon
 from events.models import Event, VideoSubmission
 from accounts.models import Profile
+from django_simple_coupons.validations import validate_coupon
+from django_simple_coupons.models import Coupon
+
 
 User = get_user_model()
 
@@ -35,49 +40,69 @@ def publish_event(request, uuid):
     videos = VideoSubmission.objects.filter(event=event, approved=True)
 
     if videos.count() >= 1:
+        package = get_package(event)
+        try:
+            coupon = float(event.coupon.discount_value)
+        except ObjectDoesNotExist:
+            coupon = 0
+        order_total = package.price
+        discounted_total = float(order_total) - coupon
+        stripe_total = int(discounted_total * 100)
+
         if request.method == "POST":
             profile, created = Profile.objects.get_or_create(user=request.user)
-            package = get_package(event)
-            order_total = package.price
-            stripe_total = int(package.price * 100)
-            if profile.stripe_id:
-                customer = profile.stripe_id
+            if discounted_total > 0:
+                if profile.stripe_id:
+                    customer = profile.stripe_id
+                else:
+                    customer = stripe.Customer.create(
+                        email=request.user.email,
+                        source=request.POST["stripeToken"],
+                        name=(request.user.first_name + " " + request.user.last_name),
+                    )
+                    profile.stripe_id = customer.id
+                    profile.save()
+
+                charge = stripe.Charge.create(
+                    amount=stripe_total,
+                    currency="usd",
+                    customer=customer,
+                    description="Love Note Video" + " - " + event.name,
+                )
+
+                if charge.status == "succeeded":
+                    order = Order.objects.create(
+                        event=event,
+                        customer=user,
+                        package=package,
+                        order_total=discounted_total,
+                    )
+                    Payment.objects.create(
+                        order=order,
+                        stripe_payment_id=charge.id,
+                        customer=user,
+                        event=event,
+                        amount=order_total,
+                        receipt_url=charge.receipt_url,
+                    )
+                    event.status == "Production"
+                    event.save()
+
+                    card = charge.payment_method_details.card
+
             else:
-                customer = stripe.Customer.create(
-                    email=request.user.email,
-                    source=request.POST["stripeToken"],
-                    name=(request.user.first_name + " " + request.user.last_name),
-                )
-                profile.stripe_id = customer.id
-                profile.save()
-
-            charge = stripe.Charge.create(
-                amount=stripe_total,
-                currency="usd",
-                customer=customer,
-                description="Love Note Video" + " - " + event.name,
-            )
-
-            if charge.status == "succeeded":
                 order = Order.objects.create(
-                    event=event, customer=user, package=package, order_total=order_total
-                )
-                Payment.objects.create(
-                    order=order,
-                    stripe_payment_id=charge.id,
-                    customer=user,
                     event=event,
-                    amount=order_total,
-                    receipt_url=charge.receipt_url,
+                    customer=user,
+                    package=package,
+                    order_total=discounted_total,
                 )
                 event.status == "Production"
                 event.save()
 
-                card = charge.payment_method_details.card
-
-                return HttpResponseRedirect(
-                    reverse("orders:publish_success", kwargs={"uuid": event.uuid})
-                )
+            return HttpResponseRedirect(
+                reverse("orders:publish_success", kwargs={"uuid": event.uuid})
+            )
         else:
 
             context = {
@@ -85,9 +110,11 @@ def publish_event(request, uuid):
                 "videos": videos,
                 "package": package,
                 "order_total": order_total,
+                "discounted_total": discounted_total,
                 "stripe_total": stripe_total,
                 "key": settings.STRIPE_PUBLISHABLE_KEY,
             }
+
     else:
         messages.add_message(
             request,
@@ -96,6 +123,55 @@ def publish_event(request, uuid):
         )
         return redirect(reverse("events:event_detail", kwargs={"uuid": event.uuid}))
     return render(request, "orders/publish_event.html", context)
+
+
+class UseCouponView(View):
+    def get(self, request, *args, **kwargs):
+        coupon_code = request.GET.get("coupon_code")
+        user = User.objects.get(id=request.user.id)
+
+        status = validate_coupon(coupon_code=coupon_code, user=user)
+        if status["valid"]:
+            coupon = Coupon.objects.get(code=coupon_code)
+            coupon.use_coupon(user=user)
+
+            return HttpResponse("Discount Applied")
+
+        return HttpResponse(status["INVALID COUPON CODE"])
+
+
+@login_required
+def use_coupon(request):
+    event_id = request.GET.get("event_id")
+    event = Event.objects.filter(id=event_id).first()
+    coupon_code = request.GET.get("coupon_code")
+    order_total = float(request.GET.get("order_total"))
+    user = User.objects.filter(id=request.user.id).first()
+
+    status = validate_coupon(coupon_code=coupon_code, user=user)
+    if status["valid"]:
+        coupon = Coupon.objects.get(code=coupon_code)
+        coupon.use_coupon(user=user)
+
+        ec, created = EventCoupon.objects.get_or_create(event=event,)
+        ec.coupon = coupon
+        dicount = coupon.get_discount()
+        if coupon.discount.is_percentage:
+            if coupon.discount.value == 100:
+                discount_value = order_total
+            else:
+                discount_value = order_total * (coupon.discount.value / 100)
+        else:
+            discount_value = coupon.discount.value
+        ec.discount_value = discount_value
+        ec.save()
+
+    else:
+        messages.add_message(request, messages.WARNING, status["message"])
+
+    return HttpResponseRedirect(
+        reverse("orders:publish_event", kwargs={"uuid": event.uuid})
+    )
 
 
 @login_required

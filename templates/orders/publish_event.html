@@ -56,7 +56,7 @@ input[type="text"]::placeholder {
                                                 <tr>
                                                     <th>Package</th>
                                                     <th class="text-center">Videos Included</th>
-                                                    <th class="text-center">Your Videos</th>
+                                                    <th class="text-center">Approved Videos</th>
                                                     <th class="text-center">Price</th>
                                                 </tr>
                                                 <tr>
@@ -65,20 +65,41 @@ input[type="text"]::placeholder {
                                                     <td class="text-center">{{videos.count}}</td>
                                                     <td class="text-center">${{package.price}}</td>
                                                 </tr>
+                                                {% if event.coupon %}
+                                                    <tr style="margin-top:25px;">
+                                                        <td></td>
+                                                        <td class="text-center">Discount:</td>
+                                                        <td class="text-center">{{event.coupon.coupon.code}}</td>
+                                                        <td class="text-center">-${{event.coupon.discount_value}}</>
+                                                    </tr>
+                                                {% endif %}
+                                                <tr>
+                                                    <td></td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-right"><strong>Order Total: </strong></td>
+                                                    <td class="text-center">${{discounted_total|floatformat:2}}</td>
+                                                </tr>
                                             </table>    
                                         </div>
                                         <div class="text-right">
-                                            <form method="GET">
-                                                <input type="text" name="code" placeholder="Discount Code">
-                                                <button type="submit" class="btn btn-sm btn-warning">Apply</button>
-
+                                            <form method="GET" action="{% url 'orders:use_coupon' %}">
+                                                {% if event.coupon %}
+                                                    <button style="float:right;" type="submit" class="btn btn-sm btn-warning">Change</button>
+                                                {% else %}
+                                                    <button style="float:right;" type="submit" class="btn btn-sm btn-warning">Apply</button>
+                                                {% endif %}
+                                                
+                                                <input style="float:right; border: 1px solid #DEDEDE;" type="text" name="coupon_code" placeholder="Discount Code">
+                                                <input type="hidden" name="order_total" value="{{order_total}}">
+                                                <input type="hidden" name="event_id" value="{{event.id}}">
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-footer text-center">
-                                    <form method="POST">
-                                    {% csrf_token %}
+                                <form method="POST">
+                                {% csrf_token %}
+                                    {% if discounted_total > 0 %}
                                     <script
                                         src="https://checkout.stripe.com/checkout.js"
                                         class="stripe-button"
@@ -91,7 +112,11 @@ input[type="text"]::placeholder {
                                         data-email={{request.user.email}}>
                                     </script>
                                     <button class="btn btn-lg teal-button" type="submit"><span class="far fa-heart"></span> &nbsp;Pay & Publish </button>
-                                    </form>
+                                    
+                                    {% else %}
+                                        <button class="btn btn-lg teal-button" type="submit"><span class="far fa-heart"></span> &nbsp;Publish </button>
+                                    {% endif %}
+                                </form>
                                 </div>
                         </div>
                     </div> 
