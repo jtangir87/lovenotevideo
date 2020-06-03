@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "bootstrap4",
     "bootstrap_datepicker_plus",
+    "django_cleanup.apps.CleanupConfig",
     "videokit",
     "django_simple_coupons",
     "accounts",
