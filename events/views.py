@@ -24,6 +24,8 @@ from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from django.contrib import messages
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
 
 User = get_user_model()
 # Create your views here.
@@ -125,8 +127,31 @@ def video_submission(request, uuid):
             uploaded_by = request.POST.get("uploaded_by", None)
             sub = VideoSubmission(event=event, video=video, uploaded_by=uploaded_by)
             sub.save()
-
             sub.video_mp4.generate()
+
+            ## EMAIL USER ##
+            txt_template = get_template("events/emails/video_submission.txt")
+            html_template = get_template("events/emails/video_submission.html")
+
+            context = {
+                "event_url": request.build_absolute_uri(
+                    reverse("events:event_detail", kwargs={"uuid": event.uuid})
+                ),
+                "event": event,
+            }
+
+            text_content = txt_template.render(context)
+            html_content = html_template.render(context)
+            from_email = "Love Note Video <support@lovenotevideo.com>"
+            subject, from_email, to = (
+                "New Love Note Submission",
+                from_email,
+                event.user.email,
+            )
+            email = EmailMultiAlternatives(subject, text_content, from_email, [to])
+            email.attach_alternative(html_content, "text/html")
+            email.send()
+
             return HttpResponseRedirect("/thank-you")
         else:
             errors = form.errors

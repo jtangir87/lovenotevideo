@@ -1,0 +1,6 @@
+
+Yay! Someone has submitted a Love Note!
+
+Someone has submitted a love note for {{event.name}}. Go to your Love Note page to see it!
+    
+{{event_url}}"
