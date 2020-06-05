@@ -1,0 +1,22 @@
+.teal-button {
+    border: none;
+    color: white;
+    background: #00BBF9;
+}
+
+.lilac-button {
+    border: none;
+    color: white;
+    background: #9B5DE5;
+}
+
+
+.pink-button {
+  border: none;
+  color: white;
+  background: #F15BB5;
+}
+
+.bg-gradient-custom {
+  background-color: #9B5DE5;
+  background-size: cover; 

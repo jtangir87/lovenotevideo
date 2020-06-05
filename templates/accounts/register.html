@@ -11,7 +11,7 @@
                 <form method="post">
                 {% bootstrap_form_errors form %}
                   {% csrf_token %}
-                  {% bootstrap_form form show_label=false %}
+                  {% bootstrap_form form show_help=false layout="horizontal" %}
                   {% bootstrap_button "Sign Up!" button_type="submit" button_class="btn btn-lg login-button" %}
                 </form>
             <div>

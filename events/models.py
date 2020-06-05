@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from videokit.models import VideoField, VideoSpecField
+import datetime
 
 User = get_user_model()
 # Create your models here.
@@ -38,6 +39,18 @@ class Event(models.Model):
         related_name="assigned_editor",
         limit_choices_to={"editor": True},
     )
+    final_video = VideoField(
+        upload_to=user_event_directory_path,
+        thumbnail_field="final_video_thumbnail",
+        blank=True,
+        null=True,
+    )
+    final_video_mp4 = VideoSpecField(
+        source="final_video", format="mp4", blank=True, null=True
+    )
+    final_video_thumbnail = models.ImageField(null=True, blank=True)
+    delivery_date = models.DateTimeField(auto_now_add=False, blank=True, null=True)
+    completed_date = models.DateTimeField(auto_now_add=False, blank=True, null=True)
 
     class Meta:
         ordering = ["due_date"]
@@ -50,6 +63,11 @@ class Event(models.Model):
 
     def approved_videos(self):
         return VideoSubmission.objects.filter(event=self.id, approved=True)
+
+    def deliver_final(self):
+        self.status = "Delivered"
+        self.delivery_date = datetime.datetime.now()
+        self.save()
 
 
 def user_directory_path(instance, filename):
@@ -81,6 +99,7 @@ class VideoSubmission(models.Model):
     video_webm = VideoSpecField(source="video", format="webm")
 
     uploaded_by = models.CharField(max_length=255, verbose_name="From:")
+    email = models.EmailField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=False)
     production_order = models.PositiveIntegerField(blank=True, null=True)

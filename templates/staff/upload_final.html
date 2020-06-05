@@ -1,0 +1,27 @@
+{% extends 'staff/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block title %}
+Upload Final Video
+{% endblock title %}
+
+{% block content %}
+<!-- Content Row -->
+<div class="col-lg-6">
+    <div class="card mb-4">
+      <div class="card-header">
+        Upload Final Video for {{event.name}}
+      </div>
+      <div class="card-body">
+        <form method="POST" enctype='multipart/form-data'>
+          {% csrf_token %}
+          {% bootstrap_form_errors form %}
+          {% bootstrap_form form show_label=False %}
+          <button class="btn btn-primary" type="submit">Upload</button>
+        </form>
+      </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -221,19 +221,3 @@ def production_order(request, uuid):
         "events/video_submission_reorder.html",
         {"formset": formset, "event": event},
     )
-
-
-@login_required
-def download_files(request, uuid):
-    event = Event.objects.filter(uuid=uuid).first()
-    videos = VideoSubmission.objects.filter(event=event, approved=True)
-
-    response = HttpResponse(content_type="application/zip")
-    zip_file = zipfile.ZipFile(response, "w")
-    for video in videos:
-        name_only = video.video.path.split(os.sep)[-1]
-        ordered_name = "{}_{}".format(video.production_order, name_only)
-        zip_file.write(video.video.path, ordered_name)
-    response["Content-Disposition"] = "attachment; filename={}.zip".format(event.name)
-    zip_file.close()
-    return response

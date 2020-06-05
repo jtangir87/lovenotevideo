@@ -25,6 +25,7 @@ urlpatterns = [
     path("", include("accounts.urls")),
     path("", include("events.urls")),
     path("", include("orders.urls")),
+    path("", include("staff.urls")),
     path("", include("django.contrib.auth.urls")),
     path("", HomeView.as_view(), name="home"),
     path("dashboard", dashboard, name="dashboard"),

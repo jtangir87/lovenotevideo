@@ -74,6 +74,12 @@
 								<li class="nav-item divider"><a class="nav-link" href="contact.html">Contact</a></li>{% endcomment %}
 								{% if request.user.is_authenticated %}
 									<li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">My Love Notes</a></li>
+									{% if request.user.is_employee %}
+										<li class="nav-item"><a class="nav-link" href="{% url 'staff:editor_dash' %}">Editor Dashboard</a></li>
+									{% endif %}
+									{% if request.user.is_staff %}
+										<li class="nav-item"><a class="nav-link" href="{% url 'staff:staff_dash' %}">Admin Dashboard</a></li>
+									{% endif %}
 									<li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a></li>
 								{% else %}
 									<li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
@@ -82,7 +88,7 @@
 							</ul>
 							<ul class="nav navbar-nav navbar-right">
 								{% if request.user.is_authenticated %}
-									<li class="nav-item"><a href="#" class="tickets_btn">Start a Love Note</a></li>
+									<li class="nav-item"><a href="{% url 'dashboard' %}" class="tickets_btn">Start a Love Note</a></li>
 								{% else %}
 									<li class="nav-item"><a href="{% url 'accounts:register' %}" class="tickets_btn">Start a Love Note</a></li>
 								{% endif %}

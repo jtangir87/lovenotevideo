@@ -19,7 +19,7 @@ class RegisterForm(UserCreationForm):
             "first_name",
             "last_name",
             "email",
+            "timezone",
             "password1",
             "password2",
         )
-
