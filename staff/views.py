@@ -1,3 +1,6 @@
+import os
+import os.path
+import zipfile
 from django.shortcuts import render
 from django.urls import reverse
 from django.template.loader import render_to_string
@@ -16,7 +19,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.contrib import messages
 
-from events.models import Event
+from events.models import Event, VideoSubmission
 from .forms import UploadFinalVideoForm
 
 # Create your views here.
@@ -64,7 +67,8 @@ def download_files(request, uuid):
     zip_file = zipfile.ZipFile(response, "w")
     for video in videos:
         name_only = video.video.path.split(os.sep)[-1]
-        ordered_name = "{}_{}".format(video.production_order, name_only)
+        production_order = str(video.production_order).zfill(3)
+        ordered_name = "{}_{}".format(production_order, name_only)
         zip_file.write(video.video.path, ordered_name)
     response["Content-Disposition"] = "attachment; filename={}.zip".format(event.name)
     zip_file.close()

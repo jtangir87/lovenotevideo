@@ -9,7 +9,7 @@ class EventCreateForm(forms.ModelForm):
         fields = ("name", "due_date")
         labels = {"name": "Occassion", "due_date": "Submission Deadline"}
         help_texts = {
-            "due_date": "Don't forget it takes up to 48 hours to produce your video once it's published!"
+            "due_date": "Don't forget it takes up to 2 business days to produce your video once it's published!"
         }
         widgets = {
             "name": forms.TextInput(attrs={"placeholder": "Michael's 50th Birthday"}),
