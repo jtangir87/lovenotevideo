@@ -1,5 +1,7 @@
+import os
 import json
 import datetime
+from django.utils.encoding import smart_str
 from django.contrib.auth import settings
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -23,6 +25,7 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
+from django.utils.safestring import mark_safe
 
 User = get_user_model()
 # Create your views here.
@@ -203,8 +206,12 @@ def production_order(request, uuid):
         if formset.is_valid():
             for form in formset:
                 form.save()
+        publish_url = reverse("orders:publish_event", kwargs={"uuid": event.uuid})
+        success_message = "Order and Approvals saved! <a class='btn btn-small lilac-button' style='margin-left:10px' href='{}'>Click Here to Publish!</a>".format(
+            publish_url
+        )
         messages.add_message(
-            request, messages.SUCCESS, "Order and Approvals saved!",
+            request, messages.SUCCESS, mark_safe(success_message),
         )
         return HttpResponseRedirect(
             reverse("events:video_reorder", kwargs={"uuid": event.uuid})
@@ -218,3 +225,22 @@ def production_order(request, uuid):
         "events/video_submission_reorder.html",
         {"formset": formset, "event": event},
     )
+
+
+def final_video(request, uuid):
+    event = Event.objects.filter(uuid=uuid).first()
+    video_url = request.build_absolute_uri(event.final_video.url)
+    return render(
+        request, "events/final_video.html", {"event": event, "video_url": video_url}
+    )
+
+
+@login_required
+def final_video_download(request, uuid):
+    event = Event.objects.filter(uuid=uuid).first()
+    file_name = event.final_video.path.split(os.sep)[-1]
+    print(file_name)
+    response = HttpResponse(content_type="application/force-download")
+    response["Content-Disposition"] = "attachment; filename=%s" % (file_name)
+    response["X-Sendfile"] = event.final_video.path
+    return response

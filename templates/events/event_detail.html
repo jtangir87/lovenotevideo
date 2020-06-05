@@ -1,6 +1,15 @@
 {% extends 'dashboard_base.html' %}
 {% load static %}
 {% load bootstrap4 %}
+{% block headscript %}
+<style>
+#finalVideo {
+    width: 100% !important;
+    height: auto !important;
+}
+</style>
+{% endblock headscript %}
+
 {% block breadcrumb %}
     <li class="breadcrumb-item active" aria-current="page">{{event.name}}</li>
 {% endblock breadcrumb %}
@@ -92,9 +101,35 @@
 
 
                         </div>
+
+                        {% if event.final_video %}
                         <div class="col-lg-8 mx-auto mb-2">
                             <div class="card mb-4">                 
                                 <div class="card-body">
+                                    <div class="text-center">
+                                        <h2 class="card-title">Your Love Note is ready!</h2>
+                                        <video id="finalVideo" poster="{{event.final_video_thumbnail.url}}" controls controlsList="nodownload">
+                                            <source src="{{event.final_video_mp4.url}}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <div class="row">
+                                            <div class="col-lg-6 mx-auto text-center mb-2">
+                                                <a class="btn btn-lg lilac-button" href="{{event.final_video.url}}" download><span class="fas fa-cloud-download-alt"></span> &nbsp;Download</a>
+                                            </div>
+                                            <div class="col-lg-6 mx-auto text-center mb-2">
+                                                <button class="btn btn-lg lilac-button" data-clipboard-text="https://www.lovenotevideo.com/{{event.uuid}}"><span class="far fa-copy"></span> &nbsp;Copy Shareable Link</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+    
+                        <div class="col-lg-8 mx-auto mb-2">
+                            <div class="card mb-4">                 
+                                <div class="card-body">
+
                                     <h2 class="card-title text-center">Invite People to Share Their Love</h2>
                                     {% comment %} <p class="card-title text-center">Subnote here</p> {% endcomment %}
                                     <div class="col-lg-12">
@@ -113,7 +148,7 @@
                                         {% else %}
                                             <p class="text-muted text-center"><small>Video submissions are closed once a love note is submitted for publishing</small></p>
                                         {% endif %}
-                                    </div>
+                                    </div>                          
                                 </div>
                             </div>
 
@@ -154,6 +189,7 @@
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
                     </div> 
                 </div>
                 {% if not event.order %}

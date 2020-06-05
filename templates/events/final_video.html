@@ -1,0 +1,47 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block metatags %}
+<meta property="og:video" content="{{video_url}}" />
+{% endblock metatags %}
+
+{% block headscript %}
+<style>
+video {
+    width: 100% !important;
+    height: auto !important;
+}
+</style>
+{% endblock headscript %}
+{% block content %}
+
+            <div class="card">
+                <div class="card-body">
+                <div class="text-center">
+                    <video poster="{{event.final_video_thumbnail.url}}" controls controlsList="nodownload">
+                        <source src="{{event.final_video_mp4.url}}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                {% if request.user == event.user %}
+                <div class="row">
+                        <div class="col-lg-6 mx-auto text-center mt-3 mb-2">
+                            <a class="btn btn-lg lilac-button" href="{{event.final_video.url}}" download><span class="fas fa-cloud-download-alt"></span> &nbsp;Download</a>
+                        </div>
+                        <div class="col-lg-6 mx-auto text-center mt-3 mb-2">
+                            <button class="btn btn-lg lilac-button" data-clipboard-text="https://www.lovenotevideo.com/{{event.uuid}}"><span class="far fa-copy"></span> &nbsp;Copy Shareable Link</button>
+                        </div>
+                    </div>
+                {% endif %}
+                <hr style="margin-top:75px;">
+                <div class="text-center">
+                    <p class="mb-2">Want to create your own Love Note Video?</p>
+                    <a class="btn btn-lg teal-button" href="{% url 'accounts:login' %}">Get Started!</a>
+                </div>
+            </h3>
+        </div>
+
+
+
+{% endblock content %}

@@ -24,17 +24,21 @@ from .views import (
     production_order,
     event_image_upload,
     event_titles,
+    final_video,
+    final_video_download,
 )
 
 app_name = "events"
 
 urlpatterns = [
     path("create", event_create, name="event_create"),
-    path("<uuid:uuid>/update", event_update, name="event_update"),
-    path("<uuid:uuid>", EventDetail.as_view(), name="event_detail"),
-    path("<uuid:uuid>/titles", event_titles, name="set_titles"),
+    path("<uuid:uuid>", final_video, name="final_video"),
+    path("<uuid:uuid>/download", final_video_download, name="final_video_download"),
+    path("dashboard/<uuid:uuid>/update", event_update, name="event_update"),
+    path("dashboard/<uuid:uuid>", EventDetail.as_view(), name="event_detail"),
+    path("dashboard/<uuid:uuid>/titles", event_titles, name="set_titles"),
     path("<uuid:uuid>/submission", video_submission, name="video_submission"),
     path("thank-you", ThankYou.as_view(), name="thank_you"),
-    path("<uuid:uuid>/reorder", production_order, name="video_reorder"),
-    path("<uuid:uuid>/image", event_image_upload, name="event_image_upload"),
+    path("dashboard/<uuid:uuid>/reorder", production_order, name="video_reorder"),
+    path("dashboard/<uuid:uuid>/image", event_image_upload, name="event_image_upload"),
 ]

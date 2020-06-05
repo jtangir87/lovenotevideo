@@ -64,6 +64,10 @@ class Event(models.Model):
     def approved_videos(self):
         return VideoSubmission.objects.filter(event=self.id, approved=True)
 
+    def publish(self):
+        self.status = "Production"
+        self.save()
+
     def deliver_final(self):
         self.status = "Delivered"
         self.delivery_date = datetime.datetime.now()

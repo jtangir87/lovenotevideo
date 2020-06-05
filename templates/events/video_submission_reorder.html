@@ -9,7 +9,7 @@
 
 {% block breadcrumb %}
     <li class="breadcrumb-item" aria-current="page"><a href="{% url 'events:event_detail' uuid=event.uuid %}">{{event.name}}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Reorder & Approve</li>
+    <li class="breadcrumb-item active" aria-current="page">Order & Approve</li>
 {% endblock breadcrumb %}
 
 {% block content %}
@@ -18,9 +18,20 @@
             <div class="card">                 
                 <div class="card-body">
                     <h2 class="card-title text-center">Order & Approve Your Love Notes</h2>
-                    <p class="card-title text-center">We recommend that you choose your order by 5's so that if you change your mind you have spaces in between</p>
+                    <p class="card-title text-center">
+                        <strong>Non Approved Love Notes will not be included in your Love Note Video.
+                        <br>
+                        Production Order is optional.</strong>
+                        <br>
+                        If you leave fields blank, our editors will choose the order for you. 
+                        As you start creating your order, we recommend leaving space between each order number. 
+                        For example, number by 5's (5, 10, 15, etc) so if you get to the end of your list and find a Love Note you'd like to have between 5 and 10 you can use 6, 7, 8 or 9 </p>
                     <div class="col-lg-12 mx-auto">
                         <form method="POST" class="center-form">
+                        <div class="text-center">
+                            <button type="button" class="btn btn-sm pink-button mt-4" id="approveAll">Approve All</button>
+                            <p class="text-muted mb-4" style="margin-top:3px;"><small>To save, click approve button at the bottom of the page</small></p>
+                        </div>
                             {% csrf_token %}
                             {{ formset.management_form }}
                             {% bootstrap_formset_errors formset %}
@@ -48,7 +59,7 @@
                                     
                                 {% endfor %}
                                 <div class="text-center">
-                                    {% bootstrap_button "Approve" button_type="submit" button_class="btn btn-lg lilac-button"%}
+                                    {% bootstrap_button "Approve" id="approveButton" button_type="submit" button_class="btn btn-lg lilac-button"%}
                                 </div> 
                         </form>
                     </div>
@@ -59,3 +70,17 @@
 
 
 {% endblock content %}
+{% block footscript %}
+<script>
+$(document).ready(function () {
+  $('body').on('click', '#approveAll', function () {
+    if ($(this).hasClass('allChecked')) {
+        $('input[type="checkbox"]').prop('checked', false);
+    } else {
+        $('input[type="checkbox"]').prop('checked', true);
+    }
+    $(this).toggleClass('allChecked');
+  })
+});
+</script>
+{% endblock footscript %}

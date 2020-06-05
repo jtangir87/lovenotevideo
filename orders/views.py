@@ -85,8 +85,7 @@ def publish_event(request, uuid):
                         amount=order_total,
                         receipt_url=charge.receipt_url,
                     )
-                    event.status == "Production"
-                    event.save()
+                    event.publish()
 
                     card = charge.payment_method_details.card
 
@@ -97,8 +96,7 @@ def publish_event(request, uuid):
                     package=package,
                     order_total=discounted_total,
                 )
-                event.status == "Production"
-                event.save()
+                event.publish()
 
             return HttpResponseRedirect(
                 reverse("orders:publish_success", kwargs={"uuid": event.uuid})
