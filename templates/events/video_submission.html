@@ -111,13 +111,13 @@
 {% endblock content %}
 
 {% block footscript %}
-{% comment %} <script type="text/javascript" src="{% static 'dashboard/js/bootstrap-uploadprogress.js' %}"></script>
+<script type="text/javascript" src="{% static 'dashboard/js/bootstrap-uploadprogress.js' %}"></script>
 <script>
   $("form").uploadprogress({
     redirect_url: "{% url 'events:thank_you' %}"
   });
-</script> {% endcomment %}
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+</script>
+{% comment %} <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
 <script>
 
 $(document).ready(function () {
@@ -146,5 +146,5 @@ $(document).ready(function () {
 
 
     
-</script>
+</script> {% endcomment %}
 {% endblock footscript %}
