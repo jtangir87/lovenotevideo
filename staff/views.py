@@ -111,9 +111,7 @@ def upload_final_video(request, uuid):
     if request.user.is_employee:
         event = Event.objects.filter(uuid=uuid).first()
         if request.method == "POST":
-            form = UploadFinalVideoForm(
-                request.POST or None, request.FILES or None, instance=event
-            )
+            form = UploadFinalVideoForm(request.POST or None, request.FILES or None)
             if form.is_valid():
                 event.final_video = request.FILES.get("final_video", None)
                 event.deliver_final()
@@ -151,12 +149,10 @@ def upload_final_video(request, uuid):
                 return HttpResponseRedirect(reverse("staff:editor_dash"))
             else:
                 errors = form.errors
-                form = UploadFinalVideoForm(
-                    request.POST or None, request.FILES or None, instance=event
-                )
+                form = UploadFinalVideoForm(request.POST or None, request.FILES or None)
                 context = {"form": form, "event": event}
         else:
-            form = UploadFinalVideoForm(instance=event)
+            form = UploadFinalVideoForm()
             context = {"form": form, "event": event}
         return render(request, "staff/upload_final.html", context)
 

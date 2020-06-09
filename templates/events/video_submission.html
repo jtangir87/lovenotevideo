@@ -119,24 +119,32 @@
 </script> {% endcomment %}
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
 <script>
+
 $(document).ready(function () {
     $('#submit-button').click(function(){
         $('body').LoadingOverlay("show", {
-            fade: false,
-            text: "Uploading..."
+            image       : "fas fa-spinner fa-spin",
+            imageAnimation: "2000ms rotate_right",
+            imageAutoResize: true,
+            imageResizeFactor: 1,
+            imageColor: "#00bbf9"
+            progress    : true,
+            progressColor: "#00bbf9"
         });
-        setTimeout(function(){
-            $('body').LoadingOverlay("text", "Please do not refresh page");
-        }, 3000);       
-        setTimeout(function(){
-            $('body').LoadingOverlay("text", "Yep, still uploading...");
-        }, 9000);
-        setTimeout(function(){
-            $('body').LoadingOverlay("text", "Almost there .. ");
-        }, 20000);
-
-    });
+        var count     = 0;
+        var interval  = setInterval(function(){
+            if (count >= 100) {
+                clearInterval(interval);
+                $('body').LoadingOverlay("text", "Processing Video ...");
+                return;
+            }
+            count += 10;
+            $('body').LoadingOverlay("progress", count);
+        }, 300);
 });
+});
+
+
     
 </script>
 {% endblock footscript %}
