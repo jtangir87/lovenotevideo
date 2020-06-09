@@ -1,0 +1,13 @@
+{% extends 'email_base.html' %}
+{% block email_header %}
+    <h3>Yay! Your Love Note Video for {{event.name}} is ready!</h3>
+{% endblock email_header %}
+
+{% block email_body %}
+    <a href="{{video_url}}"><img src="{{poster_url}}" width="600"></a>
+    
+    <a style="margin-top:20px;" class="btn btn-lg pink-button" href="{{video_url}}">View Love Note</a>
+
+    <p> Thank you for allowing us to be a part of your memories!</p>
+
+{% endblock email_body %}

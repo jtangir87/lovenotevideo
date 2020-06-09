@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button class="btn btn-lg lilac-button" type="submit">Submit</button>
+                                <button class="btn btn-lg lilac-button" id="submit-button" type="submit">Submit</button>
                             </div>
                         </form>
                         {% else %}
@@ -111,10 +111,32 @@
 {% endblock content %}
 
 {% block footscript %}
-<script type="text/javascript" src="{% static 'dashboard/js/bootstrap-uploadprogress.js' %}"></script>
+{% comment %} <script type="text/javascript" src="{% static 'dashboard/js/bootstrap-uploadprogress.js' %}"></script>
 <script>
   $("form").uploadprogress({
     redirect_url: "{% url 'events:thank_you' %}"
   });
+</script> {% endcomment %}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('#submit-button').click(function(){
+        $('body').LoadingOverlay("show", {
+            fade: false,
+            text: "Uploading..."
+        });
+        setTimeout(function(){
+            $('body').LoadingOverlay("text", "Please do not refresh page");
+        }, 3000);       
+        setTimeout(function(){
+            $('body').LoadingOverlay("text", "Yep, still uploading...");
+        }, 9000);
+        setTimeout(function(){
+            $('body').LoadingOverlay("text", "Almost there .. ");
+        }, 20000);
+
+    });
+});
+    
 </script>
 {% endblock footscript %}

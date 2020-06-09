@@ -1,0 +1,4 @@
+
+Yay! Your Love Note Video for {{event.name}} is ready!
+
+Click here to check out your video {{video_url}}

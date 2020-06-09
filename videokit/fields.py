@@ -3,152 +3,195 @@ from django.core.files import File
 from django.db.models.fields.files import FieldFile
 from django.db.models.fields.files import FileDescriptor
 
+from django.core.files.storage import default_storage
 from datetime import datetime
 from hashlib import md5
 import os.path
 import subprocess
-
+import boto3
+from botocore.client import Config
 from videokit.apps import VideokitConfig
 from videokit.tasks import generate_video
 
 
 def get_video_dimensions(file):
-    path = os.path.join(settings.MEDIA_ROOT, file.name)
+    # session = boto3.session.Session()
+    # client = session.client(
+    #     "s3",
+    #     region_name=settings.AWS_S3_REGION_NAME,
+    #     endpoint_url=settings.AWS_S3_ENDPOINT_URL,
+    #     aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+    #     aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+    #     config=Config(signature_version="s3"),
+    # )
+    # path_to_file = "{}/{}{}".format(settings.AWS_LOCATION, settings.MEDIA_ROOT, file)
+    # path = client.generate_presigned_url(
+    #     ClientMethod="get_object",
+    #     Params={"Bucket": settings.AWS_STORAGE_BUCKET_NAME, "Key": path_to_file},
+    # )
+    # if os.path.isfile(path):
+    #     try:
+    #         process = subprocess.Popen(
+    #             ["mediainfo", "--Inform=Video;%Width%", path],
+    #             stdout=subprocess.PIPE,
+    #             stderr=subprocess.PIPE,
+    #             universal_newlines=True,
+    #         )
 
-    if os.path.isfile(path):
-        try:
-            process = subprocess.Popen(
-                ["mediainfo", "--Inform=Video;%Width%", path],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                universal_newlines=True,
-            )
+    #         stdout, stderr = process.communicate()
+    #         if process.wait() == 0:
+    #             width = int(stdout.strip(" \t\n\r"))
+    #         else:
+    #             return (0, 0)
 
-            stdout, stderr = process.communicate()
-            if process.wait() == 0:
-                width = int(stdout.strip(" \t\n\r"))
-            else:
-                return (0, 0)
+    #         process = subprocess.Popen(
+    #             ["mediainfo", "--Inform=Video;%Height%", path],
+    #             stdout=subprocess.PIPE,
+    #             stderr=subprocess.PIPE,
+    #             universal_newlines=True,
+    #         )
 
-            process = subprocess.Popen(
-                ["mediainfo", "--Inform=Video;%Height%", path],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                universal_newlines=True,
-            )
+    #         stdout, stderr = process.communicate()
+    #         if process.wait() == 0:
+    #             height = int(stdout.strip(" \t\n\r"))
+    #         else:
+    #             return (None, None)
 
-            stdout, stderr = process.communicate()
-            if process.wait() == 0:
-                height = int(stdout.strip(" \t\n\r"))
-            else:
-                return (None, None)
-
-            return (width, height)
-        except OSError:
-            pass
+    #         return (width, height)
+    #     except OSError:
+    #         pass
 
     return (None, None)
 
 
 def get_video_rotation(file):
-    path = os.path.join(settings.MEDIA_ROOT, file.name)
+    # path = os.path.join(settings.MEDIA_ROOT, file.name)
 
-    if os.path.isfile(path):
-        try:
-            process = subprocess.Popen(
-                ["mediainfo", "--Inform=Video;%Rotation%", path],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                universal_newlines=True,
-            )
+    # if os.path.isfile(path):
+    #     try:
+    #         process = subprocess.Popen(
+    #             ["mediainfo", "--Inform=Video;%Rotation%", path],
+    #             stdout=subprocess.PIPE,
+    #             stderr=subprocess.PIPE,
+    #             universal_newlines=True,
+    #         )
 
-            stdout, stderr = process.communicate()
-            if process.wait() == 0:
-                try:
-                    rotation = float(stdout.strip(" \t\n\r"))
-                except ValueError:
-                    rotation = 0.0
+    #         stdout, stderr = process.communicate()
+    #         if process.wait() == 0:
+    #             try:
+    #                 rotation = float(stdout.strip(" \t\n\r"))
+    #             except ValueError:
+    #                 rotation = 0.0
 
-                return rotation
-        except OSError:
-            pass
+    #             return rotation
+    #     except OSError:
+    #         pass
 
     return 0.0
 
 
 def get_video_mimetype(file):
-    path = os.path.join(settings.MEDIA_ROOT, file.name)
+    # path = os.path.join(settings.MEDIA_ROOT, file.name)
 
-    if os.path.isfile(path):
-        try:
-            process = subprocess.Popen(
-                ["mediainfo", "--Inform=Video;%InternetMediaType%", path],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                universal_newlines=True,
-            )
+    # if os.path.isfile(path):
+    #     try:
+    #         process = subprocess.Popen(
+    #             ["mediainfo", "--Inform=Video;%InternetMediaType%", path],
+    #             stdout=subprocess.PIPE,
+    #             stderr=subprocess.PIPE,
+    #             universal_newlines=True,
+    #         )
 
-            stdout, stderr = process.communicate()
-            if process.wait() == 0:
-                mimetype = stdout.strip(" \t\n\r")
-                if mimetype == "video/H264":
-                    mimetype = "video/mp4"
+    #         stdout, stderr = process.communicate()
+    #         if process.wait() == 0:
+    #             mimetype = stdout.strip(" \t\n\r")
+    #             if mimetype == "video/H264":
+    #                 mimetype = "video/mp4"
 
-                if mimetype == "":
-                    mimetype = "video/mp4"
-                return mimetype
-        except OSError:
-            pass
+    #             if mimetype == "":
+    #                 mimetype = "video/mp4"
+    #             return mimetype
+    #     except OSError:
+    #         pass
 
     return ""
 
 
 def get_video_duration(file):
-    path = os.path.join(settings.MEDIA_ROOT, file.name)
+    # path = os.path.join(settings.MEDIA_ROOT, file.name)
 
-    if os.path.isfile(path):
-        try:
-            process = subprocess.Popen(
-                ["mediainfo", "--Inform=Video;%Duration%", path],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                universal_newlines=True,
-            )
+    # if os.path.isfile(path):
+    #     try:
+    #         process = subprocess.Popen(
+    #             ["mediainfo", "--Inform=Video;%Duration%", path],
+    #             stdout=subprocess.PIPE,
+    #             stderr=subprocess.PIPE,
+    #             universal_newlines=True,
+    #         )
 
-            stdout, stderr = process.communicate()
-            if process.wait() == 0:
-                try:
-                    duration = int(stdout.strip(" \t\n\r"))
-                except ValueError:
-                    duration = 0
+    #         stdout, stderr = process.communicate()
+    #         if process.wait() == 0:
+    #             try:
+    #                 duration = int(stdout.strip(" \t\n\r"))
+    #             except ValueError:
+    #                 duration = 0
 
-                return duration
-        except OSError:
-            pass
+    #             return duration
+    #     except OSError:
+    #         pass
 
     return 0
 
 
 def get_video_thumbnail(file):
-    path = os.path.join(settings.MEDIA_ROOT, file.name)
-    thumbnail_name = "%s%s" % (file.name, ".thumb.jpg")
-    thumbnail_path = os.path.join(settings.MEDIA_ROOT, thumbnail_name)
+    # base = getattr(settings, "BASE_DIR", "")
 
-    if os.path.isfile(path):
-        try:
-            process = subprocess.Popen(
-                ["ffmpeg", "-i", path, "-frames", "1", "-y", thumbnail_path],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
+    # session = boto3.session.Session()
+    # client = session.client(
+    #     "s3",
+    #     region_name=settings.AWS_S3_REGION_NAME,
+    #     endpoint_url=settings.AWS_S3_ENDPOINT_URL,
+    #     aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+    #     aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+    #     config=Config(signature_version="s3"),
+    # )
+    # path_to_file = "{}/{}{}".format(settings.AWS_LOCATION, settings.MEDIA_ROOT, file)
+    # path = client.generate_presigned_url(
+    #     ClientMethod="get_object",
+    #     Params={"Bucket": settings.AWS_STORAGE_BUCKET_NAME, "Key": path_to_file},
+    # )
 
-            if process.wait() == 0:
-                return thumbnail_name
+    # print(path)
+    # path = os.path.join(settings.MEDIA_ROOT, file.name)
+    thumbnail_name = "%s%s" % (file, ".thumb.jpg")
+    # print(thumbnail_name)
 
-        except OSError:
-            pass
+    # temp_file_dir = os.path.join(
+    #     base, getattr(settings, "VIDEOKIT_TEMP_DIR", VideokitConfig.VIDEOKIT_TEMP_DIR)
+    # )
+    # temp_file = os.path.join(temp_file_dir, thumbnail_name)
+    # try:
+    #     print("trying process")
+    #     process = subprocess.Popen(
+    #         ["ffmpeg", "-i", path, "-frames", "1", "-y", temp_file],
+    #         stdout=subprocess.PIPE,
+    #         stderr=subprocess.PIPE,
+    #     )
 
-    return ""
+    #     process.wait()
+    #     print("waiting")
+    #     with File(open(temp_file, "rb")) as f:
+    #         print("open file")
+    #         # f = File(open(temp_file, "rb"))
+    #         default_storage.save(thumbnail_name, f)
+    #         f.close()
+
+    #     os.remove(temp_file)
+
+    # except OSError:
+    #     pass
+
+    return thumbnail_name
 
 
 class VideoFile(File):

@@ -125,9 +125,10 @@ def video_submission(request, uuid):
         if form.is_valid():
             video = request.FILES.get("video", None)
             uploaded_by = request.POST.get("uploaded_by", None)
-            sub = VideoSubmission(event=event, video=video, uploaded_by=uploaded_by)
+            sub = VideoSubmission(event=event, uploaded_by=uploaded_by)
             sub.save()
-            sub.video_mp4.generate()
+            sub.video = video
+            sub.save()
 
             ## EMAIL USER ##
             txt_template = get_template("events/emails/video_submission.txt")

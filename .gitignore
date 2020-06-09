@@ -6,7 +6,8 @@ __pycache__
 db.sqlite3
 media
 lovenotevideo/local_settings.py 
-
+videokit-temp/
+temp_zip_files/
 # Backup files # 
 *.bak 
 

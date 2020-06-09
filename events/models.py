@@ -76,26 +76,19 @@ class Event(models.Model):
 
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return "user_{0}/{1}".format(instance.event.user.id, filename.lower())
+    file_name = filename.split(".")[-2]
+    file_type = filename.split(".")[-1]
+    return "user_{0}/{1}_{2}.{3}".format(
+        instance.event.user.id, file_name.lower(), instance.id, file_type.lower()
+    )
 
 
 class VideoSubmission(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     video = VideoField(
-        upload_to=user_directory_path,
-        width_field="video_width",
-        height_field="video_height",
-        rotation_field="video_rotation",
-        mimetype_field="video_mimetype",
-        duration_field="video_duration",
-        thumbnail_field="video_thumbnail",
+        upload_to=user_directory_path, thumbnail_field="video_thumbnail",
     )
-    video_width = models.IntegerField(null=True, blank=True)
-    video_height = models.IntegerField(null=True, blank=True)
-    video_rotation = models.FloatField(null=True, blank=True)
-    video_mimetype = models.CharField(max_length=32, null=True, blank=True)
-    video_duration = models.IntegerField(null=True, blank=True)
     video_thumbnail = models.ImageField(null=True, blank=True)
 
     video_mp4 = VideoSpecField(source="video", format="mp4")
