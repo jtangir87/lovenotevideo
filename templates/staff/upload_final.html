@@ -18,10 +18,25 @@ Upload Final Video
           {% csrf_token %}
           {% bootstrap_form_errors form %}
           {% bootstrap_form form show_label=False %}
-          <button class="btn btn-primary" type="submit">Upload</button>
+          <button class="btn btn-primary" id="submit-button" type="submit">Upload</button>
         </form>
       </div>
     </div>
 </div>
 
 {% endblock content %}
+{% block footscript %}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+<script>
+
+$(document).ready(function () {
+    $('#submit-button').click(function(){
+        $('body').LoadingOverlay("show", {
+            text: "Uploading & Processing"
+        });
+        
+});
+});
+
+</script>
+{% endblock footscript %}
