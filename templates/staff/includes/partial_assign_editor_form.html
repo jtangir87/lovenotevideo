@@ -1,0 +1,22 @@
+{% load bootstrap4 %}
+{{form.media}}
+<form method="POST" action="{% url 'staff:assign_editor' pk=form.instance.pk %}" class="js-assign-editor-form">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h4 class="modal-title">Assign Editor</h4>
+  </div>
+  <div class="modal-body">
+    {% bootstrap_form_errors form %}
+    {% bootstrap_form form %}
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    {% bootstrap_button "Assign" button_type="submit" button_class="btn-primary"%}
+  </div>
+</form>
+
+<script>
+$('#id_editing_due').datepicker({
+});
+</script>

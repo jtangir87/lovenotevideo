@@ -4,6 +4,7 @@
 {% endblock email_header %}
 
 {% block email_body %}
+    <img src="{{sub.video_thumbnail.url}}" width="600">
     <p> Someone has submitted a love note for {{event.name}}. Go to your Love Note page to see it!</p>
     <a class="btn btn-lg pink-button" href="{{event_url}}">Go To Love Note</a>
 {% endblock email_body %}

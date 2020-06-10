@@ -139,6 +139,7 @@ def video_submission(request, uuid):
                     reverse("events:event_detail", kwargs={"uuid": event.uuid})
                 ),
                 "event": event,
+                "sub": sub,
             }
 
             text_content = txt_template.render(context)

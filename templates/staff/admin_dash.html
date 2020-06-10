@@ -1,5 +1,15 @@
 {% extends 'staff/base.html' %}
 {% load static %}
+{% load bootstrap4 %}
+
+{% block headscript %}
+<link href="{% static 'staff/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock headscript %}
+
+{% block title %}
+Admin Dashboard
+{% endblock title %}
+
 {% block content %}
 <!-- Content Row -->
           <div class="row">
@@ -10,11 +20,30 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Revnue (Monthly)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">New Users</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{new_users.count}}</div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                      <i class="fas fa-users fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                     <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">New Love Notes</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{new_events.count}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-heart fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -27,8 +56,8 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Revenue (Annual)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">New Orders</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{new_orders.count}}</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -37,44 +66,17 @@
                 </div>
               </div>
             </div>
-
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">In Production</div>
-                      <div class="row no-gutters align-items-center">
-                        <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                        </div>
-                        <div class="col">
-                          <div class="progress progress-sm mr-2">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <!-- Pending Requests Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Assign To Editor</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Being Produced</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{in_production.count}}</div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-comments fa-2x text-gray-300"></i>
+                      <i class="fas fa-photo-video fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -85,7 +87,35 @@
           <!-- Content Row -->
 
           <div class="row">
-
+            {% if need_editor %}
+            <div class="col-xl-12 col-lg-7">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-danger">NEED EDITOR ASSIGNED</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered" id="needEditor" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Love Note <small>(Click for Details)</small></th>
+                      <th>Published Date</th>
+                      <th>Videos</th>
+                      <th>Package</th>
+                      <th>Actions</th>   
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% include 'staff/includes/partial_need_editor_list.html' %}
+                  </tbody>
+                </table>
+              </div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
             <!-- Area Chart -->
             <div class="col-xl-8 col-lg-7">
               <div class="card shadow mb-4">
@@ -276,7 +306,17 @@
 {% endblock content %}
 
 {% block footscript %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
   <!-- Page level custom scripts -->
-  <script src="{% static 'staff/js/demo/chart-area-demo.js' %}"></script>
-  <script src="{% static 'staff/js/demo/chart-pie-demo.js' %}"></script>
+ {% comment %} <script src="{% static 'staff/js/demo/chart-area-demo.js' %}"></script>
+  <script src="{% static 'staff/js/demo/chart-pie-demo.js' %}"></script> {% endcomment %}
+  <script src="{% static 'staff/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'staff/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+  
+  <script>
+  $(document).ready(function() {
+      $('#needEditor').DataTable()
+  })
+  </script>
 {% endblock footscript %}

@@ -1,0 +1,15 @@
+{{form.media}}
+{% for project in need_editor %}
+    <tr>
+        <td><a href="#" class="js-event-detail" data-toggle="modal" data-url="{% url 'staff:event_detail' pk=project.pk %}">{{project.name}}</a></td>
+        <td>{{project.order.created_at}}</td>
+        <td>{{project.approved_videos.count}}</td>
+        <td>{{project.order.package.name}}</td>
+        <td>
+            <button type="button"
+            class="btn btn-sm lilac-button js-assign-editor" 
+            data-url="{% url 'staff:assign_editor' project.id %}">Assign Editor</button>
+
+        </td>
+    </tr>
+{% endfor %}

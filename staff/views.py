@@ -2,6 +2,7 @@ import os
 import os.path
 import zipfile
 import boto3
+from datetime import datetime, timedelta
 from django.conf import settings
 from django.shortcuts import render
 from django.urls import reverse
@@ -10,6 +11,7 @@ from lovenotevideo.mixins import (
     StaffRequiredMixin,
     EmployeeRequiredMixin,
 )
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import (
     JsonResponse,
@@ -24,13 +26,28 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 
 from events.models import Event, VideoSubmission
-from .forms import UploadFinalVideoForm
+from .forms import UploadFinalVideoForm, AssignEditorForm
+
+
+User = get_user_model()
 
 # Create your views here.
 @login_required
 @permission_required("user.is_staff", raise_exception=True)
 def staff_dashboard(request):
-    context = {}
+    seven_days_ago = datetime.today() - timedelta(days=6)
+    new_users = User.objects.filter(date_joined__gte=seven_days_ago)
+    new_events = Event.objects.filter(created_at__gte=seven_days_ago)
+    new_orders = Event.objects.filter(order__created_at__gte=seven_days_ago)
+    in_production = Event.objects.filter(status="Production")
+    need_editor = Event.objects.filter(editor__isnull=True).exclude(status="Open")
+    context = {
+        "new_users": new_users,
+        "new_events": new_events,
+        "new_orders": new_orders,
+        "in_production": in_production,
+        "need_editor": need_editor,
+    }
     return render(request, "staff/admin_dash.html", context)
 
 
@@ -60,6 +77,54 @@ def event_detail(request, pk):
         "staff/includes/partial_event_detail.html", {"event": event}, request=request
     )
     return JsonResponse(data)
+
+
+@login_required
+@permission_required("user.is_staff", raise_exception=True)
+def assign_editor(request, pk):
+    event = Event.objects.filter(id=pk).first()
+    data = dict()
+    if request.method == "POST":
+        form = AssignEditorForm(request.POST or None, instance=event)
+        if form.is_valid():
+            form.save()
+            data["form_is_valid"] = True
+            need_editor = Event.objects.filter(editor__isnull=True).exclude(
+                status="Open"
+            )
+            data["html_need_editor_list"] = render_to_string(
+                "staff/includes/partial_need_editor_list.html",
+                {"need_editor": need_editor},
+            )
+
+        else:
+            data["form_is_valid"] = False
+    else:
+        form = AssignEditorForm(instance=event)
+        data["html_form"] = render_to_string(
+            "staff/includes/partial_assign_editor_form.html",
+            {"form": form},
+            request=request,
+        )
+    return JsonResponse(data)
+
+
+# @login_required
+# @permission_required("user.is_staff", raise_exception=True)
+# def assign_editor(request, pk):
+#     event = Event.objects.filter(id=pk).first()
+#     if request.method == "POST":
+#         form = AssignEditorForm(request.POST or None, instance=event)
+#         if form.is_valid():
+#             form.save()
+
+#         else:
+#             data["form_is_valid"] = False
+#     else:
+#         form = AssignEditorForm(instance=event)
+#     return render(
+#         request, "staff/includes/partial_assign_editor_form.html", {"form": form}
+#     )
 
 
 @login_required

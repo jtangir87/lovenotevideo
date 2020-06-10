@@ -31,6 +31,7 @@ class Event(models.Model):
         upload_to=user_event_directory_path, blank=True, null=True
     )
     status = models.CharField(max_length=255, choices=EVENT_STATUS_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     editor = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -39,6 +40,7 @@ class Event(models.Model):
         related_name="assigned_editor",
         limit_choices_to={"editor": True},
     )
+    editing_due = models.DateField(auto_now_add=False, blank=True, null=True)
     final_video = VideoField(
         upload_to=user_event_directory_path,
         thumbnail_field="final_video_thumbnail",

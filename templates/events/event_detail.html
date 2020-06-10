@@ -174,6 +174,12 @@
                                                     <div class="card-body video-sub-details">
                                                         <p>From: {{video.uploaded_by}}</p>
                                                         <p class="video-sub-details">Shared: {{video.timestamp| date:"M j, Y "}}</p>
+                                                        {% if video.approved %}
+                                                            <p class="video-sub-details" style="color:green;"><strong>Approved</strong></p>
+                                                        {% else %}
+                                                            <p class="video-sub-details" style="color:red;"><strong>Not Approved</strong></p>
+                                                        {% endif %}
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
