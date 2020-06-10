@@ -1,8 +1,5 @@
 {% extends 'staff/base.html' %}
 {% load static %}
-{% block headscript %}
-<link href="{% static 'staff/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
-{% endblock headscript %}
 
 {% block title %}
 Editor Dashboard
@@ -138,9 +135,7 @@ Editor Dashboard
 {% endblock content %}
 
 {% block footscript %}
-  <!-- Page level custom scripts -->
-  <script src="{% static 'staff/vendor/datatables/jquery.dataTables.min.js' %}"></script>
-  <script src="{% static 'staff/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
 
   <script>
   $(document).ready(function() {

@@ -1,0 +1,70 @@
+{% extends 'staff/base.html' %}
+{% load static %}
+{% block headscript %}
+
+{% endblock headscript %}
+{% block title %}
+Open Love Notes
+{% endblock title %}
+
+{% block content %}
+
+          <div class="row">
+
+            <!-- Area Chart -->
+            <div class="col-xl-12 col-lg-7">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <!-- Card Body -->
+                <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered" id="openEvents" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>LN Name</th>
+                      <th>Created Date</th>
+                      <th>Due Date</th>
+                      <th>Submissions</th>
+                      <th>Actions</th>   
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for event in events %}
+                    <tr>
+                      <td>{{event.user.username}}</td>
+                      <td>{{event.name}}</td>
+                      <td>{{event.created_at}}</td>
+                      <td>{{event.due_date}}</td>
+                      <td>{{event.submissions.count}}</td>
+                      <td>
+                        <a class="btn btn-sm btn-primary" href="#">Button here</a>
+
+                    </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+{% endblock content %}
+
+{% block footscript %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+	<script src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/datetime-moment.js"></script>
+
+  <script>
+  $(document).ready(function() {
+      $.fn.dataTable.moment( 'MMMM D, YYYY, h:mm a' );
+      $('#openEvents').DataTable({
+        select:'single',
+        "order": [[3, "asc"]]
+      })
+
+  })
+  </script>
+{% endblock footscript %}

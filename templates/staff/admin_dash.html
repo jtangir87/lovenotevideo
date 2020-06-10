@@ -2,10 +2,6 @@
 {% load static %}
 {% load bootstrap4 %}
 
-{% block headscript %}
-<link href="{% static 'staff/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
-{% endblock headscript %}
-
 {% block title %}
 Admin Dashboard
 {% endblock title %}
@@ -311,8 +307,6 @@ Admin Dashboard
   <!-- Page level custom scripts -->
  {% comment %} <script src="{% static 'staff/js/demo/chart-area-demo.js' %}"></script>
   <script src="{% static 'staff/js/demo/chart-pie-demo.js' %}"></script> {% endcomment %}
-  <script src="{% static 'staff/vendor/datatables/jquery.dataTables.min.js' %}"></script>
-  <script src="{% static 'staff/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
   
   <script>
   $(document).ready(function() {

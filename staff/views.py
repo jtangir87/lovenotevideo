@@ -6,12 +6,14 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.generic import ListView
 from django.template.loader import render_to_string
 from lovenotevideo.mixins import (
     StaffRequiredMixin,
     EmployeeRequiredMixin,
 )
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import (
     JsonResponse,
@@ -131,24 +133,6 @@ def assign_editor(request, pk):
     return JsonResponse(data)
 
 
-# @login_required
-# @permission_required("user.is_staff", raise_exception=True)
-# def assign_editor(request, pk):
-#     event = Event.objects.filter(id=pk).first()
-#     if request.method == "POST":
-#         form = AssignEditorForm(request.POST or None, instance=event)
-#         if form.is_valid():
-#             form.save()
-
-#         else:
-#             data["form_is_valid"] = False
-#     else:
-#         form = AssignEditorForm(instance=event)
-#     return render(
-#         request, "staff/includes/partial_assign_editor_form.html", {"form": form}
-#     )
-
-
 @login_required
 def download_files(request, uuid):
     event = Event.objects.filter(uuid=uuid).first()
@@ -245,3 +229,46 @@ def upload_final_video(request, uuid):
 
     else:
         raise PermissionDenied()
+
+
+class UserList(LoginRequiredMixin, StaffRequiredMixin, ListView):
+    model = User
+    context_object_name = "users"
+    template_name = "staff/user_list.html"
+
+
+class OpenEventsList(LoginRequiredMixin, StaffRequiredMixin, ListView):
+    model = Event
+    context_object_name = "events"
+    template_name = "staff/open_event_list.html"
+
+    def get_queryset(self):
+        seven_days_ago = datetime.today() - timedelta(days=6)
+        return (
+            Event.objects.filter(status="Open")
+            .exclude(due_date__lt=seven_days_ago)
+            .order_by("due_date")
+        )
+
+
+class PublishedEventsList(LoginRequiredMixin, StaffRequiredMixin, ListView):
+    model = Event
+    context_object_name = "events"
+    template_name = "staff/published_event_list.html"
+
+    def get_queryset(self):
+        return Event.objects.all().exclude(status="Open")
+
+
+class ExpiredEventsList(LoginRequiredMixin, StaffRequiredMixin, ListView):
+    model = Event
+    context_object_name = "events"
+    template_name = "staff/expired_event_list.html"
+
+    def get_queryset(self):
+        seven_days_ago = datetime.today() - timedelta(days=6)
+        return (
+            Event.objects.filter(status="Open")
+            .exclude(due_date__gt=seven_days_ago)
+            .order_by("due_date")
+        )

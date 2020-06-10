@@ -22,6 +22,10 @@ from .views import (
     upload_final_video,
     download_files,
     assign_editor,
+    UserList,
+    OpenEventsList,
+    PublishedEventsList,
+    ExpiredEventsList,
 )
 
 app_name = "staff"
@@ -29,6 +33,12 @@ app_name = "staff"
 urlpatterns = [
     path("staff/dashboard", staff_dashboard, name="staff_dash"),
     path("staff/event/<int:pk>/assign-editor", assign_editor, name="assign_editor"),
+    path("staff/user-list", UserList.as_view(), name="user_list"),
+    path("staff/events/open", OpenEventsList.as_view(), name="open_events"),
+    path(
+        "staff/events/published", PublishedEventsList.as_view(), name="published_events"
+    ),
+    path("staff/events/expired", ExpiredEventsList.as_view(), name="expired_events"),
     path("editor/dashboard", editor_dashboard, name="editor_dash"),
     path("editor/event/<int:pk>/details", event_detail, name="event_detail"),
     path(
