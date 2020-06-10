@@ -18,7 +18,7 @@
             <div class="card">
                 <div class="card-header text-center">
                 {% if not event.order %}
-                    <a class="btn btn-lg teal-button" href="{% url 'orders:publish_event' uuid=event.uuid %}"><span class="far fa-heart"></span> &nbsp;Publish Love Note</a>
+                    <a class="btn btn-lg teal-button" href="{% url 'orders:publish_event' uuid=event.uuid %}"><span class="far fa-heart"></span> &nbsp;Publish & Submit for Editing</a>
                 {% else %}
                     <h4>Published on {{event.order.created_at| date:"M j, Y "}}
                 {% endif %}
@@ -200,7 +200,7 @@
                 </div>
                 {% if not event.order %}
                 <div class="card-footer text-center">
-                    <a class="btn btn-lg teal-button" href="{% url 'orders:publish_event' uuid=event.uuid %}"><span class="far fa-heart"></span> &nbsp;Publish Love Note</a>
+                    <a class="btn btn-lg teal-button" href="{% url 'orders:publish_event' uuid=event.uuid %}"><span class="far fa-heart"></span> &nbsp;Publish & Submit for Editing</a>
                 </div>
                 {% endif %}
             </div>
