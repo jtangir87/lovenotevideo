@@ -11,3 +11,4 @@ class AssignEditorForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = ("editor", "editing_due")
+        widgets = {"editing_due": forms.DateInput(format="%m/%d/%Y")}

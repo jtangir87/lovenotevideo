@@ -1,0 +1,6 @@
+
+Your Love Note Video has been published!
+
+Our editors are going to get started building your Love Note Video for {{event.name}}. We will notify you within 2 business days when it's ready!
+You can view your receipt and order details from your dashboard.    
+{{event_url}}

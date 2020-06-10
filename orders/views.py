@@ -9,6 +9,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from django.views.generic import View
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
 
 from .models import Package, Addon, Order, OrderAddon, Payment, EventCoupon
 from events.models import Event, VideoSubmission
@@ -82,7 +84,7 @@ def publish_event(request, uuid):
                         stripe_payment_id=charge.id,
                         customer=user,
                         event=event,
-                        amount=order_total,
+                        amount=discounted_total,
                         receipt_url=charge.receipt_url,
                     )
                     event.publish()
@@ -97,6 +99,30 @@ def publish_event(request, uuid):
                     order_total=discounted_total,
                 )
                 event.publish()
+
+            ## EMAIL CUSTOMER HERE ###
+
+            txt_template = get_template("orders/emails/publish_success.txt")
+            html_template = get_template("orders/emails/publish_success.html")
+
+            context = {
+                "event_url": request.build_absolute_uri(
+                    reverse("events:event_detail", kwargs={"uuid": event.uuid})
+                ),
+                "event": event,
+            }
+
+            text_content = txt_template.render(context)
+            html_content = html_template.render(context)
+            from_email = "Love Note Video <support@lovenotevideo.com>"
+            subject, from_email, to = (
+                "Your Love Note Video Has Been Published!",
+                from_email,
+                event.user.email,
+            )
+            email = EmailMultiAlternatives(subject, text_content, from_email, [to])
+            email.attach_alternative(html_content, "text/html")
+            email.send()
 
             return HttpResponseRedirect(
                 reverse("orders:publish_success", kwargs={"uuid": event.uuid})

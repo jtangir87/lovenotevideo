@@ -97,6 +97,28 @@ def assign_editor(request, pk):
                 {"need_editor": need_editor},
             )
 
+            ## EMAIL EDITOR HERE ###
+
+            txt_template = get_template("staff/emails/editor_assigned.txt")
+            html_template = get_template("staff/emails/editor_assigned.html")
+
+            context = {
+                "editor_dash": request.build_absolute_uri(reverse("staff:editor_dash")),
+                "event": event,
+            }
+
+            text_content = txt_template.render(context)
+            html_content = html_template.render(context)
+            from_email = "Love Note Video <support@lovenotevideo.com>"
+            subject, from_email, to = (
+                "You have been assigned a Love Note Video",
+                from_email,
+                event.editor.email,
+            )
+            email = EmailMultiAlternatives(subject, text_content, from_email, [to])
+            email.attach_alternative(html_content, "text/html")
+            email.send()
+
         else:
             data["form_is_valid"] = False
     else:

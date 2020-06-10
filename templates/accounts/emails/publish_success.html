@@ -1,0 +1,12 @@
+{% extends 'email_base.html' %}
+{% block email_header %}
+    <h3>Your Love Note Video has been published!</h3>
+{% endblock email_header %}
+
+{% block email_body %}
+    <p> Our editors are going to get started building your Love Note Video for {{event.name}}. We will notify you within 2 business days when it's ready!
+    <br>
+    You can view your order, payment details, and receipt from your Love Note Dashboard.
+    </p>
+    <a class="btn btn-lg pink-button" href="{{event_url}}">Go To Love Note</a>
+{% endblock email_body %}

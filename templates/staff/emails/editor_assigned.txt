@@ -1,0 +1,1 @@
+You have been assigned as the editor for {{event.name}}. Final product must be uploaded by {{event.editing_due}}. Files can be retrieved from your dashboard.
