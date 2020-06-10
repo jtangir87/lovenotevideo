@@ -18,7 +18,7 @@ Expired Love Notes
                 <!-- Card Body -->
                 <div class="card-body">
                 <div class="table-responsive">
-                <table class="table table-bordered" id="openEvents" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="expiredEvents" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>User</th>
@@ -59,7 +59,7 @@ Expired Love Notes
 
   <script>
   $(document).ready(function() {
-      $.fn.dataTable.moment( 'MMMM D, YYYY, h:mm a' );
+      $.fn.dataTable.moment( 'MMMM D, YYYY' );
       $('#openEvents').DataTable({
         select:'single',
         "order": [[3, "asc"]]

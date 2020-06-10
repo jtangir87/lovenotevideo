@@ -38,7 +38,7 @@ Published Love Notes
                       <td>{{event.created_at}}</td>
                       <td>{{event.order.created_at}}</td>
                       <td>{{event.delivery_date}}</td>
-                      <td>{{event.order.order_total}}</td>
+                      <td>${{event.order.order_total}}</td>
                       <td>
                         <a class="btn btn-sm btn-primary" href="#">Button here</a>
 
@@ -62,7 +62,7 @@ Published Love Notes
   <script>
   $(document).ready(function() {
       $.fn.dataTable.moment( 'MMMM D, YYYY, h:mm a' );
-      $('#openEvents').DataTable({
+      $('#publishedEvents').DataTable({
         select:'single',
         "order": [[3, "asc"]]
       })
