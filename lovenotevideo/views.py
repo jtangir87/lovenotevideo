@@ -21,3 +21,11 @@ def dashboard(request):
         "events": events,
     }
     return render(request, "events/dashboard.html", context)
+
+
+class PrivacyPolicy(TemplateView):
+    template_name = "public/privacy_policy.html"
+
+
+class TermsofUse(TemplateView):
+    template_name = "public/terms_of_use.html"

@@ -45,17 +45,21 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{% url 'staff:staff_dash' %}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
+          <span>Admin Dashboard</span></a>
       </li>
-
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'staff:editor_dash' %}">
+          <i class="fas fa-fw fa-photo-video"></i>
+          <span>Editor Dashboard</span></a>
+      </li>
       <!-- Divider -->
       <hr class="sidebar-divider">
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Interface
+        FRONT END
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
