@@ -4,7 +4,7 @@
 
 {% block og_tags %}
 <meta property="og:title" content="Love Note Video - {{event.name}}" />
-<meta property="og:type" content="movie" />
+<meta property="og:type" content="video.movie" />
 <meta property="og:video" content="{{video_url}}" />
 <meta property="og:video:url" content="{{video_url}}" />
 <meta property="og:video:secure_url" content="{{video_url}}" />
@@ -13,6 +13,7 @@
 <meta property="og:video:height" content="720" />
 <meta property="og:image" content="{{event.final_video_thumbnail.url}}" />
 <meta property="og:url" content="https://www.lovenotevideo.com/{{event.uuid}}" />
+<meta property="og:description" content="Providing friends and families all over the world the opportunity to share and celebrate special occassions from a distance " />
 {% endblock og_tags %}
 
 {% block headscript %}
