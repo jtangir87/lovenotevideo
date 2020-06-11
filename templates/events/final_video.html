@@ -4,14 +4,14 @@
 
 {% block og_tags %}
 <meta property="og:title" content="Love Note Video - {{event.name}}" />
-<meta property="og:type" content="video" />
+<meta property="og:type" content="website" />
 <meta property="og:video" content="{{video_url}}" />
 <meta property="og:video:url" content="{{video_url}}" />
 <meta property="og:video:secure_url" content="{{video_url}}" />
 <meta property="og:video:type" content="video/mp4" />
 <meta property="og:video:width" content="1280" />
 <meta property="og:video:height" content="720" />
-<meta property="og:image" content="720" />
+<meta property="og:image" content="{{event.final_video_thumbnail.url}}" />
 <meta property="og:url" content="www.lovenotevideo.com/{{event.uuid}}" />
 {% endblock og_tags %}
 
