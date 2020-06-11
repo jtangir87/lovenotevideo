@@ -1,5 +1,10 @@
 {% extends 'public/base.html' %}
 {% load static %}
+
+{% block og_tags %}
+	{% include 'base_og_tags.html' %}
+{% endblock og_tags %}
+
 {% block headscript %}
 <style>
 .made_life_area {

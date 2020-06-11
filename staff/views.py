@@ -195,7 +195,9 @@ def upload_final_video(request, uuid):
                 html_template = get_template("events/emails/final_video.html")
 
                 context = {
-                    "video_url": request.build_absolute_uri(event.final_video.url),
+                    "video_url": request.build_absolute_uri(
+                        reverse("events:final_video", kwargs={"uuid": event.uuid})
+                    ),
                     "poster_url": request.build_absolute_uri(
                         event.final_video_thumbnail.url
                     ),

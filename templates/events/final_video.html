@@ -2,9 +2,16 @@
 {% load static %}
 {% load bootstrap4 %}
 
-{% block metatags %}
+{% block og_tags %}
+<meta property="og:url" content="{{video_url}}" />
+<meta property="og:title" content="Love Note Video - {{event.name}}" />
+<meta property="og:type" content="video" />
+<meta property="og:image" content="{{event.final_video_thumbnail.url}}" />
 <meta property="og:video" content="{{video_url}}" />
-{% endblock metatags %}
+<meta property="og:video:type" content="video/mp4" />
+<meta property="og:video:width" content="1280" />
+<meta property="og:video:height" content="720" />
+{% endblock og_tags %}
 
 {% block headscript %}
 <style>

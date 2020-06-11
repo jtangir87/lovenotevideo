@@ -1,6 +1,10 @@
 {% extends 'dashboard_base.html' %}
 {% load static %}
 {% load bootstrap4 %}
+{% block og_tags %}
+	{% include 'base_og_tags.html' %}
+{% endblock og_tags %}
+
 
 {% block content %}
 <div class="thankyou-container" style="background-image: url({% static 'dashboard/img/fireworks-background.jpg' %});">
