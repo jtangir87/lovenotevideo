@@ -43,6 +43,30 @@ def event_create(request):
             event.user = user
             event.status = "Open"
             event.save()
+
+            ## EMAIL USER ##
+            txt_template = get_template("events/emails/new_event.txt")
+            html_template = get_template("events/emails/new_event.html")
+
+            context = {
+                "event_url": request.build_absolute_uri(
+                    reverse("events:event_detail", kwargs={"uuid": event.uuid})
+                ),
+                "event": event,
+            }
+
+            text_content = txt_template.render(context)
+            html_content = html_template.render(context)
+            from_email = "Love Note Video <support@lovenotevideo.com>"
+            subject, from_email, to = (
+                "New Love Note Created",
+                from_email,
+                user.email,
+            )
+            email = EmailMultiAlternatives(subject, text_content, from_email, [to])
+            email.attach_alternative(html_content, "text/html")
+            email.send()
+
             return HttpResponseRedirect(
                 reverse("events:event_detail", kwargs={"uuid": event.uuid})
             )

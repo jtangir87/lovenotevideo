@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.contrib.auth import login, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -6,7 +7,8 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from .forms import RegisterForm, UserUpdateForm
 from django.views.generic import UpdateView
-
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
 
 CustomUser = get_user_model()
 
@@ -20,6 +22,27 @@ def register(request):
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
             login(request, user)
+
+            ## EMAIL USER ##
+            txt_template = get_template("accounts/emails/registration_success.txt")
+            html_template = get_template("accounts/emails/registration_success.html")
+
+            context = {
+                "dashboard_url": request.build_absolute_uri(reverse("dashboard")),
+            }
+
+            text_content = txt_template.render(context)
+            html_content = html_template.render(context)
+            from_email = "Love Note Video <support@lovenotevideo.com>"
+            subject, from_email, to = (
+                "Love Note Video Account",
+                from_email,
+                user.email,
+            )
+            email = EmailMultiAlternatives(subject, text_content, from_email, [to])
+            email.attach_alternative(html_content, "text/html")
+            email.send()
+
             return redirect("dashboard")
     else:
         form = RegisterForm()

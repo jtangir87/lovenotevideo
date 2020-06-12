@@ -1,0 +1,16 @@
+{% extends 'email_base.html' %}
+{% block email_header %}
+    <h3>Your Love Note Video account is ready!</h3>
+{% endblock email_header %}
+
+{% block email_body %}
+    <p> Thank you for joining the Love Note Video community! You are now ready to start sharing the love.
+    <br>
+     Go to your dashboard to start a Love Note!
+    </p>
+    <a class="btn btn-lg pink-button" href="{{dashboard_url}}">Go To Dashboard</a>
+{% endblock email_body %}
+
+
+
+

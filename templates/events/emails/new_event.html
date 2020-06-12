@@ -1,0 +1,9 @@
+{% extends 'email_base.html' %}
+{% block email_header %}
+    <h3>Yay! Your Love Note for {{event.name}} is ready!</h3>
+{% endblock email_header %}
+
+{% block email_body %}
+    <p> You can invite friends and family to contribute, view, order and approve submissions all from your Love Note Dashboard. Go to your Love Note page to get started!</p>
+    <a class="btn btn-lg pink-button" href="{{event_url}}">Go To Love Note</a>
+{% endblock email_body %}

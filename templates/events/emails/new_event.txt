@@ -1,0 +1,3 @@
+
+Thank you for creating a new Love Note for {{event.name}}!
+You can monitor your Love Note from your dashboard : {{event_url}}"

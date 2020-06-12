@@ -1,0 +1,5 @@
+
+Your Love Note Video account is ready!
+
+Thank you for joining the Love Note Video community! You are now ready to start sharing your love. Go to your dashboard to start a Love Note!
+{{dashboard_url}}
