@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 from timezone_field import TimeZoneField
 
+
 # Create your models here.
 
 

@@ -23,6 +23,7 @@ from .views import (
     download_files,
     assign_editor,
     UserList,
+    EditorList,
     OpenEventsList,
     PublishedEventsList,
     ExpiredEventsList,
@@ -34,6 +35,7 @@ urlpatterns = [
     path("staff/dashboard", staff_dashboard, name="staff_dash"),
     path("staff/event/<int:pk>/assign-editor", assign_editor, name="assign_editor"),
     path("staff/user-list", UserList.as_view(), name="user_list"),
+    path("staff/editor-list", EditorList.as_view(), name="editor_list"),
     path("staff/events/open", OpenEventsList.as_view(), name="open_events"),
     path(
         "staff/events/published", PublishedEventsList.as_view(), name="published_events"

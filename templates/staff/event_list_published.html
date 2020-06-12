@@ -26,6 +26,7 @@ Published Love Notes
                       <th>Created</th>
                       <th>Published</th>
                       <th>Delivered</th>
+                      <th>Status</th>
                       <th>Price</th>
                       <th>Actions</th>   
                     </tr>
@@ -38,9 +39,10 @@ Published Love Notes
                       <td>{{event.created_at}}</td>
                       <td>{{event.order.created_at}}</td>
                       <td>{{event.delivery_date}}</td>
+                      <td>{{event.status}}</td>
                       <td>${{event.order.order_total}}</td>
                       <td>
-                        <a class="btn btn-sm btn-primary" href="#">Button here</a>
+                        <a class="btn btn-sm pink-button" href="{% url 'events:event_detail' uuid=event.uuid %}" target="_blank">View Love Note</a>
 
                     </td>
                     </tr>

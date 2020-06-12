@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, get_user_model
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import RegisterForm
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from .forms import RegisterForm, UserUpdateForm
 from django.views.generic import UpdateView
 
 
@@ -30,3 +32,25 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
     model = CustomUser
     fields = ("first_name", "last_name", "email")
     template_name = "accounts/user_update.html"
+
+
+@login_required
+@permission_required("user.is_staff", raise_exception=True)
+def admin_user_update(request, pk):
+    user = get_object_or_404(CustomUser, id=pk)
+    data = dict()
+    if request.method == "POST":
+        form = UserUpdateForm(request.POST or None, instance=user)
+        if form.is_valid():
+            form.save()
+            data["form_is_valid"] = True
+        else:
+            data["form_is_valid"] = False
+    else:
+        form = UserUpdateForm(instance=user)
+        data["html_form"] = render_to_string(
+            "accounts/includes/partial_admin_user_update_form.html",
+            {"form": form},
+            request=request,
+        )
+    return JsonResponse(data)

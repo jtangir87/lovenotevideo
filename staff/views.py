@@ -239,10 +239,19 @@ class UserList(LoginRequiredMixin, StaffRequiredMixin, ListView):
     template_name = "staff/user_list.html"
 
 
+class EditorList(LoginRequiredMixin, StaffRequiredMixin, ListView):
+    model = User
+    context_object_name = "users"
+    template_name = "staff/user_editor_list.html"
+
+    def get_queryset(self):
+        return User.objects.filter(editor=True)
+
+
 class OpenEventsList(LoginRequiredMixin, StaffRequiredMixin, ListView):
     model = Event
     context_object_name = "events"
-    template_name = "staff/open_event_list.html"
+    template_name = "staff/event_list_open.html"
 
     def get_queryset(self):
         seven_days_ago = datetime.today() - timedelta(days=6)
@@ -256,7 +265,7 @@ class OpenEventsList(LoginRequiredMixin, StaffRequiredMixin, ListView):
 class PublishedEventsList(LoginRequiredMixin, StaffRequiredMixin, ListView):
     model = Event
     context_object_name = "events"
-    template_name = "staff/published_event_list.html"
+    template_name = "staff/event_list_published.html"
 
     def get_queryset(self):
         return Event.objects.all().exclude(status="Open")
@@ -265,7 +274,7 @@ class PublishedEventsList(LoginRequiredMixin, StaffRequiredMixin, ListView):
 class ExpiredEventsList(LoginRequiredMixin, StaffRequiredMixin, ListView):
     model = Event
     context_object_name = "events"
-    template_name = "staff/expired_event_list.html"
+    template_name = "staff/event_list_expired.html"
 
     def get_queryset(self):
         seven_days_ago = datetime.today() - timedelta(days=6)

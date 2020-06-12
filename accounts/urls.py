@@ -16,7 +16,7 @@ Including another URLconf
 
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import register, UserUpdate
+from .views import register, UserUpdate, admin_user_update
 
 app_name = "accounts"
 
@@ -29,4 +29,5 @@ urlpatterns = [
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("signup/", register, name="register"),
     path("account/<uuid:uuid>", UserUpdate.as_view(), name="user_update"),
+    path("account/<int:pk>/update", admin_user_update, name="admin_user_update"),
 ]

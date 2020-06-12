@@ -38,7 +38,7 @@ Expired Love Notes
                       <td>{{event.due_date}}</td>
                       <td>{{event.submissions.count}}</td>
                       <td>
-                        <a class="btn btn-sm btn-primary" href="#">Button here</a>
+                        <a class="btn btn-sm pink-button" href="{% url 'events:event_detail' uuid=event.uuid %}" target="_blank">View Love Note</a>
 
                     </td>
                     </tr>

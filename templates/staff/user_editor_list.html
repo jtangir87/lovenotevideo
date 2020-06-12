@@ -4,7 +4,7 @@
 
 {% endblock headscript %}
 {% block title %}
-Open Love Notes
+Editor List
 {% endblock title %}
 
 {% block content %}
@@ -18,27 +18,27 @@ Open Love Notes
                 <!-- Card Body -->
                 <div class="card-body">
                 <div class="table-responsive">
-                <table class="table table-bordered" id="openEvents" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="userList" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                      <th>User</th>
-                      <th>LN Name</th>
+                      <th>Username</th>
+                      <th>Name</th>
                       <th>Created Date</th>
-                      <th>Due Date</th>
-                      <th>Submissions</th>
+                      <th>Last Log In</th>
+                      <th>Assigned Projects</th>
                       <th>Actions</th>   
                     </tr>
                   </thead>
                   <tbody>
-                    {% for event in events %}
+                    {% for user in users %}
                     <tr>
-                      <td>{{event.user.username}}</td>
-                      <td>{{event.name}}</td>
-                      <td>{{event.created_at}}</td>
-                      <td>{{event.due_date}}</td>
-                      <td>{{event.submissions.count}}</td>
+                      <td>{{user.username}}</td>
+                      <td>{{user.get_full_name}}</td>
+                      <td>{{user.date_joined}}</td>
+                      <td>{{user.last_login}}</td>
+                      <td>{{user.assigned_editor.count}}</td>
                       <td>
-                        <a class="btn btn-sm btn-primary" href="#">Button here</a>
+                        <button type="button" data-url="{% url 'accounts:admin_user_update' pk=user.pk %}" class="btn btn-sm btn-primary js-update-user">Update</button>
 
                     </td>
                     </tr>
@@ -59,10 +59,10 @@ Open Love Notes
 
   <script>
   $(document).ready(function() {
-      $.fn.dataTable.moment( 'MMMM D, YYYY' );
-      $('#openEvents').DataTable({
+      $.fn.dataTable.moment( 'MMMM D, YYYY, h:mm a' );
+      $('#userList').DataTable({
         select:'single',
-        "order": [[3, "asc"]]
+        "order": [[2, "dec"]]
       })
 
   })
