@@ -39,8 +39,8 @@ input[type="file"] {
                         <button type="button" class="btn btn-lg pink-button" data-toggle="modal" data-target="#tipsModal"><span class="far fa-lightbulb"></span> &nbsp;Recording Tips</button>
                     </div>
                     <h3 class="text-center mb-2">{{event.user.first_name}} has invited to you to share your love for {{event.name}}!</h3>
-                    <p class="text-center mb-4">Use your phone to record your video message and upload here!</p>
-
+                    <p class="text-center">Use your phone to record your video message and upload here!</p>
+                    <p class="text-center mb-4" style="color:red; font-weight:700">Uploading files through Facebook Messenger browser may not work. Please open link in your default internet app.</p>
                     <div class="col-lg-6 mx-auto">
                         {% if event.status == "Open" %}
                         
@@ -52,6 +52,7 @@ input[type="file"] {
                                 <div class="col-md-9">
                                     <label class="col-form-label" for="id_video">Upload or Record Video</label>
                                     <input type="file" name="video" class="form-control-file" title="" required id="id_video" accept="video/*">
+                                    <label id="file-name" style="font-weight:900;"></label>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -140,7 +141,12 @@ input[type="file"] {
   $("form").uploadprogress({
     redirect_url: "{% url 'events:thank_you' %}"
   });
+$("#id_video").change(function(){
+  $("#file-name").text("File selected");
+});
 </script>
+
+
 {% comment %} <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
 <script>
 
