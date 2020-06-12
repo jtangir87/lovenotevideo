@@ -40,6 +40,12 @@
   background: #F15BB5;
 }
 
+.yellow-button {
+  border: none;
+  color: white;
+  background: #FEE440;
+}
+
 .image-head {
   max-width: 300px;
   max-height: 600px;

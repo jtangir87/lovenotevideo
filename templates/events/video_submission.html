@@ -4,6 +4,26 @@
 {% block og_tags %}
 	{% include 'base_og_tags.html' %}
 {% endblock og_tags %}
+
+{% block headscript %}
+<style>
+label[for="id_video"] {
+    background-color: #00f5d4;
+    border-radius: .3rem;
+    padding: .5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    text-align: center;
+    color: black;
+    cursor: pointer;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+input[type="file"] {
+    display:none;
+}
+</style>
+{% endblock headscript %}
+
 {% block content %}
 
             <div class="card">
@@ -15,11 +35,12 @@
                             <img class="card-img-top" src="{% static "dashboard/img/lnv-phone-logo.png" %}" alt="Image Not Found">
                         {% endif %}
                     </div>
-                    <h3 class="text-center mb-2">{{event.user.first_name}} has invited to you to share your love for {{event.name}}!</h3>
-                    <p class="text-center mb-4">Use your phone to record your video message and upload here!</p>
                     <div class="text-center mb-4">    
                         <button type="button" class="btn btn-lg pink-button" data-toggle="modal" data-target="#tipsModal"><span class="far fa-lightbulb"></span> &nbsp;Recording Tips</button>
                     </div>
+                    <h3 class="text-center mb-2">{{event.user.first_name}} has invited to you to share your love for {{event.name}}!</h3>
+                    <p class="text-center mb-4">Use your phone to record your video message and upload here!</p>
+
                     <div class="col-lg-6 mx-auto">
                         {% if event.status == "Open" %}
                         
@@ -27,8 +48,9 @@
                             {% csrf_token %}
                             {% bootstrap_form_errors form %}
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label" for="id_video">Video:</label>
+                                <label class="col-md-3 col-form-label" for="video"></label>
                                 <div class="col-md-9">
+                                    <label class="col-form-label" for="id_video">Upload or Record Video</label>
                                     <input type="file" name="video" class="form-control-file" title="" required id="id_video" accept="video/*">
                                 </div>
                             </div>
@@ -46,7 +68,7 @@
                             <p class="text-center">Sorry! This Love Note has already been published and is no longer accepting submissions!</p>
                         {% endif %}
                     </div>
-                <hr style="margin-top:75px;">
+                <hr style="margin-top:150px;">
                 <div class="text-center">
                     <p class="mb-2">Want to create your own Love Note Video?</p>
                     <a class="btn btn-lg teal-button" href="{% url 'accounts:login' %}">Get Started!</a>
