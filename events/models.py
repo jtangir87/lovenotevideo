@@ -19,7 +19,7 @@ EVENT_STATUS_CHOICES = [
 
 def user_event_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return "user_{0}/{1}".format(instance.user.id, filename.lower())
+    return "user_{0}/final_{1}".format(instance.user.id, instance.id)
 
 
 class Event(models.Model):
@@ -80,8 +80,8 @@ def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     file_name = filename.split(".")[-2]
     file_type = filename.split(".")[-1]
-    return "user_{0}/{1}_{2}.{3}".format(
-        instance.event.user.id, file_name.lower(), instance.id, file_type.lower()
+    return "user_{0}/video_sub_{1}.{2}".format(
+        instance.event.user.id, instance.id, file_type.lower()
     )
 
 
