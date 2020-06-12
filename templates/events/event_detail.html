@@ -103,6 +103,18 @@
                              {% endif %}
 
 
+                            <!--- CONTACT SUPPORT CARD -->
+                           
+                            <div class="card mt-2">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Need assistance?</h5>
+                                    <button type="button" class="btn pink-button js-contact-support" data-url="{% url 'events:contact_support' uuid=event.uuid submitted_from='Dashboard' %}">Contact Support</button>
+                                
+
+    
+                                </div>
+                            </div>
+
                         </div>
 
                         {% if event.final_video %}

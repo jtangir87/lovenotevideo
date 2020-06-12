@@ -65,6 +65,10 @@ input[type="file"] {
                                 <button class="btn btn-lg lilac-button" id="submit-button" type="submit">Submit</button>
                             </div>
                         </form>
+
+                    <div class="text-center mt-4">
+                        <h6 class="card-title">Need assistance?<button type="submit" style="margin-left:20px;" class="btn btn-sm pink-button js-contact-support" data-url="{% url 'events:contact_support' uuid=event.uuid submitted_from='Video Submission' %}">Contact Support</button></h6>
+                    </div>
                         {% else %}
                             <p class="text-center">Sorry! This Love Note has already been published and is no longer accepting submissions!</p>
                         {% endif %}

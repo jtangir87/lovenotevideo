@@ -43,3 +43,10 @@ class EventTitlesForm(forms.ModelForm):
     class Meta:
         model = EventTitles
         fields = ("start_title", "end_title")
+
+
+class ContactSupportForm(forms.Form):
+    name = forms.CharField(max_length=50)
+    email = forms.EmailField()
+    phone = forms.CharField(max_length=15)
+    message = forms.CharField(widget=forms.Textarea)

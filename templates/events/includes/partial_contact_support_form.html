@@ -1,0 +1,19 @@
+{% load bootstrap4 %}
+
+<form method="POST" action="{% url 'events:contact_support' uuid=event.uuid submitted_from='BLANK' %}" class="js-contact-support-form" autocomplete="off">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h4 class="modal-title">Contact Support</h4>
+  </div>
+  <div class="modal-body">
+    <p class="text-center">Please fill out this form and explain your issue. We will respond to you within 24 hours</p>
+    <hr>
+    {% bootstrap_form_errors form %}
+    {% bootstrap_form form %}
+    <input type="hidden" id="submitted_from" name="submitted_from" value="{{submitted_from}}">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    {% bootstrap_button "Submit" button_type="submit" button_class="teal-button"%}
+  </div>
+</form>

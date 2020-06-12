@@ -1,0 +1,12 @@
+NEW SUPPORT REQUEST
+
+Submitted From: {{submitted_from}}
+Love Note ID:  {{event.id}}
+Love Note Name: {{event.name}}
+Status: {{event.status}}
+
+
+From: {{name}}
+Email: {{email}}
+Phone: {{phone}}
+Message:  {{message}}

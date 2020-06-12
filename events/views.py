@@ -3,8 +3,8 @@ import json
 import datetime
 from django.utils.encoding import smart_str
 from django.contrib.auth import settings
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse, resolve
 from .models import Event, VideoSubmission, EventTitles
 from .forms import (
     EventCreateForm,
@@ -12,6 +12,7 @@ from .forms import (
     VideoProductionForm,
     EventImageForm,
     EventTitlesForm,
+    ContactSupportForm,
 )
 from lovenotevideo.mixins import UserOrStaffMixin
 from django.forms.models import modelformset_factory
@@ -272,3 +273,56 @@ def final_video_download(request, uuid):
     response["Content-Disposition"] = "attachment; filename=%s" % (file_name)
     response["X-Sendfile"] = event.final_video.path
     return response
+
+
+def contact_support(request, uuid, submitted_from):
+    event = get_object_or_404(Event, uuid=uuid)
+    submitted_from = submitted_from
+    data = dict()
+
+    if request.method == "POST":
+        form = ContactSupportForm(request.POST or None)
+        if form.is_valid():
+            email = request.POST.get("email", None)
+            name = request.POST.get("name", None)
+            phone = request.POST.get("phone", None)
+            message = request.POST.get("message", None)
+            submitted_from = request.POST.get("submitted_from", None)
+
+            txt_template = get_template("events/emails/contact_support.txt")
+            html_template = get_template("events/emails/contact_support.html")
+
+            context = {
+                "event": event,
+                "email": email,
+                "name": name,
+                "phone": phone,
+                "message": message,
+                "submitted_from": submitted_from,
+            }
+
+            text_content = txt_template.render(context)
+            html_content = html_template.render(context)
+            from_email = "LNV Support <noreply@lovenotevideo.com>"
+            subject, from_email = (
+                "NEW SUPPORT REQUEST",
+                from_email,
+            )
+            email = EmailMultiAlternatives(
+                subject, text_content, from_email, ["support@lovenotevideo.com"]
+            )
+            email.attach_alternative(html_content, "text/html")
+            email.send()
+
+            data["form_is_valid"] = True
+        else:
+            data["form_is_valid"] = False
+
+    else:
+        form = ContactSupportForm()
+        data["html_form"] = render_to_string(
+            "events/includes/partial_contact_support_form.html",
+            {"form": form, "event": event, "submitted_from": submitted_from},
+            request=request,
+        )
+    return JsonResponse(data)
