@@ -124,6 +124,14 @@ def publish_event(request, uuid):
             email.attach_alternative(html_content, "text/html")
             email.send()
 
+            admins = User.objects.filter(is_staff=True)
+            for admin in admins:
+                email = EmailMultiAlternatives(
+                    "PUBLISHED LOVE NOTE", text_content, from_email, [admin.email]
+                )
+                email.attach_alternative(html_content, "text/html")
+                email.send()
+
             return HttpResponseRedirect(
                 reverse("orders:publish_success", kwargs={"uuid": event.uuid})
             )
