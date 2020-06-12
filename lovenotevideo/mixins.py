@@ -9,3 +9,9 @@ class StaffRequiredMixin(UserPassesTestMixin):
 class EmployeeRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_staff or self.request.user.editor
+
+
+class UserOrStaffMixin(UserPassesTestMixin):
+    def test_func(self):
+        object = self.get_object()
+        return self.request.user == object.user or self.request.user.is_staff

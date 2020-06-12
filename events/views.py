@@ -13,10 +13,12 @@ from .forms import (
     EventImageForm,
     EventTitlesForm,
 )
+from lovenotevideo.mixins import UserOrStaffMixin
 from django.forms.models import modelformset_factory
 from django.views.generic import DetailView, CreateView, TemplateView, View
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
+from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
@@ -98,7 +100,7 @@ def event_image_upload(request, uuid):
         )
 
 
-class EventDetail(LoginRequiredMixin, DetailView):
+class EventDetail(LoginRequiredMixin, UserOrStaffMixin, DetailView):
     slug_url_kwarg = "uuid"
     slug_field = "uuid"
     model = Event
