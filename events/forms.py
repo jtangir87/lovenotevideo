@@ -7,7 +7,7 @@ class EventCreateForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = ("name", "due_date")
-        labels = {"name": "Occassion", "due_date": "Submission Deadline"}
+        labels = {"name": "Occasion", "due_date": "Submission Deadline"}
         help_texts = {
             "due_date": "Don't forget it takes up to 2 business days to produce your video once it's published!"
         }
