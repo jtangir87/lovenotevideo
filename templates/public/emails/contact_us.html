@@ -1,0 +1,17 @@
+{% extends 'email_base.html' %}
+{% block email_header %}
+    <h3>NEW CONTACT US</h3>
+{% endblock email_header %}
+
+{% block email_body %}
+    <p>
+    <strong>Name: </strong> {{name}}
+    <br>
+    <strong>Email: </strong> {{email}}
+    <br>
+    <strong>Subject: </strong> {{subject}}
+    <br>
+    <strong>Message: </strong> {{message}}
+    </p>
+
+{% endblock email_body %}
