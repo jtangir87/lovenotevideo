@@ -1,0 +1,24 @@
+{% extends 'staff/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block title %}
+Create New Package
+{% endblock title %}
+
+{% block content %}
+<!-- Content Row -->
+<div class="col-lg-6">
+    <div class="card mb-4">
+      <div class="card-body">
+        <form method="POST" enctype='multipart/form-data'>
+          {% csrf_token %}
+          {% bootstrap_form_errors form %}
+          {% bootstrap_form form %}
+          <button class="btn btn-primary" id="submit-button" type="submit">Create</button>
+        </form>
+      </div>
+    </div>
+</div>
+
+{% endblock content %}

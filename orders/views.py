@@ -3,15 +3,17 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
-from django.views.generic import View
+from django.views.generic import View, CreateView, ListView
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 
+from lovenotevideo.mixins import StaffRequiredMixin
 from .models import Package, Addon, Order, OrderAddon, Payment, EventCoupon
 from events.models import Event, VideoSubmission
 from accounts.models import Profile
@@ -210,3 +212,14 @@ def use_coupon(request):
 def publish_success(request, uuid):
     event = Event.objects.filter(uuid=uuid).first()
     return render(request, "orders/publish_successful.html", {"event": event})
+
+
+class PackageCreate(LoginRequiredMixin, StaffRequiredMixin, CreateView):
+    model = Package
+    template_name = "staff/package_create.html"
+
+
+class PackageList(LoginRequiredMixin, StaffRequiredMixin, ListView):
+    model = Package
+    context_object_name = "packages"
+    template_name = "staff/package_list.html"

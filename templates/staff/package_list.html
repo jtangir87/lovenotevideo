@@ -1,0 +1,72 @@
+{% extends 'staff/base.html' %}
+{% load static %}
+{% block headscript %}
+
+{% endblock headscript %}
+{% block title %}
+Packages
+{% endblock title %}
+
+{% block content %}
+
+          <div class="row">
+
+            <!-- Area Chart -->
+            <div class="col-xl-12 col-lg-7">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <!-- Card Body -->
+                <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered" id="orderTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th>Price</th>
+                      <th>Min Videos</th>
+                      <th>Max Videos</th>
+                      <th>Status</th>
+                      <th>Actions</th>   
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for p in packages %}
+                    <tr>
+                      <td>{{p.name}}</td>
+                      <td>{{p.description|truncatechars:50}}</td>
+                      <td>${{p.price}}</td>
+                      <td>{{p.min_videos}}</td>
+                      <td>{{p.max_videos}}</td>
+                      <td>{{p.get_status}}</td>
+                      <td>
+                        <a class="btn btn-sm pink-button" href="#" target="_blank">Button</a>
+
+                    </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+{% endblock content %}
+
+{% block footscript %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+	<script src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/datetime-moment.js"></script>
+
+  <script>
+  $(document).ready(function() {
+      $.fn.dataTable.moment( 'MMMM D, YYYY hh:mm a' );
+      $('#orderTable').DataTable({
+        select:'single',
+        "order": [[2, "asc"]]
+      })
+
+  })
+  </script>
+{% endblock footscript %}

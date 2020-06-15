@@ -15,7 +15,13 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import publish_event, publish_success, use_coupon
+from .views import (
+    publish_event,
+    publish_success,
+    use_coupon,
+    PackageList,
+    PackageCreate,
+)
 
 app_name = "orders"
 
@@ -24,4 +30,6 @@ urlpatterns = [
     path("<uuid:uuid>/publish/success", publish_success, name="publish_success"),
     path("<uuid:uuid>/publish/success", publish_success, name="publish_success"),
     path("orders/coupon", use_coupon, name="use_coupon"),
+    path("staff/packages", PackageList.as_view(), name="package_list"),
+    path("staff/packages/create", PackageCreate.as_view(), name="package_create"),
 ]

@@ -27,11 +27,13 @@ from .views import (
     OpenEventsList,
     PublishedEventsList,
     ExpiredEventsList,
+    OrderList,
 )
 
 app_name = "staff"
 
 urlpatterns = [
+    ## ADMIN URLS ##
     path("staff/dashboard", staff_dashboard, name="staff_dash"),
     path("staff/event/<int:pk>/assign-editor", assign_editor, name="assign_editor"),
     path("staff/user-list", UserList.as_view(), name="user_list"),
@@ -41,6 +43,8 @@ urlpatterns = [
         "staff/events/published", PublishedEventsList.as_view(), name="published_events"
     ),
     path("staff/events/expired", ExpiredEventsList.as_view(), name="expired_events"),
+    path("staff/orders", OrderList.as_view(), name="order_list"),
+    ## EDITOR URLS
     path("editor/dashboard", editor_dashboard, name="editor_dash"),
     path("editor/event/<int:pk>/details", event_detail, name="event_detail"),
     path(

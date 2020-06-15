@@ -28,6 +28,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 
 from events.models import Event, VideoSubmission
+from orders.models import Order
 from .forms import UploadFinalVideoForm, AssignEditorForm
 
 
@@ -283,3 +284,9 @@ class ExpiredEventsList(LoginRequiredMixin, StaffRequiredMixin, ListView):
             .exclude(due_date__gt=seven_days_ago)
             .order_by("due_date")
         )
+
+
+class OrderList(LoginRequiredMixin, StaffRequiredMixin, ListView):
+    model = Order
+    context_object_name = "orders"
+    template_name = "staff/order_list.html"
