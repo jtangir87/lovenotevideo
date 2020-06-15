@@ -9,6 +9,7 @@
             <button type="button"
             class="btn btn-sm lilac-button js-assign-editor" 
             data-url="{% url 'staff:assign_editor' project.id %}">Assign Editor</button>
+            <a class="btn btn-sm btn-primary" href="{% url 'staff:download_files' uuid=project.uuid %}">Download Files</a>
 
         </td>
     </tr>
