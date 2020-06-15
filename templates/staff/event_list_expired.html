@@ -59,7 +59,7 @@ Expired Love Notes
 
   <script>
   $(document).ready(function() {
-      $.fn.dataTable.moment( 'MMMM D, YYYY' );
+      $.fn.dataTable.moment( 'MMMM D, YYYY, h:mm a' );
       $('#expiredEvents').DataTable({
         select:'single',
         "order": [[3, "asc"]]
