@@ -2,3 +2,4 @@
 Yay! Your Love Note Video for {{event.name}} is ready!
 
 Click here to check out your video {{video_url}}
+It may be up to 30 minutes before your Love Note Video is viewable while the upload finishes processing.
