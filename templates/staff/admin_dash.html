@@ -16,8 +16,8 @@ Admin Dashboard
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">New Users</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{new_users.count}}</div>
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">New Users (Today)</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{today_users.count}}</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -35,8 +35,8 @@ Admin Dashboard
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                      <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">New Love Notes</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{new_events.count}}</div>
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">New Love Notes (Today)</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{today_events.count}}</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-heart fa-2x text-gray-300"></i>
@@ -52,8 +52,8 @@ Admin Dashboard
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">New Orders</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{new_orders.count}}</div>
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">New Orders (Today)</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{today_orders.count}}</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -68,8 +68,8 @@ Admin Dashboard
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Being Produced</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{in_production.count}}</div>
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Video Submissions (Today)</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{today_subs.count}}</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-photo-video fa-2x text-gray-300"></i>
@@ -112,6 +112,52 @@ Admin Dashboard
               </div>
             </div>
           {% endif %}
+
+            <!-- In Production Table -->
+            <div class="col-xl-12 col-lg-7">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold">In Production</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered" id="inProduction" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Love Note <small>(Click for Details)</small></th>
+                      <th>Published Date</th>
+                      <th>Approved Videos</th>
+                      <th>Package</th>
+                      <th>Editor</th>
+                      <th>Editing Due</th>
+                      <th>Actions</th>   
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for project in in_production  %}
+                      <tr>
+                          <td><a href="#" class="js-event-detail" data-toggle="modal" data-url="{% url 'staff:event_detail' pk=project.pk %}">{{project.name}}</a></td>
+                          <td>{{project.order.created_at}}</td>
+                          <td>{{project.approved_videos.count}}</td>
+                          <td>{{project.order.package.name}}</td>
+                          <td>{{project.editor.get_full_name}}</td>
+                          <td>{{project.editing_due}}</td>
+                          <td>
+                              <a class="btn btn-sm lilac-button" href="{% url 'events:event_detail' uuid=project.uuid %}" target="_blank">View Love Note</a>
+                              <a class="btn btn-sm btn-primary" href="{% url 'staff:download_files' uuid=project.uuid %}">Download Files</a>
+
+                          </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Area Chart -->
             <div class="col-xl-8 col-lg-7">
               <div class="card shadow mb-4">
@@ -304,13 +350,19 @@ Admin Dashboard
 {% block footscript %}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/datetime-moment.js"></script>
   <!-- Page level custom scripts -->
- {% comment %} <script src="{% static 'staff/js/demo/chart-area-demo.js' %}"></script>
-  <script src="{% static 'staff/js/demo/chart-pie-demo.js' %}"></script> {% endcomment %}
+<script src="{% static 'staff/js/demo/chart-area-demo.js' %}"></script>
+  <script src="{% static 'staff/js/demo/chart-pie-demo.js' %}"></script>
   
   <script>
   $(document).ready(function() {
+      $.fn.dataTable.moment( 'MMMM D, YYYY' );
       $('#needEditor').DataTable()
+      $('#inProduction').DataTable({
+        select:'single',
+        "order": [[5, "asc"]]
+      })
   })
   </script>
 {% endblock footscript %}

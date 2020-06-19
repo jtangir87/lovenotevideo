@@ -38,16 +38,18 @@ User = get_user_model()
 @login_required
 @permission_required("user.is_staff", raise_exception=True)
 def staff_dashboard(request):
-    seven_days_ago = datetime.today() - timedelta(days=6)
-    new_users = User.objects.filter(date_joined__gte=seven_days_ago)
-    new_events = Event.objects.filter(created_at__gte=seven_days_ago)
-    new_orders = Event.objects.filter(order__created_at__gte=seven_days_ago)
+    today = datetime.today()
+    today_users = User.objects.filter(date_joined=today)
+    today_events = Event.objects.filter(created_at=today)
+    today_orders = Event.objects.filter(order__created_at=today)
+    today_subs = VideoSubmission.objects.filter(timestamp=today)
     in_production = Event.objects.filter(status="Production")
     need_editor = Event.objects.filter(editor__isnull=True).exclude(status="Open")
     context = {
-        "new_users": new_users,
-        "new_events": new_events,
-        "new_orders": new_orders,
+        "today_users": today_users,
+        "today_events": today_events,
+        "today_orders": today_orders,
+        "today_subs": today_subs,
         "in_production": in_production,
         "need_editor": need_editor,
     }
