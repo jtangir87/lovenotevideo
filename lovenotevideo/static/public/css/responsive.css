@@ -176,7 +176,8 @@
 	/* End End Footer Area css
 	============================================================================================ */
 	.home_banner_area .banner_inner .home_left_img {
-		display: none;
+		padding-top: 0px;
+		padding-bottom: 0px;
 	}
 	.header_area .navbar .tickets_btn {
 		display: none;

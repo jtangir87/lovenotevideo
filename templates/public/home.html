@@ -21,7 +21,7 @@
 						</div>
 						<div class="col-lg-7">
 							<div class="home_left_img">
-								<video width="720" poster="{% static 'public/video/lnv_commercial_main_poster.png' %}" controls controlsList="nodownload">
+								<video width="720" style="max-width:100%" poster="{% static 'public/video/lnv_commercial_main_poster.png' %}" controls controlsList="nodownload" autoplay>
 									<source src="{% static 'public/video/lnv_commercial_main.mp4' %}" type="video/mp4">
 									Your browser does not support the video tag.
 								</video>
@@ -32,23 +32,6 @@
             </div>
         </section>
         <!--================End Home Banner Area =================-->
-         <!--================MOBILE ONLY =================-->
-        <section class="made_life_area p_120" id="mobile-only">
-        	<div class="container">
-        		<div class="work_inner row">
-        			<div class="col-lg-12">
-        				<div class="work_item">
-							<video width="300" preload="auto" poster="{% static 'public/video/lnv_commercial_main_poster.png' %}" controls controlsList="nodownload">
-								<source src="{% static 'public/video/lnv_commercial_main.mp4' %}" type="video/mp4">
-								Your browser does not support the video tag.
-							</video>
-        				</div>
-        			</div>
-        		</div>
-        	</div>
-        </section>
-        <!--================End MOBILE ONLY =================-->    
-
    
         <!--================Work Area =================-->
         <section class="work_area p_120">
@@ -90,32 +73,9 @@
         	</div>
         </section>
         <!--================End Work Area =================-->
-
-        <!--================Made Life Area =================-->
-        <section class="made_life_area p_120">
-        	<div class="container">
-        		<div class="made_life_inner">
-					<div class="row made_life_text">
-						<div class="col-lg-6">
-							<div class="left_side_text">
-								<h3>Our Mission</h3>
-								<h6>It's our mission to provide friends and families all over the world the opportunity to share and celebrate special occassions from a distance.</h6>
-								<a class="main_btn" href="{% url 'accounts:register' %}">Get Started Now</a>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="chart_img">
-								<img class="img-fluid" src="{% static 'dashboard/img/lnv-phone-logo.png' %}" alt="" style="max-height:500px;">
-							</div>
-						</div>
-					</div>
-        		</div>
-        	</div> 
-        </section> 
-        <!--================End Made Life Area =================-->
 		<a name="how-to-video"></a>
         <!--================Screen Area =================-->
-        <section class="screen_area text-center p_120">
+        <section class="made_life_area text-center p_120">
 		
         	<div class="container">
         		<div class="main_title">
@@ -129,8 +89,10 @@
         	</div>
         </section>
         <!--================End Screen Area =================-->
+
+
         <!--================Made Life Area =================-->
-        <section class="made_life_area p_120">
+        {% comment %} <section class="made_life_area p_120">
         	<div class="container">
         		<div class="made_life_inner">
 					<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -155,7 +117,7 @@
 										<h3>We’ve created a way<br />to make birthdays even more special</h3>
 										<h6>Celebrate your loved one from anywhere!</h6>
 										<p>Create a lifelong keepsake video for major birthdays. Surprise them with happy tears especially during times of social distancing</p>
-										<a class="main_btn" href="#">Get Started Now</a>
+										<a class="main_btn" href="{% url 'accounts:register' %}">Get Started Now</a>
 									</div>
 								</div>
 								<div class="col-lg-6">
@@ -172,7 +134,7 @@
 										<h3>Major accomplisments deserve <br />major acknowledgement</h3>
 										<h6>We are here to help you show someone how proud you are!</h6>
 										<p></p>
-										<a class="main_btn" href="#">Get Started Now</a>
+										<a class="main_btn" href="{% url 'accounts:register' %}">Get Started Now</a>
 									</div>
 								</div>
 								<div class="col-lg-6">
@@ -189,7 +151,7 @@
 										<h3>Weddings, Bar/Bat Mitzvahs and Retirement</h3>
 										<h6></h6>
 										<p>Can't celebrate these amazing milestones that way you originally intended? Show your support and love for the guest of honor with a heart warming Love Note Video</p>
-										<a class="main_btn" href="#">Get Started Now</a>
+										<a class="main_btn" href="{% url 'accounts:register' %}">Get Started Now</a>
 									</div>
 								</div>
 								<div class="col-lg-6">
@@ -206,7 +168,7 @@
 										<h3>Know someone who needs <br />a splash of happiness?</h3>
 										<h6>Create a reason to make your loved one smile!</h6>
 										<p></p>
-										<a class="main_btn" href="#">Get Started Now</a>
+										<a class="main_btn" href="{% url 'accounts:register' %}">Get Started Now</a>
 									</div>
 								</div>
 								<div class="col-lg-6">
@@ -219,10 +181,32 @@
 					</div>
         		</div>
         	</div>
-        </section>
+        </section> {% endcomment %}
         <!--================End Made Life Area =================-->
         
-        
+              <!--================Made Life Area =================-->
+        <section class="screen_area p_120">
+        	<div class="container">
+        		<div class="made_life_inner">
+					<div class="row made_life_text">
+						<div class="col-lg-6">
+							<div class="left_side_text text-center">
+							<h2>Love Notes Created</h2>
+							<h3><span class="counter">542</span></h3>
+							
+								
+							</div>
+						</div>
+						<div class="col-lg-6 text-center">
+							<h2> Videos Submitted </h2>
+							<h3><span class="counter">2157</span></h3>
+							
+						</div>
+					</div>
+        		</div>
+        	</div> 
+        </section> 
+        <!--================End Made Life Area =================-->  
         <!--================Made Life Area =================-->
         {% comment %} <section class="made_life_area p_120">
         	<div class="container">
@@ -246,40 +230,7 @@
         	</div> 
         </section> {% endcomment %}
         <!--================End Made Life Area =================-->
-        
-        <!--================Price Area =================-->
-        <section class="price_area p_120">
-        	<div class="container">
-        		<div class="main_title">
-        			<h2>Pricing</h2>
-        		</div>
-				
-        		<div class="price_inner row">
-				{% for package in packages %}
-        			<div class="col-lg-3">
-        				<div class="price_item">
-        					<div class="price_head">
-        						<h4>{{package.name}}</h4>
-        					</div>
-        					<div class="price_body">
-        						<ul class="list">
-									{{package.description|safe}}
-        						</ul>
-        					</div>
-        					<div class="price_footer">
-        						<h3><span class="dlr">$</span> {{package.price|stringformat:'d'}}</h3>
-								<h6>${{package.addtl_video_price}} per additional video </h6>
-        						<a class="main_btn" href="{% url 'accounts:register' %}">Get Started</a>
-        					</div>
-        				</div>
-        			</div>
-					{% endfor %}
-        		</div>
-        	</div>
-        </section>
-        <!--================End Price Area =================-->
-        
-        <!--================Testimonials Area =================-->
+ <!--================Testimonials Area =================-->
         <section class="testimonials_area p_120">
         	<div class="container">
         		<div class="main_title">
@@ -412,7 +363,61 @@
         		</div>
         	</div>
         </section> 
-        <!--================End Testimonials Area =================-->
+        <!--================End Testimonials Area =================-->       
+        <!--================Price Area =================-->
+        <section class="price_area p_120">
+        	<div class="container">
+        		<div class="main_title">
+        			<h2>Pricing</h2>
+        		</div>
+				
+        		<div class="price_inner row">
+				{% for package in packages %}
+        			<div class="col-lg-3">
+        				<div class="price_item">
+        					<div class="price_head">
+        						<h4>{{package.name}}</h4>
+        					</div>
+        					<div class="price_body">
+        						<ul class="list">
+									{{package.description|safe}}
+        						</ul>
+        					</div>
+        					<div class="price_footer">
+        						<h3><span class="dlr">$</span> {{package.price|stringformat:'d'}}</h3>
+								<h6>${{package.addtl_video_price}} per additional video </h6>
+        						<a class="main_btn" href="{% url 'accounts:register' %}">Get Started</a>
+        					</div>
+        				</div>
+        			</div>
+					{% endfor %}
+        		</div>
+        	</div>
+        </section>
+        <!--================End Price Area =================-->
+              <!--================Made Life Area =================-->
+        <section class="made_life_area p_120">
+        	<div class="container">
+        		<div class="made_life_inner">
+					<div class="row made_life_text">
+						<div class="col-lg-6">
+							<div class="left_side_text">
+								<h3>Our Mission</h3>
+								<h6>It's our mission to provide friends and families all over the world the opportunity to share and celebrate special occassions from a distance.</h6>
+								<a class="main_btn" href="{% url 'accounts:register' %}">Get Started Now</a>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="chart_img">
+								<img class="img-fluid" src="{% static 'dashboard/img/lnv-phone-logo.png' %}" alt="" style="max-height:500px;">
+							</div>
+						</div>
+					</div>
+        		</div>
+        	</div> 
+        </section> 
+        <!--================End Made Life Area =================-->  
+        
         
         <!--================Made Life Area =================-->
         {% comment %} <section class="made_life_area made_white p_120">
@@ -452,3 +457,15 @@
 
 
 {% endblock content %}
+
+{% block footscript %}
+<script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+<script src="{% static 'public/js/jquery.counterup.min.js' %}"></script>
+<script>
+$('.counter').counterUp({
+    delay: 3000,
+    time: 10000
+});
+</script>
+
+{% endblock footscript %}
