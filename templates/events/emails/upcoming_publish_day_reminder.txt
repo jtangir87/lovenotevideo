@@ -1,0 +1,6 @@
+
+It's almost the due date for {{event.name}}'s Love Note Video!
+If some of your friends and family haven't submitted their videos yet, now is the time to remind them! Once you have everyone's 
+videos, don't forget to click "Publish & Submit for Editing"
+
+{{event_url}}

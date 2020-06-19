@@ -8,6 +8,7 @@ media
 lovenotevideo/local_settings.py 
 videokit-temp/
 temp_zip_files/
+celerybeat.pid
 # Backup files # 
 *.bak 
 

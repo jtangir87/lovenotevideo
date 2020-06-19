@@ -1,0 +1,34 @@
+  <div class="modal-header">
+    <h4 class="modal-title">Select a Package</h4>
+  </div>
+  <div class="modal-body">
+  {% if event.approved_videos.count >= 1 %}
+   <section class="pricing py-5">
+  <div class="container">
+    <div class="row">
+      <!-- Free Tier -->
+      {% for package in packages %}
+      <div class="col-lg-3">
+        <div class="card mb-5 mb-lg-0">
+          <div class="card-body">
+            <h5 class="card-title text-muted text-uppercase text-center">{{package.name}}</h5>
+            <h6 class="card-price text-center">${{package.price}}</h6>
+            <hr>
+            <ul class="fa-ul">
+                {{package.description|safe}}
+            </ul>
+            <a href="{% url 'orders:publish_event' uuid=event.uuid package_id=package.id %}" class="btn btn-block lilac-button text-uppercase">Select</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% else %}
+<h5>Oops! You must have at least 1 approved video to publish.</h5>
+{% endif %}
+  </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+  </div>

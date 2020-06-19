@@ -16,6 +16,7 @@ Including another URLconf
 
 from django.urls import path
 from .views import (
+    package_select,
     publish_event,
     publish_success,
     use_coupon,
@@ -26,8 +27,8 @@ from .views import (
 app_name = "orders"
 
 urlpatterns = [
-    path("<uuid:uuid>/publish", publish_event, name="publish_event"),
-    path("<uuid:uuid>/publish/success", publish_success, name="publish_success"),
+    path("<int:pk>/package-select", package_select, name="package_select"),
+    path("<uuid:uuid>/publish/<int:package_id>", publish_event, name="publish_event"),
     path("<uuid:uuid>/publish/success", publish_success, name="publish_success"),
     path("orders/coupon", use_coupon, name="use_coupon"),
     path("staff/packages", PackageList.as_view(), name="package_list"),

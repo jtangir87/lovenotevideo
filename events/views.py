@@ -14,6 +14,7 @@ from .forms import (
     EventTitlesForm,
     ContactSupportForm,
 )
+from events.tasks import customer_sub_email
 from lovenotevideo.mixins import UserOrStaffMixin
 from django.forms.models import modelformset_factory
 from django.views.generic import DetailView, CreateView, TemplateView, View
@@ -152,15 +153,19 @@ def video_submission(request, uuid):
         if form.is_valid():
             video = request.FILES.get("video", None)
             uploaded_by = request.POST.get("uploaded_by", None)
-            sub = VideoSubmission(event=event, uploaded_by=uploaded_by)
+            cus_email = request.POST.get("email", None)
+            sub = VideoSubmission(event=event, uploaded_by=uploaded_by, email=cus_email)
             sub.save()
             sub.video = video
             sub.save()
 
-            ## EMAIL USER ##
-            txt_template = get_template("events/emails/video_submission.txt")
-            html_template = get_template("events/emails/video_submission.html")
+            sub.video_mp4.generate()
 
+            ## EMAIL CUSTOMER ##
+            if cus_email:
+                customer_sub_email.delay(event.id, cus_email)
+
+            ## EMAIL CONTEXT ##
             context = {
                 "event_url": request.build_absolute_uri(
                     reverse("events:event_detail", kwargs={"uuid": event.uuid})
@@ -168,6 +173,10 @@ def video_submission(request, uuid):
                 "event": event,
                 "sub": sub,
             }
+
+            ## EMAIL USER ##
+            txt_template = get_template("events/emails/video_submission.txt")
+            html_template = get_template("events/emails/video_submission.html")
 
             text_content = txt_template.render(context)
             html_content = html_template.render(context)
@@ -235,8 +244,8 @@ def production_order(request, uuid):
         if formset.is_valid():
             for form in formset:
                 form.save()
-        publish_url = reverse("orders:publish_event", kwargs={"uuid": event.uuid})
-        success_message = "Order and Approvals saved! <a class='btn btn-small lilac-button' style='margin-left:10px' href='{}'>Click Here to Publish!</a>".format(
+        publish_url = reverse("orders:package_select", kwargs={"pk": event.pk})
+        success_message = "Order and Approvals saved! <button type='button' class='btn btn-small lilac-button js-package-select' style='margin-left:10px' data-url='{}'>Click Here to Publish!</button>".format(
             publish_url
         )
         messages.add_message(
@@ -303,10 +312,9 @@ def contact_support(request, uuid, submitted_from):
 
             text_content = txt_template.render(context)
             html_content = html_template.render(context)
-            from_email = "LNV Support <noreply@lovenotevideo.com>"
             subject, from_email = (
                 "NEW SUPPORT REQUEST",
-                from_email,
+                email,
             )
             email = EmailMultiAlternatives(
                 subject, text_content, from_email, ["support@lovenotevideo.com"]

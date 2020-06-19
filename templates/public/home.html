@@ -251,45 +251,46 @@
         	<div class="container">
         		<div class="main_title">
         			<h2>Pricing</h2>
-        			<p>Your package will automatically be selected for you when you publish based on the amount of videos you approve.</p> 
+        			{% comment %} <p>Your package will automatically be selected for you when you publish based on the amount of videos you approve.</p>  {% endcomment %}
         		</div>
+				
         		<div class="price_inner row">
+				{% for package in packages %}
         			<div class="col-lg-3">
         				<div class="price_item">
         					<div class="price_head">
-        						<h4>Basic</h4>
+        						<h4>{{package.name}}</h4>
         					</div>
         					<div class="price_body">
         						<ul class="list">
-        							<li><a href="#">1 - 10 Video Clips</a></li>
-        							<li><a href="#">Start & End Titles</a></li>
-        							<li><a href="#">Compiled by Professional Editor</a></li>
-        							<li><a href="#">Digital Download</a></li>
-									<li><a href="#">Shareable Link Hosted for 30 Days</a></li>
+									{{package.description|safe}}
         						</ul>
         					</div>
         					<div class="price_footer">
-        						<h3><span class="dlr">$</span> 49</h3>
+        						<h3><span class="dlr">$</span> {{package.price|stringformat:'d'}}</h3>
+								<h6>${{package.addtl_video_price}} per additional video </h6>
         						<a class="main_btn" href="{% url 'accounts:register' %}">Get Started</a>
         					</div>
         				</div>
         			</div>
-        			<div class="col-lg-3">
+					{% endfor %}
+        			{% comment %} <div class="col-lg-3">
         				<div class="price_item">
         					<div class="price_head">
         						<h4>Deluxe</h4>
         					</div>
         					<div class="price_body">
         						<ul class="list">
-        							<li><a href="#">11 - 25 Video Clips</a></li>
+        							<li><a href="#">10 Videos Included</a></li>
 									<li><a href="#">All Basic Features</a></li>
         							<li><a href="#">Audio Leveling</a></li>
         							<li><a href="#">Video Color Correction & Cropping</a></li>
-									<li><a href="#">Shareable Link Hosted for 60 Days</a></li>
+									<li><a href="#">Shareable Link Hosted for 60 Days</a> <br>  &nbsp;</li>
         						</ul>
         					</div>
         					<div class="price_footer">
-        						<h3><span class="dlr">$</span> 99 </h3>
+        						<h3><span class="dlr">$</span> 39 </h3>
+								<h6>$4 per additional video </h6>
         						<a class="main_btn" href="{% url 'accounts:register' %}">Get Started</a>
         					</div>
         				</div>
@@ -301,15 +302,17 @@
         					</div>
         					<div class="price_body">
         						<ul class="list">
-        							<li><a href="#">26 - 50 Video Clips</a></li>
+        							<li><a href="#">25 Videos Included</a></li>
         							<li><a href="#">All Deluxe Features</a></li>
         							<li><a href="#">Animated Backgrounds</a></li>
         							<li><a href="#">Digital Download</a></li>
-									<li><a href="#">Shareable Link Hosted for 90 Days</a></li>
+									<li><a href="#">Shareable Link Hosted for 90 Days</a> <br>  &nbsp;</li>
+
         						</ul>
         					</div>
         					<div class="price_footer">
-        						<h3><span class="dlr">$</span> 149</h3>
+        						<h3><span class="dlr">$</span> 99</h3>
+								<h6>$5 per additional video </h6>
         						<a class="main_btn" href="{% url 'accounts:register' %}">Get Started</a>
         					</div>
         				</div>
@@ -317,23 +320,24 @@
         			<div class="col-lg-3">
         				<div class="price_item">
         					<div class="price_head">
-        						<h4>Premium Plus</h4>
+        						<h4>Cinematic</h4>
         					</div>
         					<div class="price_body">
         						<ul class="list">
-        							<li><a href="#">51 - 75 Video Clips</a></li>
-        							<li><a href="#">All Deluxe & Premium Features</a></li>
-        							<li><a href="#">Emotional Background Music</a></li>
+        							<li><a href="#">30 Videos Included</a></li>
+        							<li><a href="#">All Premium Features</a></li>
+        							<li><a href="#" style="margin-left:5px; margin-right:5px;">Artistically Edited Together to Create a Short Cinematic Film</a></li>
         							<li><a href="#">Digital Download</a></li>
 									<li><a href="#">Shareable Link Hosted for 90 Days</a></li>
         						</ul>
         					</div>
         					<div class="price_footer">
-        						<h3><span class="dlr">$</span> 199</h3>
+        						<h3><span class="dlr">$</span> 499</h3>
+								<h6>$8 per additional video </h6>
         						<a class="main_btn" href="{% url 'accounts:register' %}">Get Started</a>
         					</div>
         				</div>
-        			</div>
+        			</div> {% endcomment %}
         		</div>
         	</div>
         </section>
@@ -374,8 +378,8 @@
 									{% comment %} <img src="img/testimonials/testi-2.png" alt=""> {% endcomment %}
 								</div>
 								<div class="media-body">
-									<p>Having a baby during a pandemic and not seeing our family and friends may have been the hardest part, but when a family member sent us our Love Note Video it made us feel so connected!
-										Now we will have this video and memory to watch forever with our little one.. Thank you Love Note Video!!
+									<p>
+									My 40th birthday was just a few weeks after our sweet daughter arrived! We made no plans for a party, but my hubby made me this adorable #lovenotevideo to hear birthday messages from all my favorite people!!
 									</p>
 									<h4>Jamie</h4>
 									<div class="rating">

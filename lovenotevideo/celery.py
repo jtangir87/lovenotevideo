@@ -1,13 +1,14 @@
 from __future__ import absolute_import, unicode_literals
 import os
+from django.conf import settings
 from celery import Celery
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "lovenotevideo.settings")
 
 app = Celery("lovenotevideo")
 app.config_from_object("django.conf:settings", namespace="CELERY")
-app.autodiscover_tasks()
-app.conf.broker_url = "redis://localhost:6379"
+app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+# app.conf.broker_url = "redis://localhost:6379"
 
 
 @app.task(bind=True)

@@ -126,3 +126,23 @@ $(function () {
     $(".js-contact-support").click(loadForm);
     $("#modal-dashboard").on("submit", ".js-contact-support-form", saveForm);
 });
+
+
+/* Select Package Functions */
+$(function () {
+    var loadDetail = function () {
+        var btn = $(this);
+        $.ajax({
+            url: btn.attr("data-url"),
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                $('#publish-modal .modal-content').html(data.html_package_select);
+                $('#publish-modal').modal("show");
+            }
+        })
+    }
+
+    $(".js-package-select").on("click", loadDetail);
+
+})

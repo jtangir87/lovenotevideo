@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+from celery.schedules import crontab
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -140,8 +140,23 @@ STATIC_URL = "/static/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
-STRIPE_PUBLISHABLE_KEY = "pk_test_PJJHfAwUOglj5eVZoU1niYfB00qiCv5TCr"
-STRIPE_SECRET_KEY = "sk_test_SbjZwava798h4wk1zEKceowy00RQkC6nUX"
+### CELERY ###
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TASK_SERIALIZER = "json"
+CELERY_TIMEZONE = "America/New_York"
+CELERY_BEAT_SCHEDULE = {
+    "publish_day_reminder_email": {
+        "task": "events.tasks.publish_day_reminder_email",
+        "schedule": crontab(minute=0, hour=6),
+    },
+    "upcoming_publish_day_reminder_email": {
+        "task": "events.tasks.upcoming_publish_day_reminder_email",
+        "schedule": crontab(minute=50, hour=8),
+    },
+}
 
 
 try:

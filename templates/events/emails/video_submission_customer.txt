@@ -1,0 +1,6 @@
+Thank you for contributing to the Love Note Video for {{event.name}}!
+Your video has been successfully uploaded!</p>
+
+Want to create to a Love Note Video for someone special in your life?
+Use code CONTRIBUTOR15 for 15% off!
+Go to https://www.lovenotevideo.com to start your Love Note Video today!

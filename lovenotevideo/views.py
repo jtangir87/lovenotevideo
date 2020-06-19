@@ -1,6 +1,6 @@
 import datetime
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.mail import EmailMultiAlternatives
@@ -9,12 +9,18 @@ from django.contrib import messages
 
 from .forms import ContactUsForm
 from events.models import Event
+from orders.models import Package
 
 User = get_user_model()
 
 
 class HomeView(TemplateView):
     template_name = "public/home.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["packages"] = Package.objects.filter(active=True).order_by("price")
+        return context
 
 
 @login_required
@@ -56,15 +62,15 @@ def contact_us(request):
 
             text_content = txt_template.render(context)
             html_content = html_template.render(context)
-            from_email = "Love Note Video <support@lovenotevideo.com>"
-
-            admins = User.objects.filter(is_staff=True)
-            for admin in admins:
-                email = EmailMultiAlternatives(
-                    "LNV - CONTACT US", text_content, from_email, [admin.email]
-                )
-                email.attach_alternative(html_content, "text/html")
-                email.send()
+            from_email = email
+            email = EmailMultiAlternatives(
+                "LNV - CONTACT US",
+                text_content,
+                from_email,
+                ["support@lovenotevideo.com"],
+            )
+            email.attach_alternative(html_content, "text/html")
+            email.send()
 
             messages.add_message(
                 request, messages.SUCCESS, "Message sent successfully!",

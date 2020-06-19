@@ -1,4 +1,5 @@
 import uuid
+from django.urls import reverse
 from django.db import models
 from django.db.models import Sum
 from events.models import Event
@@ -12,8 +13,17 @@ class Package(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    min_videos = models.PositiveIntegerField()
-    max_videos = models.PositiveIntegerField()
+    included_videos = models.PositiveIntegerField(
+        default=10, verbose_name="Included Videos"
+    )
+    addtl_video_price = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        default=3,
+        verbose_name="Price per Additional Video",
+    )
+    min_videos = models.PositiveIntegerField(blank=True, null=True)
+    max_videos = models.PositiveIntegerField(blank=True, null=True)
     active = models.BooleanField(default=True)
 
     class Meta:
@@ -21,6 +31,15 @@ class Package(models.Model):
 
     def __str__(self):
         return self.name + " - " + str(self.price)
+
+    def get_status(self):
+        if self.active:
+            return "Active"
+        else:
+            return "Inactive"
+
+    def get_absolute_url(self):
+        return reverse("orders:package_list")
 
 
 class Addon(models.Model):
@@ -97,6 +116,9 @@ class Payment(models.Model):
 
 class EventCoupon(models.Model):
     event = models.OneToOneField(Event, related_name="coupon", on_delete=models.CASCADE)
+    package = models.ForeignKey(
+        Package, on_delete=models.CASCADE, blank=True, null=True
+    )
     coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, blank=True, null=True)
     discount_value = models.DecimalField(
         max_digits=6, decimal_places=2, blank=True, null=True

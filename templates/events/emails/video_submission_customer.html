@@ -1,0 +1,15 @@
+{% extends 'email_base.html' %}
+{% block email_header %}
+    <h3>Thank you for contributing to the Love Note Video for {{event.name}}!</h3>
+{% endblock email_header %}
+
+{% block email_body %}
+    <p>Your video has been successfully uploaded!</p>
+    <hr>
+    <div class="text-center">
+        <h4>Want to create to a Love Note Video for someone special in your life?
+        <br>
+        Use code LOVENOTE15 for 15% off!</h4>
+        <a class="btn btn-lg pink-button" href="https://www.lovenotevideo.com">Start a Love Note</a>
+    </div>
+{% endblock email_body %}

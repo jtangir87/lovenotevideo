@@ -10,7 +10,9 @@ Packages
 {% block content %}
 
           <div class="row">
-
+            <div class="col-xl-12 col-lg-7">
+                <a class="btn btn-lg teal-button mb-3" href="{% url 'orders:package_create' %}">Create Package</a>
+            </div>
             <!-- Area Chart -->
             <div class="col-xl-12 col-lg-7">
               <div class="card shadow mb-4">
@@ -18,14 +20,14 @@ Packages
                 <!-- Card Body -->
                 <div class="card-body">
                 <div class="table-responsive">
-                <table class="table table-bordered" id="orderTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="packageTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>Name</th>
                       <th>Description</th>
                       <th>Price</th>
-                      <th>Min Videos</th>
-                      <th>Max Videos</th>
+                      <th>Included Videos</th>
+                      <th>Price / Addt'l Video</th>
                       <th>Status</th>
                       <th>Actions</th>   
                     </tr>
@@ -34,10 +36,10 @@ Packages
                     {% for p in packages %}
                     <tr>
                       <td>{{p.name}}</td>
-                      <td>{{p.description|truncatechars:50}}</td>
+                      <td>{{p.description|safe}}</td>
                       <td>${{p.price}}</td>
-                      <td>{{p.min_videos}}</td>
-                      <td>{{p.max_videos}}</td>
+                      <td>{{p.included_videos}}</td>
+                      <td>${{p.addtl_video_price}}</td>
                       <td>{{p.get_status}}</td>
                       <td>
                         <a class="btn btn-sm pink-button" href="#" target="_blank">Button</a>
@@ -61,10 +63,9 @@ Packages
 
   <script>
   $(document).ready(function() {
-      $.fn.dataTable.moment( 'MMMM D, YYYY hh:mm a' );
-      $('#orderTable').DataTable({
+      $('#packageTable').DataTable({
         select:'single',
-        "order": [[2, "asc"]]
+        "order": [[5, "asc"], [2, "asc"]]
       })
 
   })

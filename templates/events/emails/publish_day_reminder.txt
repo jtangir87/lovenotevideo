@@ -1,0 +1,4 @@
+
+It's publish day for {{event.name}}!
+Don't forget to approve and order your videos and submit for editing so we can make sure your Love Note Video
+    is ready in time for your special occassion! {{event_url}}

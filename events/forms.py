@@ -26,10 +26,7 @@ class EventImageForm(forms.ModelForm):
 class VideoSubmissionForm(forms.ModelForm):
     class Meta:
         model = VideoSubmission
-        fields = (
-            "video",
-            "uploaded_by",
-        )
+        fields = ("video", "uploaded_by", "email")
         labels = {"video": "Video:"}
 
 
