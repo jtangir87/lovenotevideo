@@ -1,9 +1,12 @@
 {% extends 'email_base.html' %}
+{% load static %}
 {% block email_header %}
     <h3>Yay! Your Love Note for {{event.name}} is ready!</h3>
 {% endblock email_header %}
 
 {% block email_body %}
-    <p> You can invite friends and family to contribute, view, order and approve submissions all from your Love Note Dashboard. Go to your Love Note page to get started!</p>
-    <a class="btn btn-lg pink-button" href="{{event_url}}">Go To Love Note</a>
+    <h5>Click the video below for a quick tutorial to help you get started!</h5>
+    <a href="https://www.lovenotevideo.com/#how-to-video"><img src="https://lovenotevideo.nyc3.digitaloceanspaces.com/lovenotevideo-prod/static/public/video/lnv_how_to_create_thumb.png" width="400"></a>
+    <p> From your Love Note Dashboard you can invite friends and family to contribute, view, order and approve submissions, add titles and change the image your guests see on the submission page. Go to your Love Note Dashboard to get started!</p>
+    <a class="btn btn-lg pink-button" href="{{event_url}}">Go To Love Note Dashboard</a>
 {% endblock email_body %}
