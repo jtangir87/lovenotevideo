@@ -26,6 +26,7 @@ urlpatterns = [
     path("", include("events.urls")),
     path("", include("orders.urls")),
     path("", include("staff.urls")),
+    path("", include("django_simple_coupons.urls")),
     path("", include("django.contrib.auth.urls")),
     path("", HomeView.as_view(), name="home"),
     path("privacy-policy", PrivacyPolicy.as_view(), name="privacy_policy"),

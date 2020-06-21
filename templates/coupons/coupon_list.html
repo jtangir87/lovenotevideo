@@ -1,0 +1,75 @@
+{% extends 'staff/base.html' %}
+{% load static %}
+{% block headscript %}
+
+{% endblock headscript %}
+{% block title %}
+Coupons
+{% endblock title %}
+
+{% block content %}
+
+          <div class="row">
+            <div class="col-xl-12 col-lg-7">
+                <a class="btn btn-lg teal-button mb-3" href="#">Create Coupon Code</a>
+            </div>
+            <!-- Area Chart -->
+            <div class="col-xl-12 col-lg-7">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <!-- Card Body -->
+                <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered" id="couponTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Code</th>
+                      <th>Discount</th>
+                      <th>Times Used</th>
+                      <th>Created</th>
+                      <th>Ruleset</th>
+                      <th>Expires</th>
+                      <th>Status</th>
+                      <th>Actions</th>   
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for c in coupons %}
+                    <tr>
+                      <td>{{c.code}}</td>
+                      <td>{{c.discount}}</td>
+                      <td>{{c.times_used}}</td>
+                      <td>{{c.created}}</td>
+                      <td>{{c.ruleset}}</td>
+                      <td>{{c.ruleset.validity.expiration_date|date:"M d, Y"}}</td>
+                      <td>{{c.ruleset.validity.get_status}}</td>
+                      <td>
+                        <a class="btn btn-sm pink-button" href="#" target="_blank">Button</a>
+
+                    </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+{% endblock content %}
+
+{% block footscript %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+	<script src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/datetime-moment.js"></script>
+
+  <script>
+  $(document).ready(function() {
+      $('#couponTable').DataTable({
+        select:'single',
+        "order": [3, "dec"]
+      })
+
+  })
+  </script>
+{% endblock footscript %}

@@ -1,17 +1,25 @@
 from django.db import models
 from django.utils import timezone
 
-from django_simple_coupons.helpers import (get_random_code,
-                                           get_coupon_code_length,
-                                           get_user_model)
+from django_simple_coupons.helpers import (
+    get_random_code,
+    get_coupon_code_length,
+    get_user_model,
+)
 
 
 # Create your models here.
 # ========================
 class Ruleset(models.Model):
-    allowed_users = models.ForeignKey('AllowedUsersRule', on_delete=models.CASCADE, verbose_name="Allowed users rule")
-    max_uses = models.ForeignKey('MaxUsesRule', on_delete=models.CASCADE, verbose_name="Max uses rule")
-    validity = models.ForeignKey('ValidityRule', on_delete=models.CASCADE, verbose_name="Validity rule")
+    allowed_users = models.ForeignKey(
+        "AllowedUsersRule", on_delete=models.CASCADE, verbose_name="Allowed users rule"
+    )
+    max_uses = models.ForeignKey(
+        "MaxUsesRule", on_delete=models.CASCADE, verbose_name="Max uses rule"
+    )
+    validity = models.ForeignKey(
+        "ValidityRule", on_delete=models.CASCADE, verbose_name="Validity rule"
+    )
 
     def __str__(self):
         return "Ruleset Nº{0}".format(self.id)
@@ -41,7 +49,7 @@ class MaxUsesRule(models.Model):
     uses_per_user = models.IntegerField(default=1, verbose_name="Uses per user")
 
     def __str__(self):
-        return "MaxUsesRule Nº{0}".   format(self.id)
+        return "MaxUsesRule Nº{0}".format(self.id)
 
     class Meta:
         verbose_name = "Max Uses Rule"
@@ -53,19 +61,29 @@ class ValidityRule(models.Model):
     is_active = models.BooleanField(default=False, verbose_name="Is active?")
 
     def __str__(self):
-        return "ValidityRule Nº{0}".   format(self.id)
+        return "ValidityRule Nº{0}".format(self.id)
 
     class Meta:
         verbose_name = "Validity Rule"
         verbose_name_plural = "Validity Rules"
+
+    def get_status(self):
+        if self.is_active:
+            return "Active"
+        else:
+            return "Expired"
 
 
 class CouponUser(models.Model):
     user_model = get_user_model()
 
     user = models.ForeignKey(user_model, on_delete=models.CASCADE, verbose_name="User")
-    coupon = models.ForeignKey('Coupon', on_delete=models.CASCADE, verbose_name="Coupon")
-    times_used = models.IntegerField(default=0, editable=False, verbose_name="Times used")
+    coupon = models.ForeignKey(
+        "Coupon", on_delete=models.CASCADE, verbose_name="Coupon"
+    )
+    times_used = models.IntegerField(
+        default=0, editable=False, verbose_name="Times used"
+    )
 
     def __str__(self):
         return str(self.user)
@@ -93,12 +111,21 @@ class Discount(models.Model):
 class Coupon(models.Model):
     code_length = get_coupon_code_length()
 
-    code = models.CharField(max_length=code_length, default=get_random_code, verbose_name="Coupon Code", unique=True)
-    discount = models.ForeignKey('Discount', on_delete=models.CASCADE)
-    times_used = models.IntegerField(default=0, editable=False, verbose_name="Times used")
+    code = models.CharField(
+        max_length=code_length,
+        default=get_random_code,
+        verbose_name="Coupon Code",
+        unique=True,
+    )
+    discount = models.ForeignKey("Discount", on_delete=models.CASCADE)
+    times_used = models.IntegerField(
+        default=0, editable=False, verbose_name="Times used"
+    )
     created = models.DateTimeField(editable=False, verbose_name="Created")
 
-    ruleset = models.ForeignKey('Ruleset', on_delete=models.CASCADE, verbose_name="Ruleset")
+    ruleset = models.ForeignKey(
+        "Ruleset", on_delete=models.CASCADE, verbose_name="Ruleset"
+    )
 
     def __str__(self):
         return self.code
@@ -114,17 +141,17 @@ class Coupon(models.Model):
     def get_discount(self):
         return {
             "value": self.discount.value,
-            "is_percentage": self.discount.is_percentage
+            "is_percentage": self.discount.is_percentage,
         }
-    
+
     def get_discounted_value(self, initial_value):
         discount = self.get_discount()
 
-        if discount['is_percentage']:
-            new_price = initial_value - ((initial_value * discount['value']) / 100)
+        if discount["is_percentage"]:
+            new_price = initial_value - ((initial_value * discount["value"]) / 100)
             new_price = new_price if new_price >= 0.0 else 0.0
         else:
-            new_price = initial_value - discount['value']
+            new_price = initial_value - discount["value"]
             new_price = new_price if new_price >= 0.0 else 0.0
 
         return new_price

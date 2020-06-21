@@ -1,0 +1,66 @@
+{% extends 'staff/base.html' %}
+{% load static %}
+{% block headscript %}
+
+{% endblock headscript %}
+{% block title %}
+Coupons by User
+{% endblock title %}
+
+{% block content %}
+
+          <div class="row">
+            <!-- Area Chart -->
+            <div class="col-xl-12 col-lg-7">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <!-- Card Body -->
+                <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered" id="couponuserTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Code</th>
+                      <th>Discount</th>
+                      <th>Times Used</th>
+                      <th>Actions</th>   
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for c in coupons %}
+                    <tr>
+                      <td>{{c.user.username}}</td>
+                      <td>{{c.coupon.code}}</td>
+                      <td>{{c.coupon.discount}}</td>
+                      <td>{{c.times_used}}</td>
+                      <td>
+                        <a class="btn btn-sm pink-button" href="#" target="_blank">Button</a>
+
+                    </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+{% endblock content %}
+
+{% block footscript %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+	<script src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/datetime-moment.js"></script>
+
+  <script>
+  $(document).ready(function() {
+      $('#couponuserTable').DataTable({
+        select:'single',
+        "order": [3, "dec"]
+      })
+
+  })
+  </script>
+{% endblock footscript %}

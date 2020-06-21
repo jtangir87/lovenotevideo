@@ -134,17 +134,26 @@
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="#">
           <i class="fas fa-fw fa-cart-plus"></i>
           <span>Addons</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCoupon" aria-expanded="true" aria-controls="collapseCoupon">
           <i class="fas fa-fw fa-barcode"></i>
-          <span>Coupons</span></a>
+          <span>Coupons</span>
+        </a>
+        <div id="collapseCoupon" class="collapse" aria-labelledby="headingCoupon" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'coupons:coupon_list' %}">All Coupons</a>
+            <a class="collapse-item" href="{% url 'coupons:coupon_user_list' %}">Coupons by User</a>
+            <a class="collapse-item" href="#">Discounts</a>
+            <a class="collapse-item" href="#">Rulesets</a>
+          </div>
+        </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="#">
           <i class="fas fa-fw fa-funnel-dollar"></i>
           <span>Expenses</span></a>
       </li>
