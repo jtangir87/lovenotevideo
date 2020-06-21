@@ -17,6 +17,11 @@ EVENT_STATUS_CHOICES = [
 ]
 
 
+def user_event_image_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    return "user_{0}/image_{1}".format(instance.user.id, instance.id)
+
+
 def user_event_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     return "user_{0}/final_{1}".format(instance.user.id, instance.id)
@@ -28,7 +33,7 @@ class Event(models.Model):
     name = models.CharField(max_length=255, verbose_name="Event Name")
     due_date = models.DateField()
     image = models.ImageField(
-        upload_to=user_event_directory_path, blank=True, null=True
+        upload_to=user_event_image_directory_path, blank=True, null=True
     )
     status = models.CharField(max_length=255, choices=EVENT_STATUS_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
