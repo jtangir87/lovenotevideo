@@ -2,6 +2,8 @@ from django import forms
 from django.conf import settings
 from .models import Event, VideoSubmission, EventTitles
 
+from datetime import datetime
+
 
 class EventCreateForm(forms.ModelForm):
     class Meta:
@@ -15,6 +17,13 @@ class EventCreateForm(forms.ModelForm):
             "name": forms.TextInput(attrs={"placeholder": "Michael's 50th Birthday"}),
             "due_date": forms.DateInput(format="%m/%d/%Y"),
         }
+
+    def clean_due_date(self):
+        due_date = self.cleaned_data["due_date"]
+        today = datetime.today().date()
+        if due_date <= today:
+            raise forms.ValidationError("Submission Deadline must be in the future")
+        return due_date
 
 
 class EventImageForm(forms.ModelForm):

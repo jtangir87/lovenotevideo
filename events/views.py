@@ -46,14 +46,16 @@ def event_create(request):
             event.status = "Open"
             event.save()
 
+            event_url = request.build_absolute_uri(
+                reverse("events:event_detail", kwargs={"uuid": event.uuid})
+            )
+
             ## EMAIL USER ##
             txt_template = get_template("events/emails/new_event.txt")
             html_template = get_template("events/emails/new_event.html")
 
             context = {
-                "event_url": request.build_absolute_uri(
-                    reverse("events:event_detail", kwargs={"uuid": event.uuid})
-                ),
+                "event_url": event_url,
                 "event": event,
             }
 
@@ -68,11 +70,20 @@ def event_create(request):
             email = EmailMultiAlternatives(subject, text_content, from_email, [to])
             email.attach_alternative(html_content, "text/html")
             email.send()
-
-            return HttpResponseRedirect(
-                reverse("events:event_detail", kwargs={"uuid": event.uuid})
-            )
+            data["form_is_valid"] = True
+            data["redirect_url"] = event_url
+            # return HttpResponseRedirect(
+            #     reverse("events:event_detail", kwargs={"uuid": event.uuid})
+            # )
         else:
+            errors = form.errors
+            form = EventCreateForm(request.POST)
+            context = {"form": form, "errors": errors}
+            data["html_form"] = render_to_string(
+                "events/includes/partial_event_create_form.html",
+                context,
+                request=request,
+            )
             data["form_is_valid"] = False
 
     else:
@@ -94,10 +105,20 @@ def event_update(request, uuid):
         form = EventCreateForm(request.POST, instance=event)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(
+            event_url = request.build_absolute_uri(
                 reverse("events:event_detail", kwargs={"uuid": event.uuid})
             )
+            data["form_is_valid"] = True
+            data["redirect_url"] = event_url
         else:
+            errors = form.errors
+            form = EventCreateForm(request.POST)
+            context = {"form": form, "errors": errors}
+            data["html_form"] = render_to_string(
+                "events/includes/partial_event_create_form.html",
+                context,
+                request=request,
+            )
             data["form_is_valid"] = False
 
     else:

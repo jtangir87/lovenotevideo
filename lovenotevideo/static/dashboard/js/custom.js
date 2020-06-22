@@ -27,7 +27,9 @@ $(function () {
             success: function (data) {
                 if (data.form_is_valid) {
                     $("#modal-dashboard").modal("hide");
+                    window.location.replace(data.redirect_url)
                 } else {
+                    console.log("form not valid")
                     $("#modal-dashboard .modal-content").html(data.html_form);
                 }
             },
@@ -37,7 +39,7 @@ $(function () {
 
     // Contact Workers
     $(".js-create-event").click(loadForm);
-    $("#modal-dashboard").on("submit", ".js-create-event-form", saveForm);
+    $("#modal-dashboard").on("submit", ".js-event-create-form", saveForm);
 });
 
 /* SET TITLES */
