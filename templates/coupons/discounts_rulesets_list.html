@@ -1,0 +1,224 @@
+{% extends 'staff/base.html' %}
+{% load static %}
+{% block headscript %}
+
+{% endblock headscript %}
+{% block title %}
+Discounts & Rulesets
+{% endblock title %}
+
+{% block content %}
+
+          <div class="row">
+            <div class="col-xl-12 col-lg-7">
+                <a class="btn btn-lg teal-button mb-3" href="#">Create Ruleset</a>
+            </div>
+            <!-- Rulesets Table -->
+            <div class="col-xl-12 col-lg-7">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold">Rulesets</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered" id="rulesetsTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Allowed Users</th>
+                      <th>Max Uses</th>
+                      <th>Expiration</th>
+                      <th>Status</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for r in rulesets %}
+                    <tr>
+                      <td>{{r.id}}</td>
+                      <td>{{r.allowed_users.users_rule}}</td>
+                      <td>{{r.max_uses.uses_rule}}</td>
+                      <td>{{r.validity.expiration_date|date:"M d, Y"}}</td>
+                      <td>{{r.validity.get_status}}</td>
+                      <td>
+                        <a class="btn btn-sm pink-button" href="#" target="_blank">Button</a>
+
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+                </div>
+              </div>
+            </div>
+            <!-- Discounts Table -->
+            <div class="col-xl-3 col-lg-6">
+              <a class="btn teal-button mb-3" href="#">Create Discount</a>
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold">Discounts</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered" id="discountsTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Value</th>
+                      <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for d in discounts %}
+                    <tr>
+                      <td>{{d.id}}</td>
+                      <td>{{d}}</td>
+                      <td>
+                        <a class="btn btn-sm pink-button" href="#" target="_blank">Button</a>
+
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+                </div>
+              </div>
+            </div>
+            <!-- Allowed Users Table -->
+            <div class="col-xl-3 col-lg-6">
+            <a class="btn teal-button mb-3" href="#">Create Allowed Users Rule</a>
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold">Allowed Users Rule</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered" id="allowedUsersTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Allowed Users</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for d in allowed_users %}
+                    <tr>
+                      <td>{{d.id}}</td>
+                      <td>{{d.users_rule}}</td>
+                      <td>
+                        <a class="btn btn-sm pink-button" href="#" target="_blank">Button</a>
+
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Allowed Users Table -->
+            <div class="col-xl-3 col-lg-6">
+            <a class="btn teal-button mb-3" href="#">Create Max Uses Rule</a>
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold">Max Uses Rule</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered" id="maxUsesTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Max Uses</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for d in max_uses %}
+                    <tr>
+                      <td>{{d.id}}</td>
+                      <td>{{d.uses_rule}}</td>
+                      <td>
+                        <a class="btn btn-sm pink-button" href="#" target="_blank">Button</a>
+
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Allowed Users Table -->
+            <div class="col-xl-3 col-lg-6">
+              <a class="btn teal-button mb-3" href="#">Create Expiration Rule</a>
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold">Expiration Rule</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered" id="validityTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Expiration</th>
+                      <th>Status</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for d in validity_rules %}
+                    <tr>
+                      <td>{{d.id}}</td>
+                      <td>{{d.expiration_date|date:"m/d/y"}}</td>
+                      <td>{{d.get_status}}</td>
+                      <td>
+                        <a class="btn btn-sm pink-button" href="#" target="_blank">Button</a>
+
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+{% endblock content %}
+
+{% block footscript %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+	<script src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/datetime-moment.js"></script>
+
+  <script>
+  $(document).ready(function() {
+      $('#discountsTable').DataTable()
+      $('#allowedUsersTable').DataTable()
+      $('#rulesetsTable').DataTable()
+      $('#maxUsesTable').DataTable()
+      $('#validityTable').DataTable()
+
+  })
+  </script>
+{% endblock footscript %}

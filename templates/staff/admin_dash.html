@@ -84,7 +84,7 @@ Admin Dashboard
 
           <div class="row">
             {% if need_editor %}
-            <div class="col-xl-12 col-lg-7">
+            <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -114,7 +114,7 @@ Admin Dashboard
           {% endif %}
 
             <!-- In Production Table -->
-            <div class="col-xl-12 col-lg-7">
+            <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -132,7 +132,7 @@ Admin Dashboard
                       <th>Package</th>
                       <th>Editor</th>
                       <th>Editing Due</th>
-                      <th>Actions</th>   
+                      <th style="width:25%">Actions</th>   
                     </tr>
                   </thead>
                   <tbody>
@@ -147,6 +147,7 @@ Admin Dashboard
                           <td>
                               <a class="btn btn-sm lilac-button" href="{% url 'events:event_detail' uuid=project.uuid %}" target="_blank">View Love Note</a>
                               <a class="btn btn-sm btn-primary" href="{% url 'staff:download_files' uuid=project.uuid %}">Download Files</a>
+                              <a class="btn btn-sm pink-button" href="{% url 'staff:upload_final_video' uuid=project.uuid %}">Upload Final Video</a>
 
                           </td>
                       </tr>

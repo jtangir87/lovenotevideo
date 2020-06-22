@@ -15,11 +15,17 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import CouponList, CouponUserList
+from .views import CouponList, CouponUserList, discounts_rulesets_list, CouponCreateView
 
 app_name = "coupons"
 
 urlpatterns = [
-    path("list", CouponList.as_view(), name="coupon_list"),
-    path("list-by-user", CouponUserList.as_view(), name="coupon_user_list"),
+    path("coupons/list", CouponList.as_view(), name="coupon_list"),
+    path("coupons/list-by-user", CouponUserList.as_view(), name="coupon_user_list"),
+    path(
+        "coupons/discount-ruleset-list",
+        discounts_rulesets_list,
+        name="discounts_rulesets_list",
+    ),
+    path("coupons/create", CouponCreateView.as_view(), name="coupon_create"),
 ]

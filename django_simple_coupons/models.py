@@ -42,6 +42,12 @@ class AllowedUsersRule(models.Model):
         verbose_name = "Allowed User Rule"
         verbose_name_plural = "Allowed User Rules"
 
+    def users_rule(self):
+        if self.all_users:
+            return "All Users"
+        else:
+            return "Restricted Users"
+
 
 class MaxUsesRule(models.Model):
     max_uses = models.BigIntegerField(default=0, verbose_name="Maximum uses")
@@ -54,6 +60,12 @@ class MaxUsesRule(models.Model):
     class Meta:
         verbose_name = "Max Uses Rule"
         verbose_name_plural = "Max Uses Rules"
+
+    def uses_rule(self):
+        if self.is_infinite:
+            return "Unlimited / {} per user".format(self.uses_per_user)
+        else:
+            return "{} uses / {} per user".format(self.max_uses, self.uses_per_user)
 
 
 class ValidityRule(models.Model):

@@ -37,7 +37,7 @@
     <ul class="navbar-nav bg-gradient-custom sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'home' %}">
         <div class="sidebar-brand-text mx-3">Love Note Video</div>
       </a>
    
@@ -147,8 +147,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="{% url 'coupons:coupon_list' %}">All Coupons</a>
             <a class="collapse-item" href="{% url 'coupons:coupon_user_list' %}">Coupons by User</a>
-            <a class="collapse-item" href="#">Discounts</a>
-            <a class="collapse-item" href="#">Rulesets</a>
+            <a class="collapse-item" href="{% url 'coupons:discounts_rulesets_list' %}">Discounts & Rulesets</a>
           </div>
         </div>
       </li>
