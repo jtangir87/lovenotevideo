@@ -112,7 +112,7 @@ def event_update(request, uuid):
             data["redirect_url"] = event_url
         else:
             errors = form.errors
-            form = EventCreateForm(request.POST)
+            form = EventCreateForm(request.POST, instance=event)
             context = {"form": form, "errors": errors}
             data["html_form"] = render_to_string(
                 "events/includes/partial_event_create_form.html",
