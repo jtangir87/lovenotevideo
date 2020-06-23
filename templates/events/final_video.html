@@ -41,7 +41,7 @@ video {
                             <a class="btn btn-lg lilac-button" href="{{event.final_video.url}}" download><span class="fas fa-cloud-download-alt"></span> &nbsp;Download</a>
                         </div>
                         <div class="col-lg-6 mx-auto text-center mt-3 mb-2">
-                            <button class="btn btn-lg lilac-button" data-clipboard-text="https://www.lovenotevideo.com/{{event.uuid}}"><span class="far fa-copy"></span> &nbsp;Copy Shareable Link</button>
+                            <button class="btn btn-lg lilac-button" id="copyToClip" data-clipboard-text="https://www.lovenotevideo.com/{{event.uuid}}"><span class="far fa-copy"></span> &nbsp;Copy Shareable Link</button>
                         </div>
                     </div>
                 {% endif %}
@@ -56,3 +56,23 @@ video {
 
 
 {% endblock content %}
+{% block footscript %}
+
+<script src="{% static 'dashboard/dist/clipboard.min.js' %}"></script>
+<script>
+var clipboard = new ClipboardJS('#copyToClip');
+
+clipboard.on('success', function(e) {
+    console.info('Action:', e.action);
+    console.info('Text:', e.text);
+    console.info('Trigger:', e.trigger);
+
+    e.clearSelection();
+});
+
+clipboard.on('error', function(e) {
+    console.error('Action:', e.action);
+    console.error('Trigger:', e.trigger);
+});
+</script>
+{% endblock footscript %}
