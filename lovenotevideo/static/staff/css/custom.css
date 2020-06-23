@@ -21,3 +21,8 @@
   background-color: #9B5DE5;
   background-size: cover; 
 }
+
+#discountsTable_filter input { width: 100px!important  }
+#allowedUsersTable_filter input { width: 100px!important  }
+#maxUsesTable_filter input { width: 100px!important  }
+#validityTable_filter input { width: 100px!important  }

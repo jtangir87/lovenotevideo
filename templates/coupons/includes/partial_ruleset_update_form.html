@@ -1,0 +1,16 @@
+{% load bootstrap4 %}
+
+<form method="POST" action="{% url 'coupons:ruleset_update' pk=form.instance.pk %}" class="js-ruleset-update-form" autocomplete="off">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h4 class="modal-title">Update Ruleset</h4>
+  </div>
+  <div class="modal-body">
+    {% bootstrap_form_errors form %}
+    {% bootstrap_form form %}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    {% bootstrap_button "Update" button_type="submit" button_class="teal-button"%}
+  </div>
+</form>

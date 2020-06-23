@@ -24,6 +24,7 @@ class Package(models.Model):
     )
     min_videos = models.PositiveIntegerField(blank=True, null=True)
     max_videos = models.PositiveIntegerField(blank=True, null=True)
+    sample_video_url = models.URLField(max_length=255, blank=True, null=True)
     active = models.BooleanField(default=True)
 
     class Meta:

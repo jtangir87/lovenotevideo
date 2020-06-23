@@ -232,7 +232,14 @@ def publish_success(request, uuid):
 
 class PackageCreate(LoginRequiredMixin, StaffRequiredMixin, CreateView):
     model = Package
-    fields = ("name", "description", "price", "included_videos", "addtl_video_price")
+    fields = (
+        "name",
+        "description",
+        "price",
+        "included_videos",
+        "addtl_video_price",
+        "sample_video_url",
+    )
     template_name = "staff/package_create.html"
 
     def get_absolute_url(self):

@@ -11,7 +11,7 @@ Discounts & Rulesets
 
           <div class="row">
             <div class="col-xl-12 col-lg-7">
-                <a class="btn btn-lg teal-button mb-3" href="#">Create Ruleset</a>
+                <button type="button" class="btn btn-lg teal-button mb-3 js-create-ruleset" data-url="{% url 'coupons:ruleset_create' %}">Create Ruleset</button>
             </div>
             <!-- Rulesets Table -->
             <div class="col-xl-12 col-lg-7">
@@ -43,7 +43,7 @@ Discounts & Rulesets
                       <td>{{r.validity.expiration_date|date:"M d, Y"}}</td>
                       <td>{{r.validity.get_status}}</td>
                       <td>
-                        <a class="btn btn-sm pink-button" href="#" target="_blank">Button</a>
+                        <button type="button" class="btn btn-sm pink-button js-update-ruleset" data-url="{% url 'coupons:ruleset_update' pk=r.id%}">Update</button>
 
                       </td>
                     </tr>
@@ -56,7 +56,7 @@ Discounts & Rulesets
             </div>
             <!-- Discounts Table -->
             <div class="col-xl-3 col-lg-6">
-              <a class="btn teal-button mb-3" href="#">Create Discount</a>
+              
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -64,13 +64,14 @@ Discounts & Rulesets
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
+                <button type="button" class="btn btn-sm teal-button mb-2 js-create-discount" data-url="{% url 'coupons:discount_create' %}">Create Discount</button>
                 <div class="table-responsive">
                 <table class="table table-bordered" id="discountsTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>ID</th>
                       <th>Value</th>
-                      <th>Value</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -79,7 +80,7 @@ Discounts & Rulesets
                       <td>{{d.id}}</td>
                       <td>{{d}}</td>
                       <td>
-                        <a class="btn btn-sm pink-button" href="#" target="_blank">Button</a>
+                        <button type="button" class="btn btn-sm pink-button js-update-discount" data-url="{% url 'coupons:discount_update' pk=d.pk %}">Update</button>
 
                       </td>
                     </tr>
@@ -92,7 +93,7 @@ Discounts & Rulesets
             </div>
             <!-- Allowed Users Table -->
             <div class="col-xl-3 col-lg-6">
-            <a class="btn teal-button mb-3" href="#">Create Allowed Users Rule</a>
+            
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -100,7 +101,9 @@ Discounts & Rulesets
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
+                <a class="btn btn-sm teal-button mb-2" href="#">Create Allowed Users Rule</a>
                 <div class="table-responsive">
+                
                 <table class="table table-bordered" id="allowedUsersTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
@@ -129,7 +132,7 @@ Discounts & Rulesets
 
             <!-- Allowed Users Table -->
             <div class="col-xl-3 col-lg-6">
-            <a class="btn teal-button mb-3" href="#">Create Max Uses Rule</a>
+
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -137,6 +140,7 @@ Discounts & Rulesets
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
+                  <a class="btn btn-sm teal-button mb-2" href="#">Create Max Uses Rule</a>
                 <div class="table-responsive">
                 <table class="table table-bordered" id="maxUsesTable" width="100%" cellspacing="0">
                   <thead>
@@ -166,7 +170,7 @@ Discounts & Rulesets
 
             <!-- Allowed Users Table -->
             <div class="col-xl-3 col-lg-6">
-              <a class="btn teal-button mb-3" href="#">Create Expiration Rule</a>
+              
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -174,6 +178,7 @@ Discounts & Rulesets
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
+                  <a class="btn btn-sm teal-button mb-2" href="#">Create Expiration Rule</a>
                 <div class="table-responsive">
                 <table class="table table-bordered" id="validityTable" width="100%" cellspacing="0">
                   <thead>

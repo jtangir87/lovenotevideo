@@ -18,7 +18,14 @@ from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import HomeView, dashboard, PrivacyPolicy, TermsofUse, contact_us
+from .views import (
+    HomeView,
+    dashboard,
+    PrivacyPolicy,
+    TermsofUse,
+    contact_us,
+    package_sample,
+)
 
 urlpatterns = [
     path("dev/backend", admin.site.urls),
@@ -33,4 +40,5 @@ urlpatterns = [
     path("terms-of-use", TermsofUse.as_view(), name="terms_of_use"),
     path("dashboard", dashboard, name="dashboard"),
     path("contact", contact_us, name="contact_us"),
+    path("package/<int:pk>/sample", package_sample, name="package_sample"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

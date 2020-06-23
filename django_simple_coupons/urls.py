@@ -15,7 +15,16 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import CouponList, CouponUserList, discounts_rulesets_list, CouponCreateView
+from .views import (
+    CouponList,
+    CouponUserList,
+    discounts_rulesets_list,
+    CouponCreateView,
+    ruleset_create,
+    ruleset_update,
+    discount_create,
+    discount_update,
+)
 
 app_name = "coupons"
 
@@ -28,4 +37,9 @@ urlpatterns = [
         name="discounts_rulesets_list",
     ),
     path("coupons/create", CouponCreateView.as_view(), name="coupon_create"),
+    ## DISCOUNTS AND RULESETS AJAX PATHS ##
+    path("coupons/ruleset/create", ruleset_create, name="ruleset_create"),
+    path("coupons/ruleset/<int:pk>/update", ruleset_update, name="ruleset_update"),
+    path("coupons/discount/create", discount_create, name="discount_create"),
+    path("coupons/discount/<int:pk>/update", discount_update, name="discount_update"),
 ]

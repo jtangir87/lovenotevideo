@@ -6,8 +6,11 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.contrib import messages
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 from .forms import ContactUsForm
+from orders.models import Package
 from events.models import Event
 from orders.models import Package
 
@@ -79,3 +82,14 @@ def contact_us(request):
         form = ContactUsForm()
 
     return render(request, "public/contact_us.html", {"form": form})
+
+
+def package_sample(request, pk):
+    package = Package.objects.filter(id=pk).first()
+    data = dict()
+    data["html_package_sample"] = render_to_string(
+        "public/includes/partial_package_sample.html",
+        {"package": package},
+        request=request,
+    )
+    return JsonResponse(data)

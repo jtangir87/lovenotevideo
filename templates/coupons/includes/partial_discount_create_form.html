@@ -1,0 +1,16 @@
+{% load bootstrap4 %}
+
+<form method="POST" action="{% url 'coupons:discount_create' %}" class="js-discount-create-form" autocomplete="off">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h4 class="modal-title">Create Discount</h4>
+  </div>
+  <div class="modal-body">
+    {% bootstrap_form_errors form %}
+    {% bootstrap_form form %}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    {% bootstrap_button "Create" button_type="submit" button_class="teal-button"%}
+  </div>
+</form>

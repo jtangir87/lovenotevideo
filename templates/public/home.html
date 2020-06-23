@@ -5,6 +5,16 @@
 	{% include 'base_og_tags.html' %}
 {% endblock og_tags %}
 
+{% block headscript %}
+<style>
+.pink-button {
+  border: none;
+  color: white;
+  background: #F15BB5;
+}
+</style>
+{% endblock headscript %}
+
 {% block content %}
 
 <!--================Home Banner Area =================-->
@@ -382,6 +392,7 @@
         						<ul class="list">
 									{{package.description|safe}}
         						</ul>
+								<button type="button" class="btn pink-button js-package-sample" style="margin-top:20px;" data-url="{% url 'package_sample' pk=package.pk %}">View Sample</button>
         					</div>
         					<div class="price_footer">
         						<h3><span class="dlr">$</span> {{package.price|stringformat:'d'}}</h3>
@@ -455,17 +466,36 @@
         </section> {% endcomment %}
         <!--================End Impress Area =================-->
 
+<div class="modal fade" id="modal-home-page">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
 
 {% endblock content %}
 
 {% block footscript %}
-<script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
-<script src="{% static 'public/js/jquery.counterup.min.js' %}"></script>
+
 <script>
-$('.counter').counterUp({
-    delay: 3000,
-    time: 10000
+$(function () {
+    var loadDetail = function () {
+        var btn = $(this);
+        $.ajax({
+            url: btn.attr("data-url"),
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                $('#modal-home-page .modal-content').html(data.html_package_sample);
+                $('#modal-home-page').modal("show");
+            }
+        })
+    }
+
+    $(".js-package-sample").on("click", loadDetail);
+
 });
+
 </script>
 
 {% endblock footscript %}
