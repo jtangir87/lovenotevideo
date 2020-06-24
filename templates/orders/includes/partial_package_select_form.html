@@ -17,7 +17,7 @@
             <ul class="fa-ul">
                 {{package.description|safe}}
             </ul>
-        
+            <h6>${{package.addtl_video_price}} per additional video </h6>
             <a href="{% url 'orders:publish_event' uuid=event.uuid package_id=package.id %}" class="btn btn-block lilac-button text-uppercase">Select</a>
           </div>
         </div>
