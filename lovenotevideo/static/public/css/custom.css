@@ -1,0 +1,21 @@
+.p_60 {
+    padding-top: 60px;
+    padding-bottom: 60px; }
+
+.pink-button {
+    border: none;
+    color: white;
+    background: #F15BB5;
+    }
+
+.teal-button {
+    border: none;
+    color: white;
+    background: #00BBF9;
+}
+
+.faq-section .btn-link {
+    color: black!important ;
+    font-weight: 500;
+
+}

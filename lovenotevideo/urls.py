@@ -25,6 +25,7 @@ from .views import (
     TermsofUse,
     contact_us,
     package_sample,
+    FAQ,
 )
 
 urlpatterns = [
@@ -40,5 +41,6 @@ urlpatterns = [
     path("terms-of-use", TermsofUse.as_view(), name="terms_of_use"),
     path("dashboard", dashboard, name="dashboard"),
     path("contact", contact_us, name="contact_us"),
+    path("faq", FAQ.as_view(), name="faq"),
     path("package/<int:pk>/sample", package_sample, name="package_sample"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -31,6 +31,7 @@
         <link rel="stylesheet" href="{% static 'public/vendors/flaticon/flaticon.css' %}">
         <!-- main css -->
         <link rel="stylesheet" href="{% static 'public/css/style.css' %}">
+		<link rel="stylesheet" href="{% static 'public/css/custom.css' %}">
         <link rel="stylesheet" href="{% static 'public/css/responsive.css' %}">
 		{% block headscript %}
 		{% endblock headscript %}
@@ -53,6 +54,7 @@
 						<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 							<ul class="nav navbar-nav menu_nav justify-content-center">
 								<li class="nav-item active"><a class="nav-link" href="{% url 'home' %}"">Home</a></li> 
+								<li class="nav-item active"><a class="nav-link" href="{% url 'faq' %}"">FAQ</a></li> 
 								<li class="nav-item active"><a class="nav-link" href="{% url 'contact_us' %}"">Contact Us</a></li> 
 								{% comment %} <li class="nav-item"><a class="nav-link" href="about-us.html">About</a></li> 
 								<li class="nav-item"><a class="nav-link" href="services.html">Services</a>
@@ -120,24 +122,17 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
         				</aside>
         			</div>
-        			<div class="col-lg-5 col-sm-6">
-        				{% comment %} <aside class="f_widget news_widget">
+        			<div class="col-lg-4 col-sm-6">
+        				<aside class="f_widget news_widget text-center">
         					<div class="f_title">
-        						<h3>Newsletter</h3>
+        						<h3>Support</h3>
         					</div>
-        					<p>Stay updated with our latest features</p>
-        					<div id="mc_embed_signup">
-                                <form target="_blank" action="#" method="get" class="subscribe_form relative">
-                                	<div class="input-group d-flex flex-row">
-                                        <input name="EMAIL" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '" required="" type="email">
-                                        <button class="btn sub-btn"><span class="lnr lnr-arrow-right"></span></button>		
-                                    </div>				
-                                    <div class="mt-10 info"></div>
-                                </form>
-                            </div>
-        				</aside> {% endcomment %}
+								<a href="{% url 'contact_us' %}">Contact Us</a>
+								<br>
+								<a href="{% url 'faq' %}">FAQ</a>
+        				</aside> 
         			</div>
-        			<div class="col-lg-2">
+        			<div class="col-lg-3">
         				<aside class="f_widget social_widget">
         					<div class="f_title">
         						<h3>Follow Us</h3>

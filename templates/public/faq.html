@@ -1,0 +1,257 @@
+{% extends 'public/base.html' %}
+{% load static %}
+{% block content %}
+
+        <!--================Home Banner Area =================-->
+        <section class="banner_area">
+            <div class="banner_inner d-flex align-items-center">
+            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
+				<div class="container">
+					<div class="banner_content text-center">
+						<h2>Frequently Asked Questions</h2>
+					</div>
+				</div>
+            </div>
+        </section>
+        <!--================End Home Banner Area =================-->
+
+        
+        <!--================Screen Area =================-->
+        <section class="screen_area text-center p_60">
+        	<div class="container">
+        		<div class="main_title">
+                    <h2 class="mb-4">How can we help?</h2>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-12">
+                                <a class="btn btn-lg pink-button" style="margin:5px;" href="#generalFAQ">General Questions</a>
+                        </div>
+                        <div class="col-lg-4 col-md-12">
+                                <a class="btn btn-lg pink-button" style="margin:5px;" href="#createFAQ">I Am Creating a Love Note</a>
+                        </div>
+                        <div class="col-lg-4 col-md-12">
+                                <a class="btn btn-lg pink-button" style="margin:5px;" href="#submitFAQ">I Am Submitting a Video</a>
+                        </div>
+                        <div class="col-lg-12 col-md-12 mt-5">
+                            Have a different question? <a class="btn teal-button" style="margin:5px;" href="{% url 'contact_us' %}">Contact Us</a>
+                        </div>
+                    </div>
+        		</div>
+        		
+        	</div>
+        </section>
+        <!--================End Screen Area =================-->
+    
+
+        <!--================Screen Area =================-->
+        <a name="generalFAQ"></a>
+        <section class="screen_area p_60 faq-section">
+        	<div class="container">
+        		<div class="main_title">
+                    <h3>General Questions</h3>
+                </div>
+                        <div class="accordion" id="accordionExample">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseGeneralOne" aria-expanded="false" aria-controls="collapseGeneralOne">
+                                How does the process work?
+                                </button>
+                            </h2>
+                            </div>
+
+                            <div id="collapseGeneralOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                                Here is a quick video to show how simple we have made the process. 
+                                <video width="720" style="max-width:100%" poster="{% static 'public/video/lnv_how_to_create_thumb.png' %}" controls controlsList="nodownload">
+                                    <source src="{% static 'public/video/lnv_how_to_create.mp4' %}" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingTwo">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseGeneralTwo" aria-expanded="false" aria-controls="collapseGeneralTwo">
+                                Do you keep personal information like phone numbers that are texted the links?
+                                </button>
+                            </h2>
+                            </div>
+                            <div id="collapseGeneralTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                            <div class="card-body">
+                                No, since clicking the "Text" button opens a text message on your device we never even see the phone numbers you're texting.
+                            </div>
+                            </div>
+                        </div>
+        		</div>
+        		
+        	</div>
+        </section>
+        <!--================End Screen Area =================-->
+        <!--================Screen Area =================-->
+        <a name="createFAQ"></a>
+        <section class="screen_area p_60 faq-section">
+        	<div class="container">
+        		<div class="main_title">
+                    <h3>I Am Creating a Love Note</h3>
+                </div>
+                        <div class="accordion" id="accordionExample">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseCreateOne" aria-expanded="false" aria-controls="collapseCreateOne">
+                                How long before my special occassion should I start my Love Note?
+                                </button>
+                            </h2>
+                            </div>
+
+                            <div id="collapseCreateOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                                We recommend at least 4 days but you can start as early as you'd like! You may need to remind your friends and family and 2nd time before your submission deadline. Keep in mind, it can take up to 2 business days from the time you Publish and Submit to our editors to receive the final Love Note Video. 
+                            </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingTwo">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseCreateTwo" aria-expanded="false" aria-controls="collapseCreateTwo">
+                                If I publish will someone be able to still post a video late?
+                                </button>
+                            </h2>
+                            </div>
+                            <div id="collapseCreateTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                            <div class="card-body">
+                                Unfortunately, No. Once you publish and submit for editing the submissions page is closed. If someone visits the submission after you've already published they will see a message letting them know submissions are closed. 
+                            </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingThree">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseCreateThree" aria-expanded="false" aria-controls="collapseCreateThree">
+                                How will I know if someone submits a video?
+                                </button>
+                            </h2>
+                            </div>
+                            <div id="collapseCreateThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                            <div class="card-body">
+                                As the Love Note Host, you will receive an email notification everytime a submission is successfully uploaded. You can view, approve and order all submissions from your Love Note Dashboard
+                            </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingFour">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseCreateFour" aria-expanded="false" aria-controls="collapseCreateFour">
+                                How long does it take for my friends and family to submit videos?
+                                </button>
+                            </h2>
+                            </div>
+                            <div id="collapseCreateFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                            <div class="card-body">
+                                You know your friends and family better than us but from our experience it takes 4 - 5 days to collect all of your submissions. Most submissions are received in the last 2 days leading up to the submission deadline after you send out a reminder. Don't worry, we will send you an email reminder when it's time for you to remind you contributors. 
+                            </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingFive">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseCreateFive" aria-expanded="false" aria-controls="collapseCreateFive">
+                                Can I change the order of video submissions?
+                                </button>
+                            </h2>
+                            </div>
+                            <div id="collapseCreateFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+                            <div class="card-body">
+                                Of course! From your dashboard, you can order and approve all submissions.
+                            </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingSix">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseCreateSix" aria-expanded="false" aria-controls="collapseCreateSix">
+                                Can I delete a video submission?
+                                </button>
+                            </h2>
+                            </div>
+                            <div id="collapseCreateSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
+                            <div class="card-body">
+                                No, we do not allow deleting of a submission to protect you. Once you delete a file ... it is gone! So instead, you must approve the video submissions you want to include in your final Love Note Video. Instead of deleting, just keep the submission "unapproved".
+                            </div>
+                            </div>
+                        </div>
+        		</div>
+        	</div>
+        </section>
+        <!--================End Screen Area =================-->
+         <!--================Screen Area =================-->
+        <a name="submitFAQ"></a>
+        <section class="screen_area p_60 faq-section">
+        	<div class="container">
+        		<div class="main_title">
+                    <h3>I Am Submitting a Video</h3>
+                </div>
+                        <div class="accordion" id="accordionExample">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSubmitOne" aria-expanded="false" aria-controls="collapseSubmitOne">
+                                Why are you asking for my email?
+                                </button>
+                            </h2>
+                            </div>
+
+                            <div id="collapseSubmitOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                                Your email is requested so we can send you a confirmation that your video submission was successful and also if the Love Note Video creator chooses, they can share the final video with you.
+                            </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingTwo">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSubmitTwo" aria-expanded="false" aria-controls="collapseSubmitTwo">
+                                Do I need to create an account to submit a video?
+                                </button>
+                            </h2>
+                            </div>
+                            <div id="collapseSubmitTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                            <div class="card-body">
+                                No, you are welcome to submit your video without creating an account. You only need an account if you want to create your own Love Note Video for someone special in your life!
+                            </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingThree">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSubmitThree" aria-expanded="false" aria-controls="collapseSubmitThree">
+                                Is there a maximum time limit for my video submission?
+                                </button>
+                            </h2>
+                            </div>
+                            <div id="collapseSubmitThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                            <div class="card-body">
+                                No, we do not limit the length or file size of your video submission. The average length of a video submission is between 15 and 30 seconds. 
+                            </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingFour">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSubmitFour" aria-expanded="false" aria-controls="collapseSubmitFour">
+                                What should I say?
+                                </button>
+                            </h2>
+                            </div>
+                            <div id="collapseSubmitFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                            <div class="card-body">
+                                Don't overthink it! Just speak from the heart. Express how proud you are for their accomplishment, how much you love and/or miss them, talk about your wishes for them
+                            </div>
+                            </div>
+                        </div>
+        		</div>
+        	</div>
+        </section>
+        <!--================End Screen Area =================-->
+{% endblock content %}

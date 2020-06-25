@@ -36,6 +36,10 @@ def dashboard(request):
     return render(request, "events/dashboard.html", context)
 
 
+class FAQ(TemplateView):
+    template_name = "public/faq.html"
+
+
 class PrivacyPolicy(TemplateView):
     template_name = "public/privacy_policy.html"
 

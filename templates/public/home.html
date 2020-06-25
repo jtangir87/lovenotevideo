@@ -5,15 +5,7 @@
 	{% include 'base_og_tags.html' %}
 {% endblock og_tags %}
 
-{% block headscript %}
-<style>
-.pink-button {
-  border: none;
-  color: white;
-  background: #F15BB5;
-}
-</style>
-{% endblock headscript %}
+
 
 {% block content %}
 
@@ -26,7 +18,12 @@
 							<div class="banner_content">
 								<h2>Create memories <br />from anywhere</h2>
 								<p>Love Note Video turns individual well-wishes into one shareable, professionally edited video that is easy and convenient for everyone to use!</p>
-								<a class="banner_btn" href="{% url 'accounts:register' %}">Start a Love Note</a>
+								{% if request.user.is_authenticated %}
+									<a class="banner_btn" href="{% url 'dashboard' %}">Start a Love Note</a>
+								{% else %}
+									<a class="banner_btn" href="{% url 'accounts:register' %}">Start a Love Note</a>
+								{% endif %}
+								
 							</div>
 						</div>
 						<div class="col-lg-7">
@@ -202,14 +199,14 @@
 						<div class="col-lg-6">
 							<div class="left_side_text text-center">
 							<h2>Love Notes Created</h2>
-							<h3><span class="counter">542</span></h3>
+							<h3><span class="counter">544</span></h3>
 							
 								
 							</div>
 						</div>
 						<div class="col-lg-6 text-center">
 							<h2> Videos Submitted </h2>
-							<h3><span class="counter">2157</span></h3>
+							<h3><span class="counter">10,800</span></h3>
 							
 						</div>
 					</div>
@@ -256,7 +253,7 @@
 								</div>
 								<div class="media-body">
 									<p>We were in a bind trying to put Michael’s 50th birthday video together and Love Note Video stepped up and came to the rescue! In less then 48 hours Love Note Video put this together and helped make his quarantine birthday extra special! We love it and are so grateful to have you in our life. Xoxo</p>
-									<h4>Michelle</h4>
+									<h4>Marnie B.</h4>
 									<div class="rating">
 										<i class="fa fa-star"></i>
 										<i class="fa fa-star"></i>
@@ -278,7 +275,7 @@
 									<p>
 									My 40th birthday was just a few weeks after our sweet daughter arrived! We made no plans for a party, but my hubby made me this adorable #lovenotevideo to hear birthday messages from all my favorite people!!
 									</p>
-									<h4>Jamie</h4>
+									<h4>Jamie T.</h4>
 									<div class="rating">
 										<i class="fa fa-star"></i>
 										<i class="fa fa-star"></i>
@@ -298,7 +295,7 @@
 								</div>
 								<div class="media-body">
 									<p>Thank you so much for making my son's graduation special. He loved the spectacular video and I am glad he will have it as a keepsake. Thanks for helping us make beautiful memories, easily and quickly.</p>
-									<h4>Amy</h4>
+									<h4>Amy R.</h4>
 									<div class="rating">
 										<i class="fa fa-star"></i>
 										<i class="fa fa-star"></i>
@@ -310,26 +307,27 @@
 							</div>
         				</div>
         			</div>
-        			{% comment %} <div class="item">
+        			<div class="item">
         				<div class="testi_item">
 							<div class="media">
 								<div class="d-flex">
-									<img src="img/testimonials/testi-2.png" alt="">
+									
 								</div>
 								<div class="media-body">
-									<p>Accessories Here you can find the best computer accessory for your laptop, monitor, printer, scanner, speaker, projector, hardware.</p>
-									<h4>Mark Alviro Wiens</h4>
+									<p>I wanted to give a shout out to Love Note Video
+										for creating an awesome video for my son with photos and video messages from friends and family.  It was a last minute thing and he was very easy to work with and very accommodating.</p>
+									<h4>Tatiana B.</h4>
 									<div class="rating">
 										<i class="fa fa-star"></i>
 										<i class="fa fa-star"></i>
 										<i class="fa fa-star"></i>
 										<i class="fa fa-star"></i>
-										<i class="fa fa-star-half-o"></i>
+										<i class="fa fa-star"></i>
 									</div>
 								</div>
 							</div>
         				</div>
-        			</div> {% endcomment %}
+        			</div>
         			{% comment %} <div class="item">
         				<div class="testi_item">
 							<div class="media">
@@ -379,6 +377,7 @@
         	<div class="container">
         		<div class="main_title">
         			<h2>Pricing</h2>
+					<p>No pressure! You don't have to decide which package until you've reviewed all your video submissions and you're ready to publish!</p>
         		</div>
 				
         		<div class="price_inner row">
@@ -397,7 +396,11 @@
         					<div class="price_footer">
         						<h3><span class="dlr">$</span> {{package.price|stringformat:'d'}}</h3>
 								<h6>${{package.addtl_video_price}} per additional video </h6>
-        						<a class="main_btn" href="{% url 'accounts:register' %}">Get Started</a>
+        						{% if request.user.is_authenticated %}
+									<a class="main_btn" href="{% url 'dashboard' %}">Start a Love Note</a>
+								{% else %}
+									<a class="main_btn" href="{% url 'accounts:register' %}">Start a Love Note</a>
+								{% endif %}
         					</div>
         				</div>
         			</div>
@@ -415,7 +418,11 @@
 							<div class="left_side_text">
 								<h3>Our Mission</h3>
 								<h6>It's our mission to provide friends and families all over the world the opportunity to share and celebrate special occassions from a distance.</h6>
-								<a class="main_btn" href="{% url 'accounts:register' %}">Get Started Now</a>
+								{% if request.user.is_authenticated %}
+									<a class="main_btn" href="{% url 'dashboard' %}">Start a Love Note</a>
+								{% else %}
+									<a class="main_btn" href="{% url 'accounts:register' %}">Start a Love Note</a>
+								{% endif %}
 							</div>
 						</div>
 						<div class="col-lg-6">
