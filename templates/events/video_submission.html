@@ -3,6 +3,11 @@
 {% load bootstrap4 %}
 {% block og_tags %}
 	{% include 'base_og_tags.html' %}
+    {% if event.image %}
+    <meta property="og:image" content="{{event.image.url}}" />
+    {% else %}
+    <meta property="og:image" content="{% static 'dashboard/img/lnv-phone-logo.png' %}" />
+    {% endif %}
 {% endblock og_tags %}
 
 {% block headscript %}
@@ -32,7 +37,7 @@ input[type="file"] {
                         {% if event.image %}
                             <img class="card-img-top" src="{{event.image.url}}" alt="Image Not Found">
                         {% else %}
-                            <img class="card-img-top" src="{% static "dashboard/img/lnv-phone-logo.png" %}" alt="Image Not Found">
+                            <img class="card-img-top" src="{% static 'dashboard/img/lnv-phone-logo.png' %}" alt="Image Not Found">
                         {% endif %}
                     </div>
                     <div class="text-center mb-4">    
