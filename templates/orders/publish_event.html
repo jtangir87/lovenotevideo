@@ -78,9 +78,14 @@ input[type="text"]::placeholder {
                                                 {% endif %}
                                                 {% if event.coupon %}
                                                     <tr style="margin-top:25px;">
-                                                        <td class="text-center">Discount:</td>
+                                                        <td class="text-center">Promo Code:</td>
                                                         <td class="text-center">{{event.coupon.coupon.code}}</td>
-                                                        <td class="text-center">-${{coupon_value|floatformat:2}}</>
+                                                        {% if coupon_value > 0 %}
+                                                            <td class="text-center">-${{coupon_value|floatformat:2}}</td>
+                                                        {% else %}
+                                                            <td></td>
+                                                        {% endif %}
+                                                        
                                                     </tr>
                                                 {% endif %}
                                                 <tr>
@@ -98,7 +103,7 @@ input[type="text"]::placeholder {
                                                     <button style="float:right;" type="submit" class="btn btn-sm btn-warning">Apply</button>
                                                 {% endif %}
                                                 
-                                                <input style="float:right; border: 1px solid #DEDEDE;" type="text" name="coupon_code" placeholder="Discount Code">
+                                                <input style="float:right; border: 1px solid #DEDEDE;" type="text" name="coupon_code" placeholder="Promo Code">
                                                 <input type="hidden" name="package_id" value="{{package.id}}"> 
                                                 <input type="hidden" name="order_total" value="{{order_total}}">
                                                 <input type="hidden" name="event_id" value="{{event.id}}">
