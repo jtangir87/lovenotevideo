@@ -67,6 +67,7 @@ Editor Dashboard
                       <th>Published Date</th>
                       <th>Videos</th>
                       <th>Package</th>
+                      <th>Code</th>
                       <th>Actions</th>   
                     </tr>
                   </thead>
@@ -77,6 +78,7 @@ Editor Dashboard
                       <td>{{project.order.created_at}}</td>
                       <td>{{project.approved_videos.count}}</td>
                       <td>{{project.order.package.name}}</td>
+                      <td>{{project.coupon.coupon.code}}</td>
                       <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'staff:download_files' uuid=project.uuid %}">Download Files</a>
                         <a class="btn btn-sm pink-button" href="{% url 'staff:upload_final_video' uuid=project.uuid %}">Upload Final Video</a>
@@ -108,6 +110,7 @@ Editor Dashboard
                       <th>Delivered Date</th>
                       <th>Videos</th>
                       <th>Package</th>
+                      <th>Code</th>
                       <th>Compensation</th>   
                     </tr>
                   </thead>
@@ -118,6 +121,7 @@ Editor Dashboard
                       <td>{{project.order.created_at}}</td>
                       <td>{{project.approved_videos.count}}</td>
                       <td>{{project.order.package.name}}</td>
+                      <td>{{project.coupon.coupon.code}}</td>
                       <td></td>
                     </tr>
 
