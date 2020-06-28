@@ -6,7 +6,9 @@
         <div class="col-lg-12">
         <p><strong>Start Title: </strong> {{event.titles.start_title|default_if_none:""}}</p>
         <p><strong>End Title: </strong> {{event.titles.end_title|default_if_none:""}}</p>
-
+        <hr>
+        <p><strong>Package: </strong> {{event.order.package.name}}</p>
+        <p><strong>Approved Videos: </strong> {{event.approved_videos.count}}</p>
         </div>
 
   </section>

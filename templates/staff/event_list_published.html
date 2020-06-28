@@ -43,7 +43,7 @@ Published Love Notes
                       <td>${{event.order.order_total}}</td>
                       <td>
                         <a class="btn btn-sm pink-button" href="{% url 'events:event_detail' uuid=event.uuid %}" target="_blank">View Love Note</a>
-
+                        <button type="button" class="btn btn-sm lilac-button js-event-detail" data-url="{% url 'staff:event_detail' pk=event.pk %}">Details</button>
                     </td>
                     </tr>
                     {% endfor %}
