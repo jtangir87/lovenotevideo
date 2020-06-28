@@ -30,7 +30,7 @@ from django.template.loader import get_template
 from events.models import Event, VideoSubmission
 from orders.models import Order
 from .forms import UploadFinalVideoForm, AssignEditorForm
-
+from .tasks import delete_submissions
 
 User = get_user_model()
 
@@ -222,6 +222,8 @@ def upload_final_video(request, uuid):
                 messages.add_message(
                     request, messages.SUCCESS, "FINAL PRODUCT UPLOADED SUCCESSFULLY!"
                 )
+                delete_submissions.delay(event.id)
+
                 return HttpResponseRedirect(reverse("staff:editor_dash"))
             else:
                 errors = form.errors

@@ -14,7 +14,7 @@ from .forms import (
     EventTitlesForm,
     ContactSupportForm,
 )
-from events.tasks import customer_sub_email
+from .tasks import customer_sub_email, user_sub_email
 from lovenotevideo.mixins import UserOrStaffMixin
 from django.forms.models import modelformset_factory
 from django.views.generic import DetailView, CreateView, TemplateView, View
@@ -186,30 +186,12 @@ def video_submission(request, uuid):
             if cus_email:
                 customer_sub_email.delay(event.id, cus_email)
 
-            ## EMAIL CONTEXT ##
-            context = {
-                "event_url": request.build_absolute_uri(
-                    reverse("events:event_detail", kwargs={"uuid": event.uuid})
-                ),
-                "event": event,
-                "sub": sub,
-            }
-
             ## EMAIL USER ##
-            txt_template = get_template("events/emails/video_submission.txt")
-            html_template = get_template("events/emails/video_submission.html")
-
-            text_content = txt_template.render(context)
-            html_content = html_template.render(context)
-            from_email = "Love Note Video <support@lovenotevideo.com>"
-            subject, from_email, to = (
-                "New Love Note Submission",
-                from_email,
-                event.user.email,
+            event_url = request.build_absolute_uri(
+                reverse("events:event_detail", kwargs={"uuid": event.uuid})
             )
-            email = EmailMultiAlternatives(subject, text_content, from_email, [to])
-            email.attach_alternative(html_content, "text/html")
-            email.send()
+
+            user_sub_email.delay(event.id, sub.id, event_url)
 
             return HttpResponseRedirect("/thank-you")
         else:

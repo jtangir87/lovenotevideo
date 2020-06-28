@@ -1,5 +1,5 @@
 from lovenotevideo.celery import app
-from events.models import Event
+from events.models import Event, VideoSubmission
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.urls import reverse
@@ -8,7 +8,7 @@ from datetime import date, timedelta
 from celery import task
 
 
-@task(name="customer_sub_email")
+@app.task(name="customer_sub_email")
 def customer_sub_email(event_id, cus_email):
     event = Event.objects.filter(id=event_id).first()
 
@@ -22,6 +22,33 @@ def customer_sub_email(event_id, cus_email):
         "Your Love Note Video Submission has been received!",
         from_email,
         cus_email,
+    )
+    email = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    email.attach_alternative(html_content, "text/html")
+    email.send()
+
+
+@app.task(name="user_sub_email")
+def user_sub_email(event_id, sub_id, event_url):
+    event = Event.objects.filter(id=event_id).first()
+    sub = VideoSubmission.objects.filter(id=sub_id).first()
+
+    txt_template = get_template("events/emails/video_submission.txt")
+    html_template = get_template("events/emails/video_submission.html")
+
+    context = {
+        "event_url": event_url,
+        "event": event,
+        "sub": sub,
+    }
+
+    text_content = txt_template.render(context)
+    html_content = html_template.render(context)
+    from_email = "Love Note Video <support@lovenotevideo.com>"
+    subject, from_email, to = (
+        "New Love Note Submission",
+        from_email,
+        event.user.email,
     )
     email = EmailMultiAlternatives(subject, text_content, from_email, [to])
     email.attach_alternative(html_content, "text/html")
