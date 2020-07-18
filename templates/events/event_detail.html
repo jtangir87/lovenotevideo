@@ -176,7 +176,10 @@
 
                             <div class="card">                 
                                 <div class="card-body">
-                                    <h2 class="card-title text-center">Love Notes</h2>
+                                    <div class="text-center">
+                                        <h2 class="card-title">Love Notes</h2>
+                                        <a class="btn teal-button mb-3" href="{% url 'events:user_video_submission' uuid=event.uuid %}">Upload a Love Note</a>
+                                    </div>
                                     <div class="col-lg-12">
                                         <div class="row">
                                         {% for video in videos %}

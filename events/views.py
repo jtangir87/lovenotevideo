@@ -204,6 +204,36 @@ def video_submission(request, uuid):
     return render(request, "events/video_submission.html", context)
 
 
+def user_video_submission(request, uuid):
+    event = Event.objects.filter(uuid=uuid).first()
+
+    if request.method == "POST":
+        form = VideoSubmissionForm(request.POST or None, request.FILES or None)
+
+        if form.is_valid():
+            video = request.FILES.get("video", None)
+            uploaded_by = request.POST.get("uploaded_by", None)
+            cus_email = request.POST.get("email", None)
+            sub = VideoSubmission(event=event, uploaded_by=uploaded_by, email=cus_email)
+            sub.save()
+            sub.video = video
+            sub.save()
+
+            sub.video_mp4.generate()
+
+            return HttpResponseRedirect(
+                reverse("events:event_detail", kwargs={"uuid": event.uuid})
+            )
+        else:
+            errors = form.errors
+            form = VideoSubmissionForm(request.POST or None, request.FILES or None)
+            context = {"form": form, "errors": errors, "event": event}
+    else:
+        form = VideoSubmissionForm()
+        context = {"form": form, "event": event}
+    return render(request, "events/user_video_submission.html", context)
+
+
 class ThankYou(TemplateView):
     template_name = "events/thank_you.html"
 

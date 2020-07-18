@@ -61,6 +61,8 @@ MIDDLEWARE = [
     "lovenotevideo.middleware.TimezoneMiddleware",
 ]
 
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
+
 ROOT_URLCONF = "lovenotevideo.urls"
 
 TEMPLATES = [

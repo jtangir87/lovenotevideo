@@ -1,0 +1,192 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block og_tags %}
+	{% include 'base_og_tags.html' %}
+    {% if event.image %}
+    <meta property="og:image" content="{{event.image.url}}" />
+    {% else %}
+    <meta property="og:image" content="{% static 'dashboard/img/lnv-phone-logo.png' %}" />
+    {% endif %}
+{% endblock og_tags %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'events:event_detail' uuid=event.uuid %}">{{event.name}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Upload</li>
+{% endblock breadcrumb %}
+
+{% block headscript %}
+<style>
+label[for="id_video"] {
+    background-color: #00f5d4;
+    border-radius: .3rem;
+    padding: .5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    text-align: center;
+    color: black;
+    cursor: pointer;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+input[type="file"] {
+    display:none;
+}
+</style>
+{% endblock headscript %}
+
+{% block content %}
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="image-head text-center mb-2">
+                        {% if event.image %}
+                            <img class="card-img-top" src="{{event.image.url}}" alt="Image Not Found">
+                        {% else %}
+                            <img class="card-img-top" src="{% static 'dashboard/img/lnv-phone-logo.png' %}" alt="Image Not Found">
+                        {% endif %}
+                    </div>
+                    <div class="text-center mb-4">    
+                        <button type="button" class="btn btn-lg pink-button" data-toggle="modal" data-target="#tipsModal"><span class="far fa-lightbulb"></span> &nbsp;Recording Tips</button>
+                    </div>
+                    <p class="text-center mb-4" style="color:red; font-weight:700">Uploading files through Facebook Messenger browser may not work. Please open link in your default internet app.</p>
+                    <div class="col-lg-6 mx-auto">
+                        {% if event.status == "Open" %}
+                        
+                        <form method="POST" enctype='multipart/form-data'>
+                            {% csrf_token %}
+                            {% bootstrap_form_errors form %}
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="video"></label>
+                                <div class="col-md-9">
+                                    <label class="col-form-label" for="id_video">Upload or Record Video</label>
+                                    <input type="file" name="video" class="form-control-file" title="" required id="id_video" accept="video/*">
+                                    <label id="file-name" style="font-weight:900;"></label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="id_uploaded_by">From:</label>
+                                <div class="col-md-9">
+                                    <input type="text" name="uploaded_by" maxlength="255" class="form-control" placeholder="From" title="" required id="id_uploaded_by">
+                                </div>
+                            </div>
+                            <div class="form-group row" id="email-form-group">
+                                <label class="col-md-3 col-form-label" for="id_email">Email:</label>
+                                <div class="col-md-9">
+                                    <input type="text" name="email" maxlength="255" class="form-control" placeholder="Email" title="" id="id_email">
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-lg lilac-button" id="submit-button" type="submit">Submit</button>
+                            </div>
+                        </form>
+
+                    <div class="text-center mt-4">
+                        <h6 class="card-title">Need assistance?<button type="submit" style="margin-left:20px;" class="btn btn-sm pink-button js-contact-support" data-url="{% url 'events:contact_support' uuid=event.uuid submitted_from='Video Submission' %}">Contact Support</button></h6>
+                    </div>
+                        {% else %}
+                            <p class="text-center">Sorry! This Love Note has already been published and is no longer accepting submissions!</p>
+                        {% endif %}
+                    </div>
+            </div>
+<!-- Modal -->
+<div class="modal fade" id="tipsModal" tabindex="-1" role="dialog" aria-labelledby="tipsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tips for Best Video Quality</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ol>
+            <li>Position of Camera</li>
+                <ul>
+                    <li>Horizontal is important! Hold the camera so the video is wider. NOT Vertical Video! Even if this will be watched on a phone or tablet later, we edit horizontally not vertically.</li>
+                    <li>Lighting</li>
+                        <ul>
+                            <li>Film yourself in a location with consistent lighting across the subjects and background.</li>
+                            <li>Do not film in a location where you may need to squint or have so much lighting that you are hard to see.</li>
+                            <li>Having too much light behind you (a bright window) may cause the subject (you) to be dark.</li>
+                        </ul>
+                    <li>Angle</li>
+                        <ul>
+                            <li>Most people prefer a camera angle that is a little above the subjects head or straight on level. Not below the subject's eyes.</li>
+                        </ul>
+                    <li>Keep the camera steady, if using a phone lean it on something stable if needed.</li>
+                </ul>
+            <li>Location</li>
+                <ul>
+                    <li>Please look behind you before filming, make sure the background is what you wish to share with everyone.</li>
+                    <li>If creating a long video, please make sure there is no movement that may distract in the background.</li>
+                </ul>
+            
+            <li>Audio</li>
+                <ul>
+                    <li>Very important to find a quiet location.</li>
+                    <li>Please be careful not to film in a windy location that will make it difficult to hear.</li>
+                </ul>
+            <li>Filming</li>
+                <ul>
+                    <li>Please leave 2 seconds at the start and finish for editing purposes if needed.</li>
+                        <ul>
+                            <li>Hit record, pause two seconds then start.</li>
+                            <li>When finished, pause two seconds then hit stop.</li>
+                            <li>We will trim the edges of the film.</li>
+                        </ul> 
+                </ul>
+        </ol>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+{% block footscript %}
+<script type="text/javascript" src="{% static 'dashboard/js/bootstrap-uploadprogress.js' %}"></script>
+<script>
+  $("form").uploadprogress({
+    redirect_url: "{% url 'events:event_detail' uuid=event.uuid %}"
+  });
+$("#id_video").change(function(){
+  $("#file-name").text("File selected");
+});
+</script>
+
+
+{% comment %} <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+<script>
+
+$(document).ready(function () {
+    $('#submit-button').click(function(){
+        $('body').LoadingOverlay("show", {
+            image       : "fas fa-spinner fa-spin",
+            imageAnimation: "2000ms rotate_right",
+            imageAutoResize: true,
+            imageResizeFactor: 1,
+            imageColor: "#00bbf9"
+            progress    : true,
+            progressColor: "#00bbf9"
+        });
+        var count     = 0;
+        var interval  = setInterval(function(){
+            if (count >= 100) {
+                clearInterval(interval);
+                $('body').LoadingOverlay("text", "Processing Video ...");
+                return;
+            }
+            count += 10;
+            $('body').LoadingOverlay("progress", count);
+        }, 300);
+});
+});
+
+
+    
+</script> {% endcomment %}
+{% endblock footscript %}
