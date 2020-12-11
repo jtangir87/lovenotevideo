@@ -123,16 +123,27 @@
                                 <div class="card-body">
                                     <div class="text-center">
                                         <h2 class="card-title">Your Love Note is ready!</h2>
-                                        <video id="finalVideo" poster="{{event.final_video_thumbnail.url}}" controls controlsList="nodownload">
+                                        <video id="finalVideo" poster="{{event.final_video_thumbnail.url}}" controls>
                                             <source src="{{event.final_video_mp4.url}}" type="video/mp4">
                                             Your browser does not support the video tag.
                                         </video>
                                         <div class="row">
                                             <div class="col-lg-6 mx-auto text-center mb-2">
-                                                <a class="btn btn-lg lilac-button" href="{{event.final_video.url}}" download><span class="fas fa-cloud-download-alt"></span> &nbsp;Download</a>
+                                                <a class="btn btn-lg lilac-button" href="{{event.final_video.url}}" target="_blank"><span class="fas fa-cloud-download-alt"></span> &nbsp;Download</a>
                                             </div>
                                             <div class="col-lg-6 mx-auto text-center mb-2">
                                                 <button class="btn btn-lg lilac-button" id="copyToClip" data-clipboard-text="https://www.lovenotevideo.com/{{event.uuid}}"><span class="far fa-copy"></span> &nbsp;Copy Shareable Link</button>
+                                            </div>
+                                            <div class="col-12 mt-3 text-left">
+                                                <h4>Download Instructions</h4>
+                                                <ol>
+                                                    <li>Click the download button above.</li>
+                                                    <li>You video will open in a new tab, right click on the video and select either:</li>
+                                                    <ul>
+                                                        <li>Save Video As</li>
+                                                        <li>Download Video</li>
+                                                    </ul>
+                                                </ol>
                                             </div>
                                         </div>
                                     </div>
@@ -251,6 +262,9 @@ $(function() {
     $('.show-or-hide').hide();
 });
 $("#changeImage").click(function() {
+    $('.show-or-hide').toggle();
+});
+$("#downloadButton").click(function() {
     $('.show-or-hide').toggle();
 });
 
