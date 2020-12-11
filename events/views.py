@@ -4,7 +4,7 @@ import datetime
 from django.utils.encoding import smart_str
 from django.contrib.auth import settings
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse, resolve
+from django.urls import reverse, reverse_lazy
 from .models import Event, VideoSubmission, EventTitles
 from .forms import (
     EventCreateForm,
@@ -17,7 +17,7 @@ from .forms import (
 from .tasks import customer_sub_email, user_sub_email
 from lovenotevideo.mixins import UserOrStaffMixin
 from django.forms.models import modelformset_factory
-from django.views.generic import DetailView, CreateView, TemplateView, View
+from django.views.generic import DetailView, CreateView, TemplateView, View, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import PermissionDenied
@@ -31,8 +31,13 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.utils.safestring import mark_safe
 
+
+import boto3
+
 User = get_user_model()
 # Create your views here.
+
+
 @login_required
 def event_create(request):
     user = User.objects.filter(id=request.user.id).first()
@@ -67,7 +72,8 @@ def event_create(request):
                 from_email,
                 user.email,
             )
-            email = EmailMultiAlternatives(subject, text_content, from_email, [to])
+            email = EmailMultiAlternatives(
+                subject, text_content, from_email, [to])
             email.attach_alternative(html_content, "text/html")
             email.send()
             data["form_is_valid"] = True
@@ -147,6 +153,15 @@ def event_image_upload(request, uuid):
         )
 
 
+# class EventImageUpdate(LoginRequiredMixin, UserOrStaffMixin, UpdateView):
+#     slug_url_kwarg = "uuid"
+#     slug_field = "uuid"
+#     model = Event
+#     template_name = "events/event_detail.html"
+#     success_url = reverse_lazy(
+#         "events:event_detail", kwargs={"uuid": self.uuid})
+
+
 class EventDetail(LoginRequiredMixin, UserOrStaffMixin, DetailView):
     slug_url_kwarg = "uuid"
     slug_field = "uuid"
@@ -159,9 +174,11 @@ class EventDetail(LoginRequiredMixin, UserOrStaffMixin, DetailView):
         context["submission_url"] = reverse(
             "events:video_submission", kwargs={"uuid": self.object.uuid}
         )
-        context["videos"] = VideoSubmission.objects.filter(event=self.object.id)
+        context["videos"] = VideoSubmission.objects.filter(
+            event=self.object.id)
         context["image_form"] = EventImageForm()
-        context["titles"] = EventTitles.objects.filter(event=self.object.id).first()
+        context["titles"] = EventTitles.objects.filter(
+            event=self.object.id).first()
         return context
 
 
@@ -175,7 +192,8 @@ def video_submission(request, uuid):
             video = request.FILES.get("video", None)
             uploaded_by = request.POST.get("uploaded_by", None)
             cus_email = request.POST.get("email", None)
-            sub = VideoSubmission(event=event, uploaded_by=uploaded_by, email=cus_email)
+            sub = VideoSubmission(
+                event=event, uploaded_by=uploaded_by, email=cus_email)
             sub.save()
             sub.video = video
             sub.save()
@@ -196,7 +214,8 @@ def video_submission(request, uuid):
             return HttpResponseRedirect("/thank-you")
         else:
             errors = form.errors
-            form = VideoSubmissionForm(request.POST or None, request.FILES or None)
+            form = VideoSubmissionForm(
+                request.POST or None, request.FILES or None)
             context = {"form": form, "errors": errors, "event": event}
     else:
         form = VideoSubmissionForm()
@@ -214,7 +233,8 @@ def user_video_submission(request, uuid):
             video = request.FILES.get("video", None)
             uploaded_by = request.POST.get("uploaded_by", None)
             cus_email = request.POST.get("email", None)
-            sub = VideoSubmission(event=event, uploaded_by=uploaded_by, email=cus_email)
+            sub = VideoSubmission(
+                event=event, uploaded_by=uploaded_by, email=cus_email)
             sub.save()
             sub.video = video
             sub.save()
@@ -226,7 +246,8 @@ def user_video_submission(request, uuid):
             )
         else:
             errors = form.errors
-            form = VideoSubmissionForm(request.POST or None, request.FILES or None)
+            form = VideoSubmissionForm(
+                request.POST or None, request.FILES or None)
             context = {"form": form, "errors": errors, "event": event}
     else:
         form = VideoSubmissionForm()
@@ -302,18 +323,44 @@ def final_video(request, uuid):
     event = Event.objects.filter(uuid=uuid).first()
     video_url = request.build_absolute_uri(event.final_video.url)
     return render(
-        request, "events/final_video.html", {"event": event, "video_url": video_url}
+        request, "events/final_video.html", {
+            "event": event, "video_url": video_url}
     )
 
 
 @login_required
 def final_video_download(request, uuid):
     event = Event.objects.filter(uuid=uuid).first()
-    file_name = event.final_video.path.split(os.sep)[-1]
-    print(file_name)
+    file_name = event.name
+    path_to_file = event.final_video.url
+
+    session = boto3.session.Session()
+    client = session.client(
+        "s3",
+        region_name=settings.AWS_S3_REGION_NAME,
+        endpoint_url=settings.AWS_S3_ENDPOINT_URL,
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+    )
+    # client.download_file(
+    #     settings.AWS_STORAGE_BUCKET_NAME, aws_file_name, temp_source_file,
+    # )
+    response_headers = {
+        'response-content-type': 'application/force-download',
+        'response-content-disposition': 'attachment;filename="%s"' % file_name
+    }
+
+    url = client.generate_presigned_url(ClientMethod="get_object",
+                                        Params={
+                                            'Bucket': settings.AWS_STORAGE_BUCKET_NAME, 'Key': path_to_file},
+                                        ExpiresIn=600)
+    print(url)
+    # return HttpResponseRedirect(url)
+
     response = HttpResponse(content_type="application/force-download")
-    response["Content-Disposition"] = "attachment; filename=%s" % (file_name)
-    response["X-Sendfile"] = event.final_video.path
+    response["Content-Disposition"] = "attachment; filename=%s" % smart_str(
+        file_name)
+    response["X-Sendfile"] = url
     return response
 
 
@@ -350,7 +397,8 @@ def contact_support(request, uuid, submitted_from):
                 email,
             )
             email = EmailMultiAlternatives(
-                subject, text_content, from_email, ["support@lovenotevideo.com"]
+                subject, text_content, from_email, [
+                    "support@lovenotevideo.com"]
             )
             email.attach_alternative(html_content, "text/html")
             email.send()

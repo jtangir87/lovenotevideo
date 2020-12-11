@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
@@ -56,8 +57,10 @@ class Event(models.Model):
         source="final_video", format="mp4", blank=True, null=True
     )
     final_video_thumbnail = models.ImageField(null=True, blank=True)
-    delivery_date = models.DateTimeField(auto_now_add=False, blank=True, null=True)
-    completed_date = models.DateTimeField(auto_now_add=False, blank=True, null=True)
+    delivery_date = models.DateTimeField(
+        auto_now_add=False, blank=True, null=True)
+    completed_date = models.DateTimeField(
+        auto_now_add=False, blank=True, null=True)
 
     class Meta:
         ordering = ["due_date"]
@@ -79,6 +82,9 @@ class Event(models.Model):
         self.status = "Delivered"
         self.delivery_date = datetime.datetime.now()
         self.save()
+
+    def get_absolute_url(self):
+        return reverse("events:event_detail", kwargs={'uuid': self.uuid})
 
 
 def user_directory_path(instance, filename):
@@ -125,7 +131,8 @@ def video_delete(sender, instance, **kwargs):
 
 
 class EventTitles(models.Model):
-    event = models.OneToOneField(Event, on_delete=models.CASCADE, related_name="titles")
+    event = models.OneToOneField(
+        Event, on_delete=models.CASCADE, related_name="titles")
     start_title = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="Start Title"
     )
