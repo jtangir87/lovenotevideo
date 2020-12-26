@@ -77,7 +77,13 @@
                                 </div>
                             </div>
                             <div class="col-md-12 text-right">
-                                <button type="submit" value="submit" class="btn submit_btn">Send Message</button>
+                                <button 
+                                    value="submit" 
+                                    class="btn submit_btn g-recaptcha"
+                                    data-sitekey="6LdV6RUaAAAAAHHTZF8Y-1RW9ZQ6wQcULqUsOp1p" 
+                                    data-callback='onSubmit' 
+                                    data-action='submit' 
+                                    >Send Message</button>
                             </div>
                         </form>
                     </div>
@@ -86,3 +92,13 @@
         </section>
         <!--================Contact Area =================-->
 {% endblock content %}
+
+{% block footscript %}
+ <script src="https://www.google.com/recaptcha/api.js"></script>
+  <script>
+   function onSubmit(token) {
+     document.getElementById("contactForm").submit();
+   }
+ </script>
+{% endblock footscript %}
+
