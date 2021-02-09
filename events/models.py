@@ -1,3 +1,4 @@
+from django.conf import settings
 import uuid
 from django.db import models
 from django.urls import reverse
@@ -8,6 +9,8 @@ from videokit.models import VideoField, VideoSpecField
 import datetime
 
 User = get_user_model()
+
+
 # Create your models here.
 
 EVENT_STATUS_CHOICES = [
@@ -100,7 +103,7 @@ class VideoSubmission(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     video = VideoField(
-        upload_to=user_directory_path, thumbnail_field="video_thumbnail",
+        upload_to=user_directory_path, thumbnail_field="video_thumbnail", storage=settings.ORIGINAL_FILE_STORAGE
     )
     video_thumbnail = models.ImageField(null=True, blank=True)
 
