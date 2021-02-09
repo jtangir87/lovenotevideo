@@ -7,7 +7,7 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from videokit.models import VideoField, VideoSpecField
 import datetime
-
+from django.utils.crypto import get_random_string
 User = get_user_model()
 
 
@@ -23,7 +23,8 @@ EVENT_STATUS_CHOICES = [
 
 def user_event_image_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return "user_{0}/image_{1}".format(instance.user.id, instance.id)
+    code = get_random_string(5)
+    return "user_{0}/image_{1}".format(instance.user.id, code)
 
 
 def user_event_directory_path(instance, filename):
