@@ -111,7 +111,7 @@ def generate_video(file_name, source_file_name, options=[]):
     #     f.close()
 
     thumbnail_name = "%s%s" % (os.path.basename(
-        source_file_name.lower()), "_thumb.jpg")
+        source_file_name.lower()), ".thumb.jpg")
     temp_thumbnail_file = os.path.join(temp_file_dir, thumbnail_name)
 
     thumbnail_process = subprocess.Popen(
@@ -121,7 +121,7 @@ def generate_video(file_name, source_file_name, options=[]):
 
     thumbnail_process.wait()
 
-    processed_thumb_file = "%s%s" % (source_file_name.lower(), "_thumb.jpg")
+    processed_thumb_file = "%s%s" % (source_file_name.lower(), ".thumb.jpg")
     with File(open(temp_thumbnail_file, "rb")) as f:
         # f = File(open(temp_file, "rb"))
         default_storage.save(processed_thumb_file, f)

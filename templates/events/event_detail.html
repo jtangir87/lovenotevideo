@@ -129,7 +129,7 @@
                                         </video>
                                         <div class="row">
                                             <div class="col-lg-6 mx-auto text-center mb-2">
-                                                <a class="btn btn-lg lilac-button" href="{{event.final_video.url}}" target="_blank"><span class="fas fa-cloud-download-alt"></span> &nbsp;Download</a>
+                                                <a class="btn btn-lg lilac-button" href="{% url 'events:final_video_download' uuid=event.uuid %}"><span class="fas fa-cloud-download-alt"></span> &nbsp;Download</a>
                                             </div>
                                             <div class="col-lg-6 mx-auto text-center mb-2">
                                                 <button class="btn btn-lg lilac-button" id="copyToClip" data-clipboard-text="https://www.lovenotevideo.com/{{event.uuid}}"><span class="far fa-copy"></span> &nbsp;Copy Shareable Link</button>

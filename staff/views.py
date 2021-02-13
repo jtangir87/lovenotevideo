@@ -35,6 +35,8 @@ from .tasks import delete_submissions
 User = get_user_model()
 
 # Create your views here.
+
+
 @login_required
 @permission_required("user.is_staff", raise_exception=True)
 def staff_dashboard(request):
@@ -44,7 +46,8 @@ def staff_dashboard(request):
     today_orders = Event.objects.filter(order__created_at__date=today)
     today_subs = VideoSubmission.objects.filter(timestamp__date=today)
     in_production = Event.objects.filter(status="Production")
-    need_editor = Event.objects.filter(editor__isnull=True).exclude(status="Open")
+    need_editor = Event.objects.filter(
+        editor__isnull=True).exclude(status="Open")
     context = {
         "today_users": today_users,
         "today_events": today_events,
@@ -120,7 +123,8 @@ def assign_editor(request, pk):
                 from_email,
                 event.editor.email,
             )
-            email = EmailMultiAlternatives(subject, text_content, from_email, [to])
+            email = EmailMultiAlternatives(
+                subject, text_content, from_email, [to])
             email.attach_alternative(html_content, "text/html")
             email.send()
 
@@ -141,41 +145,46 @@ def download_files(request, uuid):
     event = Event.objects.filter(uuid=uuid).first()
     videos = VideoSubmission.objects.filter(event=event, approved=True)
 
-    session = boto3.session.Session()
-    client = session.client(
-        "s3",
-        region_name=settings.AWS_S3_REGION_NAME,
-        endpoint_url=settings.AWS_S3_ENDPOINT_URL,
-        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-    )
-    base = getattr(settings, "BASE_DIR", "")
-    temp_dir = os.path.join(base, "temp_zip_files")
+    # session = boto3.session.Session()
+    # client = session.client(
+    #     "s3",
+    #     region_name=settings.AWS_S3_REGION_NAME,
+    #     endpoint_url=settings.AWS_S3_ENDPOINT_URL,
+    #     aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+    #     aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+    # )
+    # base = getattr(settings, "BASE_DIR", "")
+    # temp_dir = os.path.join(base, "temp_zip_files")
 
-    if not os.path.exists(temp_dir):
-        try:
-            os.makedirs(temp_dir)
-        except OSError as e:
-            if e.errno != errno.EEXIST:
-                raise
+    # if not os.path.exists(temp_dir):
+    #     try:
+    #         os.makedirs(temp_dir)
+    #     except OSError as e:
+    #         if e.errno != errno.EEXIST:
+    #             raise
 
     response = HttpResponse(content_type="application/zip")
     zip_file = zipfile.ZipFile(response, "w")
     for video in videos:
-        name_only = video.video.name.split(os.sep)[-1]
-        temp_file_name = os.path.join(temp_dir, name_only)
-        aws_file_name = "{}/{}{}".format(
-            settings.AWS_LOCATION, settings.MEDIA_ROOT, video.video.name
-        )
-        client.download_file(
-            settings.AWS_STORAGE_BUCKET_NAME, aws_file_name, temp_file_name,
-        )
-
+        name_only = video.video.path.split(os.sep)[-1]
         production_order = str(video.production_order).zfill(3)
         ordered_name = "{}_{}".format(production_order, name_only)
-        zip_file.write(temp_file_name, ordered_name)
-        os.remove(temp_file_name)
-    response["Content-Disposition"] = "attachment; filename={}.zip".format(event.name)
+        zip_file.write(video.video.path, ordered_name)
+        # name_only = video.video.name.split(os.sep)[-1]
+        # temp_file_name = os.path.join(temp_dir, name_only)
+        # aws_file_name = "{}/{}{}".format(
+        #     settings.AWS_LOCATION, settings.MEDIA_ROOT, video.video.name
+        # )
+        # client.download_file(
+        #     settings.AWS_STORAGE_BUCKET_NAME, aws_file_name, temp_file_name,
+        # )
+
+        # production_order = str(video.production_order).zfill(3)
+        # ordered_name = "{}_{}".format(production_order, name_only)
+        # zip_file.write(temp_file_name, ordered_name)
+        # os.remove(temp_file_name)
+    response["Content-Disposition"] = "attachment; filename={}.zip".format(
+        event.name)
     zip_file.close()
     return response
 
@@ -185,7 +194,8 @@ def upload_final_video(request, uuid):
     if request.user.is_employee:
         event = Event.objects.filter(uuid=uuid).first()
         if request.method == "POST":
-            form = UploadFinalVideoForm(request.POST or None, request.FILES or None)
+            form = UploadFinalVideoForm(
+                request.POST or None, request.FILES or None)
             if form.is_valid():
                 event.final_video = request.FILES.get("final_video", None)
                 event.deliver_final()
@@ -199,7 +209,8 @@ def upload_final_video(request, uuid):
 
                 context = {
                     "video_url": request.build_absolute_uri(
-                        reverse("events:final_video", kwargs={"uuid": event.uuid})
+                        reverse("events:final_video",
+                                kwargs={"uuid": event.uuid})
                     ),
                     "poster_url": request.build_absolute_uri(
                         event.final_video_thumbnail.url
@@ -215,7 +226,8 @@ def upload_final_video(request, uuid):
                     from_email,
                     event.user.email,
                 )
-                email = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                email = EmailMultiAlternatives(
+                    subject, text_content, from_email, [to])
                 email.attach_alternative(html_content, "text/html")
                 email.send()
 
@@ -227,7 +239,8 @@ def upload_final_video(request, uuid):
                 return HttpResponseRedirect(reverse("staff:editor_dash"))
             else:
                 errors = form.errors
-                form = UploadFinalVideoForm(request.POST or None, request.FILES or None)
+                form = UploadFinalVideoForm(
+                    request.POST or None, request.FILES or None)
                 context = {"form": form, "event": event}
         else:
             form = UploadFinalVideoForm()

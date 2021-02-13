@@ -1,5 +1,6 @@
 from django.conf import settings
 import uuid
+import os
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth import get_user_model
@@ -29,7 +30,8 @@ def user_event_image_directory_path(instance, filename):
 
 def user_event_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return "user_{0}/final_{1}".format(instance.user.id, instance.id)
+    file_type = filename.split(".")[-1]
+    return "user_{0}/final_{1}.{2}".format(instance.user.id, instance.id, file_type.lower())
 
 
 class Event(models.Model):
@@ -56,6 +58,7 @@ class Event(models.Model):
         thumbnail_field="final_video_thumbnail",
         blank=True,
         null=True,
+        storage=settings.ORIGINAL_FILE_STORAGE,
     )
     final_video_mp4 = VideoSpecField(
         source="final_video", format="mp4", blank=True, null=True

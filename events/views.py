@@ -331,36 +331,28 @@ def final_video(request, uuid):
 @login_required
 def final_video_download(request, uuid):
     event = Event.objects.filter(uuid=uuid).first()
-    file_name = event.name
-    path_to_file = event.final_video.url
 
-    session = boto3.session.Session()
-    client = session.client(
-        "s3",
-        region_name=settings.AWS_S3_REGION_NAME,
-        endpoint_url=settings.AWS_S3_ENDPOINT_URL,
-        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-    )
-    # client.download_file(
+    path_to_file = event.final_video.path
+    file_type = path_to_file.split(".")[-1]
+    file_name = "Love Note Video - {0}.{1}".format(event.name, file_type)
+
+    # session = boto3.session.Session()
+    # client = session.client(
+    #     "s3",
+    #     region_name=settings.AWS_S3_REGION_NAME,
+    #     endpoint_url=settings.AWS_S3_ENDPOINT_URL,
+    #     aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+    #     aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+    # )
+    # # client.download_file(
     #     settings.AWS_STORAGE_BUCKET_NAME, aws_file_name, temp_source_file,
     # )
-    response_headers = {
-        'response-content-type': 'application/force-download',
-        'response-content-disposition': 'attachment;filename="%s"' % file_name
-    }
 
-    url = client.generate_presigned_url(ClientMethod="get_object",
-                                        Params={
-                                            'Bucket': settings.AWS_STORAGE_BUCKET_NAME, 'Key': path_to_file},
-                                        ExpiresIn=600)
-    print(url)
-    # return HttpResponseRedirect(url)
-
-    response = HttpResponse(content_type="application/force-download")
-    response["Content-Disposition"] = "attachment; filename=%s" % smart_str(
+    fl = open(path_to_file, 'rb')
+    response = HttpResponse(fl, content_type="application/force-download")
+    response["Content-Disposition"] = "attachment; filename={}".format(
         file_name)
-    response["X-Sendfile"] = url
+    response["X-Accel-Redirect"] = smart_str(path_to_file)
     return response
 
 

@@ -78,7 +78,8 @@ def publish_event(request, uuid, package_id):
                 customer = stripe.Customer.create(
                     email=request.user.email,
                     source=request.POST["stripeToken"],
-                    name=(request.user.first_name + " " + request.user.last_name),
+                    name=(request.user.first_name +
+                          " " + request.user.last_name),
                 )
                 profile.stripe_id = customer.id
                 profile.save()
@@ -95,6 +96,7 @@ def publish_event(request, uuid, package_id):
                     event=event,
                     customer=user,
                     package=package,
+                    approved_videos=int(videos.count()),
                     order_total=discounted_total,
                 )
                 Payment.objects.create(
@@ -114,6 +116,7 @@ def publish_event(request, uuid, package_id):
                 event=event,
                 customer=user,
                 package=package,
+                approved_videos=int(videos.count()),
                 order_total=discounted_total,
             )
             event.publish()

@@ -9,6 +9,8 @@ from django_simple_coupons.models import Coupon
 User = get_user_model()
 
 # Create your models here.
+
+
 class Package(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -25,6 +27,10 @@ class Package(models.Model):
     min_videos = models.PositiveIntegerField(blank=True, null=True)
     max_videos = models.PositiveIntegerField(blank=True, null=True)
     sample_video_url = models.URLField(max_length=255, blank=True, null=True)
+    editor_min_pay = models.DecimalField(
+        max_digits=5, decimal_places=2, default=0)
+    editor_per_video_pay = models.DecimalField(
+        max_digits=4, decimal_places=2, default=0)
     active = models.BooleanField(default=True)
 
     class Meta:
@@ -61,8 +67,10 @@ class Order(models.Model):
     customer = models.ForeignKey(
         User, related_name="published_orders", on_delete=models.CASCADE
     )
-    event = models.OneToOneField(Event, on_delete=models.CASCADE)
+    event = models.OneToOneField(
+        Event, on_delete=models.CASCADE, related_name="order")
     package = models.ForeignKey(Package, on_delete=models.CASCADE)
+    approved_videos = models.PositiveIntegerField(blank=True, null=True)
     order_total = models.DecimalField(max_digits=6, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -82,12 +90,30 @@ class Order(models.Model):
         return Payment.objects.filter(order=self.id)
 
     def payments_sum(self):
-        total_payments = Payment.objects.filter(order=self.id).aggregate(Sum("amount"))
+        total_payments = Payment.objects.filter(
+            order=self.id).aggregate(Sum("amount"))
         return total_payments["amount__sum"]
+
+    def get_editor_pay(self):
+        editor_pay_min = self.package.editor_min_pay
+        if self.package.editor_per_video_pay:
+            editor_pay = self.approved_videos * self.package.editor_per_video_pay
+        else:
+            editor_pay = 0
+
+        if editor_pay > editor_pay_min:
+            return editor_pay
+        else:
+            return editor_pay_min
+
+    def calculate_profit(self):
+        profit = self.order_total - self.get_editor_pay()
+        return profit
 
 
 class OrderAddon(models.Model):
-    order = models.ForeignKey(Order, related_name="add_ons", on_delete=models.CASCADE)
+    order = models.ForeignKey(
+        Order, related_name="add_ons", on_delete=models.CASCADE)
     addon = models.ForeignKey(Addon, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     total_price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -101,7 +127,8 @@ class OrderAddon(models.Model):
 
 
 class Payment(models.Model):
-    order = models.ForeignKey(Order, related_name="payments", on_delete=models.CASCADE)
+    order = models.ForeignKey(
+        Order, related_name="payments", on_delete=models.CASCADE)
     stripe_payment_id = models.CharField(max_length=100)
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     event = models.ForeignKey(
@@ -116,11 +143,13 @@ class Payment(models.Model):
 
 
 class EventCoupon(models.Model):
-    event = models.OneToOneField(Event, related_name="coupon", on_delete=models.CASCADE)
+    event = models.OneToOneField(
+        Event, related_name="coupon", on_delete=models.CASCADE)
     package = models.ForeignKey(
         Package, on_delete=models.CASCADE, blank=True, null=True
     )
-    coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, blank=True, null=True)
+    coupon = models.ForeignKey(
+        Coupon, on_delete=models.CASCADE, blank=True, null=True)
     discount_value = models.DecimalField(
         max_digits=6, decimal_places=2, blank=True, null=True
     )
