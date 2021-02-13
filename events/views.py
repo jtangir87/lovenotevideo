@@ -361,7 +361,7 @@ def final_video_download(request, uuid):
     response['Content-Length'] = os.path.getsize(path_to_file)
     response["Content-Disposition"] = "attachment; filename={}".format(
         file_name)
-    response["X-Accel-Redirect"] = smart_str(path_to_file)
+    # response["X-Accel-Redirect"] = smart_str(path_to_file)
     return response
 
 
