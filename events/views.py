@@ -31,6 +31,9 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.utils.safestring import mark_safe
 
+from django.http import StreamingHttpResponse
+from wsgiref.util import FileWrapper
+import mimetypes
 
 import boto3
 
@@ -348,8 +351,14 @@ def final_video_download(request, uuid):
     #     settings.AWS_STORAGE_BUCKET_NAME, aws_file_name, temp_source_file,
     # )
 
-    fl = open(path_to_file, 'rb')
-    response = HttpResponse(fl, content_type="application/force-download")
+    chunk_size = 8192
+
+    response = StreamingHttpResponse(FileWrapper(
+        open(path_to_file, 'rb'), chunk_size), content_type=mimetypes.guess_type(path_to_file)[0])
+
+    # fl = open(path_to_file, 'rb')
+    # response = HttpResponse(fl, content_type="application/force-download")
+    response['Content-Length'] = os.path.getsize(path_to_file)
     response["Content-Disposition"] = "attachment; filename={}".format(
         file_name)
     response["X-Accel-Redirect"] = smart_str(path_to_file)
