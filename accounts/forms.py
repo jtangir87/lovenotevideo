@@ -4,6 +4,15 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+REFERRAL_SOURCE = [
+    ("", "----"),
+    ("Friend", "Friend"),
+    ("Google", "Google"),
+    ("Facebook_Group", "Facebook Group"),
+    ("Social_Media_Ad", "Social Media Ad"),
+    ("Other", "Other"),
+]
+
 
 class RegisterForm(UserCreationForm):
     first_name = forms.CharField(max_length=30)
@@ -11,6 +20,8 @@ class RegisterForm(UserCreationForm):
     email = forms.EmailField(
         max_length=254, help_text="Required. Input a valid email address."
     )
+    referral = forms.ChoiceField(
+        choices=REFERRAL_SOURCE, required=False, label="How Did You Hear About Us?")
 
     class Meta:
         model = User
@@ -22,6 +33,7 @@ class RegisterForm(UserCreationForm):
             "timezone",
             "password1",
             "password2",
+            "referral",
         )
 
 

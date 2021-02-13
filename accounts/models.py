@@ -12,6 +12,7 @@ class CustomUser(AbstractUser):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     editor = models.BooleanField(default=False)
     timezone = TimeZoneField(default="US/Eastern")
+    referral = models.CharField(max_length=100, blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse("dashboard")
