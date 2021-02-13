@@ -132,6 +132,7 @@ Admin Dashboard
                       <th>Approved Videos</th>
                       <th>Package</th>
                       <th>Editor</th>
+                      <th>Editor Pay</th>
                       <th>Editing Due</th>
                       <th style="width:25%">Actions</th>   
                     </tr>
@@ -144,6 +145,7 @@ Admin Dashboard
                           <td>{{project.approved_videos.count}}</td>
                           <td>{{project.order.package.name}}</td>
                           <td>{{project.editor.get_full_name}}</td>
+                          <td>${{project.order.get_editor_pay}}</td>
                           <td>{{project.editing_due}}</td>
                           <td>
                               <a class="btn btn-sm lilac-button" href="{% url 'events:event_detail' uuid=project.uuid %}" target="_blank">View Love Note</a>

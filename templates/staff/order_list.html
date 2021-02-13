@@ -26,8 +26,11 @@ Orders
                       <th>Order Date</th>
                       <th>Package</th>
                       <th>Coupon</th>
-                      <th>Total Paid</th>
-                      <th>Actions</th>   
+                      <th>Editor</th>
+                      <th>Editor Pay</th>
+                      <th>Order Total</th>
+                      <th>Profit</th>
+                      {% comment %} <th>Actions</th>    {% endcomment %}
                     </tr>
                   </thead>
                   <tbody>
@@ -38,11 +41,15 @@ Orders
                       <td>{{order.created_at}}</td>
                       <td>{{order.package.name}}</td>
                       <td>{{order.event.coupon.coupon.code|default_if_none:""}}</td>
+                      
+                      <td>{{order.event.editor.first_name}} {{order.event.editor.last_name}}</td>
+                      <td>${{order.get_editor_pay}}</td>
                       <td>${{order.order_total}}</td>
-                      <td>
+                      <td>${{order.calculate_profit}}</td>
+                      {% comment %} <td>
                         <a class="btn btn-sm pink-button" href="#" target="_blank">Button</a>
 
-                    </td>
+                    </td> {% endcomment %}
                     </tr>
                     {% endfor %}
                   </tbody>
