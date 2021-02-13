@@ -354,7 +354,7 @@ def final_video_download(request, uuid):
     chunk_size = 8192
 
     response = StreamingHttpResponse(FileWrapper(
-        open(path_to_file, 'rb'), chunk_size), content_type=mimetypes.guess_type(path_to_file)[0])
+        open(path_to_file, 'rb'), chunk_size), content_type="application/force-download")
 
     # fl = open(path_to_file, 'rb')
     # response = HttpResponse(fl, content_type="application/force-download")
